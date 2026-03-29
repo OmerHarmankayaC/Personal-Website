@@ -21,7 +21,7 @@ export default function Projects() {
           if (item.images && item.images.length > 0) {
              if (isVera) {
                // Prioritize capturing the mobile `home_screen.png` for the vertical sidebar.
-               heroImage = item.images.find(i => i.src.includes('home_screen')) || item.images[0];
+               heroImage = item.images.find(i => i.src.includes('home-screen')) || item.images[0];
              } else {
                heroImage = item.images[0];
              }

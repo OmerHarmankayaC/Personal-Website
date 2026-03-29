@@ -25,7 +25,7 @@ export const translations = {
           size: "large",
           images: [
             { src: '/images/vera/landing.png', type: 'desktop' },
-            { src: '/images/vera/app/home_screen.png', type: 'mobile' },
+            { src: '/images/vera/app/home-screen.png', type: 'mobile' },
             { src: '/images/vera/app/insights.png', type: 'mobile' },
             { src: '/images/vera/app/assets.png', type: 'mobile' },
             { src: '/images/vera/app/goals.png', type: 'mobile' },
@@ -40,10 +40,10 @@ export const translations = {
           link: "#",
           size: "medium-large",
           images: [
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.24.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.39.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.52.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.10.16.png', type: 'desktop' }
+            { src: '/images/ieee/ieee-mockup-1.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-2.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ]
         },
         {
@@ -88,7 +88,7 @@ export const translations = {
           size: "large",
           images: [
             { src: '/images/vera/landing.png', type: 'desktop' },
-            { src: '/images/vera/app/home_screen.png', type: 'mobile' },
+            { src: '/images/vera/app/home-screen.png', type: 'mobile' },
             { src: '/images/vera/app/insights.png', type: 'mobile' },
             { src: '/images/vera/app/assets.png', type: 'mobile' },
             { src: '/images/vera/app/goals.png', type: 'mobile' },
@@ -103,10 +103,10 @@ export const translations = {
           link: "#",
           size: "medium-large",
           images: [
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.24.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.39.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.52.png', type: 'desktop' },
-            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.10.16.png', type: 'desktop' }
+            { src: '/images/ieee/ieee-mockup-1.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-2.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
+            { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ]
         },
         {
