@@ -37,6 +37,7 @@ export default function About() {
     <section 
       ref={sectionRef}
       className="container"
+      id="about"
       style={{ 
         minHeight: '80vh', 
         display: 'flex', 
@@ -46,7 +47,15 @@ export default function About() {
         paddingBottom: '10vh'
       }}
     >
-      <h2 style={{ color: 'var(--text-muted)', fontSize: '1rem', letterSpacing: '0.1em', marginBottom: '2rem' }}>{t.about.title}</h2>
+      <h2 style={{ 
+        color: 'var(--text-muted)', 
+        fontSize: '1.4rem', 
+        letterSpacing: '0.18em', 
+        marginBottom: '2rem',
+        paddingLeft: '7vw',
+        fontWeight: 600,
+        textTransform: 'uppercase'
+      }}>{t.about.title}</h2>
       <p 
         ref={textRef}
         style={{ 

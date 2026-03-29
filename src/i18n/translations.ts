@@ -11,7 +11,7 @@ export const translations = {
     },
     about: {
       title: "About",
-      text: "I'm a 3rd-year double major exploring the intersection of software and systems. I haven't locked myself into one niche yet—instead, I learn by building. I leverage AI to accelerate development and ship real-world projects that solve actual problems."
+      text: "I'm Ömer. Computer Engineering and Industrial Engineering at TED University — not because I had to, but because I'm genuinely drawn to both how systems are built and how they're optimized. The most interesting problems live at that intersection.\n\nI build with AI as a core methodology. Not a shortcut — a craft. The result is work that ships: a live fintech app, a society's entire web presence, products that exist in the real world."
     },
     projects: {
       title: "Selected Works",
@@ -37,7 +37,7 @@ export const translations = {
           title: "IEEE TEDU",
           role: "Design / Development",
           description: "Official society web page for the IEEE branch at TED University.",
-          link: "#",
+          link: "https://ieee-tedu.vercel.app/",
           size: "medium-large",
           images: [
             { src: '/images/ieee/ieee-mockup-1.png', type: 'desktop' },
@@ -47,12 +47,13 @@ export const translations = {
           ]
         },
         {
-          id: 'stealth',
-          title: "Stealth AI Suite",
-          role: "Systems Architecture",
-          description: "Upcoming real-world application focused on automating standard workflows.",
+          id: 'hospital-db',
+          title: "HOSPITAL DB",
+          role: "SYSTEMS ARCHITECTURE",
+          description: "Full relational database design for a hospital management platform. Schema architecture, normalization, and constraint enforcement.",
           link: "#",
           size: "medium-small",
+          tags: "C# · MS SQL · SCHEMA DESIGN",
           images: []
         }
       ]
@@ -74,7 +75,7 @@ export const translations = {
     },
     about: {
       title: "Hakkımda",
-      text: "Yazılım ve sistemlerin kesiştiği noktayı keşfeden bir 3. sınıf çift anadal öğrencisiyim. Henüz kendimi tek bir alana hapsetmedim—bunun yerine inşa ederek öğreniyorum. Geliştirme sürecini hızlandırmak ve gerçek sorunları çözen projeler ortaya çıkarmak için yapay zekadan yararlanıyorum."
+      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar Mühendisliği ve Endüstri Mühendisliği okuyorum — zorunda olduğum için değil, sistemlerin nasıl kurulduğuna ve nasıl optimize edildiğine gerçekten ilgi duyduğum için. En ilginç problemler bu kesişim noktasında yaşıyor.\n\nYapay zekayı temel bir metodoloji olarak kullanarak inşa ediyorum. Bir kestirme yol değil — bir zanaat. Sonuç, yayına giren işlerdir: canlı bir fintech uygulaması, bir topluluğun tüm web varlığı, gerçek dünyada var olan ürünler."
     },
     projects: {
       title: "Seçili Çalışmalar",
@@ -100,7 +101,7 @@ export const translations = {
           title: "IEEE TEDU",
           role: "Tasarım / Geliştirme",
           description: "TED Üniversitesi IEEE topluluğunun resmi web sayfası.",
-          link: "#",
+          link: "https://ieee-tedu.vercel.app/",
           size: "medium-large",
           images: [
             { src: '/images/ieee/ieee-mockup-1.png', type: 'desktop' },
@@ -110,12 +111,13 @@ export const translations = {
           ]
         },
         {
-          id: 'stealth',
-          title: "Gizli Yapay Zeka Paketi",
-          role: "Sistem Mimarisi",
-          description: "Standart iş akışlarını otomatikleştirmeye odaklanan, gerçek dünyaya yönelik yeni uygulama.",
+          id: 'hospital-db',
+          title: "HASTANE VERİTABANI",
+          role: "SİSTEM MİMARİSİ",
+          description: "Bir hastane yönetim platformu için tam ilişkisel veritabanı tasarımı. Şema mimarisi, normalizasyon ve kısıtlama zorlama.",
           link: "#",
           size: "medium-small",
+          tags: "C# · MS SQL · ŞEMA TASARIMI",
           images: []
         }
       ]
