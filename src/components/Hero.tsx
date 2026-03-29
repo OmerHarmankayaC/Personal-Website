@@ -1,61 +1,65 @@
-import { motion, useScroll, useTransform, type Variants } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useI18n } from '../i18n/context';
 import { useState, useEffect } from 'react';
 
-const subtitleContainer: Variants = {
-  initial: { opacity: 0, y: 30 },
-  animate: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: 4.2, 
-      duration: 1.2,
-      ease: "easeOut"
-    }
-  }
-};
-
 export default function Hero() {
   const { lang, setLang, t } = useI18n();
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [phase, setPhase] = useState<'drop' | 'shift'>('drop');
   
-  // Track scroll position for the scroll indicator
   const { scrollY } = useScroll();
   const scrollIndicatorOpacity = useTransform(scrollY, [0, 100], [0.5, 0]);
   const scrollIndicatorY = useTransform(scrollY, [0, 100], [0, -40]);
 
   useEffect(() => {
-    // Zoom timeout triggers flawlessly 
-    const timer = setTimeout(() => {
-      setIsZoomed(true);
-    }, 3200);
+    // Letters drop: ~2.2 seconds.
+    const timer = setTimeout(() => setPhase('shift'), 2200);
     return () => clearTimeout(timer);
   }, []);
 
-  let globalIndex = 0; // Cascades smoothly from Ö to last A
+  let globalIndex = 0;
+
+  // Premium easing curve (Custom Expo-Out)
+  const premiumEase: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
   return (
     <section 
       style={{ 
         height: '100vh', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'center',
+        width: '100vw',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center' // Centers the master scale wrapper vertically
       }}
     >
-        {/* Language Toggle (Top Center) */}
+        {/* Camera Viewfinder Corners */}
         <motion.div 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }} 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.0, duration: 1.5 }}
+          style={{ position: 'absolute', top: '24px', left: '24px', width: '2vw', height: '2vw', minWidth: '16px', minHeight: '16px', borderTop: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} 
+        />
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.0, duration: 1.5 }}
+          style={{ position: 'absolute', top: '24px', right: '24px', width: '2vw', height: '2vw', minWidth: '16px', minHeight: '16px', borderTop: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} 
+        />
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.0, duration: 1.5 }}
+          style={{ position: 'absolute', bottom: '24px', left: '24px', width: '2vw', height: '2vw', minWidth: '16px', minHeight: '16px', borderBottom: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} 
+        />
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3.0, duration: 1.5 }}
+          style={{ position: 'absolute', bottom: '24px', right: '24px', width: '2vw', height: '2vw', minWidth: '16px', minHeight: '16px', borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} 
+        />
+
+        {/* Language Toggle */}
+        <motion.div 
+          initial={{ opacity: 0, y: -20, x: "-50%" }} 
+          animate={{ opacity: 1, y: 0, x: "-50%" }} 
           transition={{ delay: 3.5, duration: 1 }}
           style={{ 
             position: 'absolute', 
             top: 40, 
             left: '50%', 
-            transform: 'translateX(-50%)', 
             zIndex: 100, 
             display: 'flex', 
             gap: '8px', 
@@ -80,126 +84,149 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        {/* Technical Brutalist Details */}
+        {/* Corner telemetry */}
         <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ delay: 3.0, duration: 1 }}
-          style={{ position: 'absolute', top: 40, left: 40, fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em', willChange: 'opacity' }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+          transition={{ delay: 3.5, duration: 1 }}
+          style={{ position: 'absolute', top: 40, left: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}
         >
           {t.hero.tags[0]}
         </motion.div>
         <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ delay: 3.0, duration: 1 }}
-          style={{ position: 'absolute', top: 40, right: 40, fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em', willChange: 'opacity' }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+          transition={{ delay: 3.5, duration: 1 }}
+          style={{ position: 'absolute', top: 40, right: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}
         >
           {t.hero.tags[1]}
         </motion.div>
         <motion.div 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          transition={{ delay: 3.0, duration: 1 }}
-          style={{ position: 'absolute', bottom: 40, right: 40, fontSize: '0.65rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em', willChange: 'opacity' }}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} 
+          transition={{ delay: 3.5, duration: 1 }}
+          style={{ position: 'absolute', bottom: 40, right: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}
         >
           {t.hero.tags[2]}
         </motion.div>
 
-        {/* Global Scaler & Aligner */}
+        {/* 
+          Master Animation Wrapper:
+          Handles the cinematic zoom-out (1.3x -> 1.0x).
+        */}
         <motion.div
-           initial={{ scale: 1.5, x: 0, y: "10vh" }}
-           animate={{ 
-             scale: isZoomed ? 1 : 1.5, 
-             x: isZoomed ? "-15vw" : 0,
-             y: isZoomed ? 0 : "10vh",
-           }}
-           transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-           style={{ 
-             display: 'flex', 
-             flexDirection: 'column',
-             alignItems: isZoomed ? 'flex-start' : 'center', // Drives all alignment identically
-             willChange: 'transform' // Hardcore FPS smoothness check
-           }}
+          animate={{ scale: phase === 'shift' ? 1.0 : 1.3 }}
+          transition={{ duration: 1.6, ease: premiumEase }}
+          style={{ 
+            width: '100%', 
+            willChange: 'transform',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
         >
-          
-          {/* Main Titles - Choreographed Row to Column transition */}
-          <motion.div 
-            layout 
-            style={{ 
-              display: 'flex', 
-              flexDirection: isZoomed ? 'column' : 'row', 
-              alignItems: isZoomed ? 'flex-start' : 'center', 
-              gap: isZoomed ? '0px' : '3vw' 
+          {/* 
+            Framer Motion Layout Container
+            We use native layout transitions to float them from a centered row to a left column.
+            CRITICAL FIX: whiteSpace: "nowrap" guarantees they NEVER wrap onto two lines 
+                          during the drop phase, even on narrow screens.
+          */}
+          <motion.div
+            layout
+            style={{
+              display: 'flex',
+              flexDirection: phase === 'shift' ? 'column' : 'row',
+              justifyContent: phase === 'shift' ? 'flex-start' : 'center',
+              alignItems: phase === 'shift' ? 'flex-start' : 'center',
+              paddingLeft: phase === 'shift' ? '12vw' : '0vw',   // Moves the stack to the left edge
+              paddingTop: phase === 'shift' ? '0vh' : '15vh',    // Visual centering adjust
+              gap: phase === 'shift' ? '0px' : '3vw',           // Gap collapses when shifting to column
+              whiteSpace: 'nowrap',                              // Prevents the premature wrap glitch
+              width: '100%'
             }}
           >
-            {t.hero.title.map((word, wordIdx) => (
-              <motion.div
-                layout="position"
-                transition={{
-                  layout: {
-                    duration: 1.4,
-                    ease: [0.16, 1, 0.3, 1],
-                    // CHOREOGRAPHED FLIGHT PATH:
-                    // Delay the second word's layout shift by 150ms! 
-                    // This forces "ÖMER" to physically move out of the way before "HARMANKAYA" sweeps left,
-                    // guaranteeing they never intersect or clip into each other during the translation!
-                    delay: isZoomed ? wordIdx * 0.15 : 0 
-                  }
-                }}
-                key={wordIdx}
-                style={{ 
-                  display: 'flex', 
-                  fontSize: 'clamp(2.5rem, 6vw, 10rem)', 
-                  fontWeight: 400, 
-                  lineHeight: 1,
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                {word.split("").map((letter, index) => {
-                    const currentGlobalIndex = globalIndex++; 
-                    return (
-                    <motion.span 
-                      initial={{ opacity: 0, y: -80, filter: "blur(20px)" }}
-                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      transition={{
-                        delay: 0.2 + (currentGlobalIndex * 0.1), 
-                        type: "spring",
-                        damping: 15,
-                        stiffness: 110,
-                      }}
-                      key={`${wordIdx}-${index}`} 
-                      style={{ 
-                        display: 'inline-block',
-                        fontFamily: 'var(--font-sans)',
-                        transformOrigin: 'bottom',
-                        willChange: 'transform, opacity, filter'
-                      }}
-                    >
-                      {letter}
-                    </motion.span>
-                )})}
-              </motion.div>
-            ))}
+            {/* Word 1: ÖMER */}
+            <motion.div
+              layout
+              transition={{ layout: { duration: 1.6, ease: premiumEase } }}
+              style={{
+                display: 'flex', 
+                fontSize: 'clamp(2.5rem, 6vw, 10rem)', 
+                fontWeight: 800, 
+                lineHeight: 0.85,
+                letterSpacing: '-0.04em'
+              }}
+            >
+              {t.hero.title[0].split("").map((letter, index) => {
+                const currentGlobalIndex = globalIndex++;
+                return (
+                  <motion.span 
+                    initial={{ opacity: 0, y: -80, filter: "blur(16px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ delay: 0.3 + (currentGlobalIndex * 0.08), type: "spring", damping: 20, stiffness: 100 }}
+                    key={`w0-${index}`} 
+                    style={{ display: 'inline-block', fontFamily: 'var(--font-sans)', transformOrigin: 'bottom', willChange: 'transform, opacity, filter' }}
+                  >
+                    {letter}
+                  </motion.span>
+                );
+              })}
+            </motion.div>
+
+            {/* 
+              Word 2: HARMANKAYA 
+              CRITICAL FIX: Delay on layout transition prevents diagonal collision.
+              ÖMER floats left first, HARMANKAYA swoops underneath it 0.15s later.
+             */}
+            <motion.div
+              layout
+              transition={{ 
+                layout: { 
+                  duration: 1.6, 
+                  ease: premiumEase,
+                  delay: phase === 'shift' ? 0.15 : 0 
+                } 
+              }}
+              style={{
+                display: 'flex', 
+                fontSize: 'clamp(2.5rem, 6vw, 10rem)', 
+                fontWeight: 800, 
+                lineHeight: 0.85,
+                letterSpacing: '-0.04em'
+              }}
+            >
+              {t.hero.title[1].split("").map((letter, index) => {
+                const currentGlobalIndex = globalIndex++;
+                return (
+                  <motion.span 
+                    initial={{ opacity: 0, y: -80, filter: "blur(16px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ delay: 0.3 + (currentGlobalIndex * 0.08), type: "spring", damping: 20, stiffness: 100 }}
+                    key={`w1-${index}`} 
+                    style={{ display: 'inline-block', fontFamily: 'var(--font-sans)', transformOrigin: 'bottom', willChange: 'transform, opacity, filter' }}
+                  >
+                    {letter}
+                  </motion.span>
+                );
+              })}
+            </motion.div>
           </motion.div>
-          
-          {/* Subtitles - Locked natively inside the master scaler */}
+
+          {/* Subtitles: Pinned safely beneath the stacked words via Margin */}
           <motion.div
-            variants={subtitleContainer}
-            initial="initial"
-            animate="animate"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: phase === 'shift' ? 1 : 0, 
+              y: phase === 'shift' ? 0 : 20 
+            }}
+            transition={{ duration: 1, ease: "easeOut", delay: phase === 'shift' ? 1.0 : 0 }}
             style={{ 
-              marginTop: '4vh', 
+              paddingLeft: '12vw',
+              marginTop: '4vh', // ensures it sits safely below the giant text stack
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'inherit', // Follows the parent precisely
-              gap: '1rem',
-              color: 'var(--text)',
+              gap: '0.8rem',
               willChange: 'transform, opacity'
             }}
           >
             <p style={{ 
-              fontSize: 'clamp(1rem, 1.5vw, 1.5rem)', 
+              fontSize: 'clamp(0.9rem, 1.3vw, 1.3rem)', 
               letterSpacing: '0.15em', 
               textTransform: 'uppercase',
               color: 'var(--text-muted)',
@@ -208,9 +235,9 @@ export default function Hero() {
               {t.hero.subtitle1}
             </p>
             <p style={{ 
-              fontSize: 'clamp(0.8rem, 1vw, 1rem)', 
-              opacity: 0.6,
-              fontFamily: 'var(--font-body)', // Updated Body Font
+              fontSize: 'clamp(0.75rem, 0.9vw, 0.95rem)', 
+              opacity: 0.5,
+              fontFamily: 'var(--font-body)',
               letterSpacing: '0.05em'
             }}>
               {t.hero.subtitle2}
@@ -219,18 +246,20 @@ export default function Hero() {
 
         </motion.div>
 
-        {/* Scrolling Indicator uses hardware accelerated scroll tracking */}
+        {/* Scroll indicator */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }} // Handed opacity off to the scroll transform
-          transition={{ delay: 4.5, duration: 1 }}
+          animate={{ opacity: phase === 'shift' ? 0.5 : 0 }}
+          transition={{ delay: phase === 'shift' ? 2.0 : 0, duration: 1 }}
           style={{
             position: 'absolute',
             bottom: '40px',
+            left: '50vw',
+            x: '-50%',
             fontSize: '0.65rem',
             letterSpacing: '0.2em',
             textTransform: 'uppercase',
-            color: 'var(--text-muted)',
+            color: 'var(--text)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

@@ -3,7 +3,7 @@ export type Language = 'EN' | 'TR';
 export const translations = {
   EN: {
     hero: {
-      tags: ["SYS.01 // CE-IE", "VER_1.0.0", "LAT: 39.9255 // ANKARA"],
+      tags: ["SYS.01 // CE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Engineering Systems. Building Realities.",
       subtitle2: "Computer & Industrial Engineering @ TED University",
@@ -22,7 +22,15 @@ export const translations = {
           role: "Fullstack / AI Integration",
           description: "A comprehensive personal finance application leveraging AI for real-time insights.",
           link: "https://vera.staticorbit.dev/",
-          size: "large" // spans 12
+          size: "large",
+          images: [
+            { src: '/images/vera/landing.png', type: 'desktop' },
+            { src: '/images/vera/app/home_screen.png', type: 'mobile' },
+            { src: '/images/vera/app/insights.png', type: 'mobile' },
+            { src: '/images/vera/app/assets.png', type: 'mobile' },
+            { src: '/images/vera/app/goals.png', type: 'mobile' },
+            { src: '/images/vera/app/inventory.png', type: 'mobile' }
+          ]
         },
         {
           id: 'ieee',
@@ -30,7 +38,13 @@ export const translations = {
           role: "Design / Development",
           description: "Official society web page for the IEEE branch at TED University.",
           link: "#",
-          size: "medium-large" // spans 8
+          size: "medium-large",
+          images: [
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.24.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.39.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.52.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.10.16.png', type: 'desktop' }
+          ]
         },
         {
           id: 'stealth',
@@ -38,7 +52,8 @@ export const translations = {
           role: "Systems Architecture",
           description: "Upcoming real-world application focused on automating standard workflows.",
           link: "#",
-          size: "medium-small" // spans 4
+          size: "medium-small",
+          images: []
         }
       ]
     },
@@ -51,7 +66,7 @@ export const translations = {
   },
   TR: {
     hero: {
-      tags: ["SYS.01 // CE-IE", "SÜRÜM_1.0.0", "ENL: 39.9255 // ANKARA"],
+      tags: ["SYS.01 // CE-IE", "SÜRÜM_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Sistem Mühendisliği. Dijital Gerçeklikler İnşa Etmek.",
       subtitle2: "Bilgisayar ve Endüstri Mühendisliği @ TED Üniversitesi",
@@ -70,7 +85,15 @@ export const translations = {
           role: "Fullstack / Yapay Zeka Entegrasyonu",
           description: "Gerçek zamanlı içgörüler için yapay zekadan yararlanan kapsamlı bir kişisel finans uygulaması.",
           link: "https://vera.staticorbit.dev/",
-          size: "large"
+          size: "large",
+          images: [
+            { src: '/images/vera/landing.png', type: 'desktop' },
+            { src: '/images/vera/app/home_screen.png', type: 'mobile' },
+            { src: '/images/vera/app/insights.png', type: 'mobile' },
+            { src: '/images/vera/app/assets.png', type: 'mobile' },
+            { src: '/images/vera/app/goals.png', type: 'mobile' },
+            { src: '/images/vera/app/inventory.png', type: 'mobile' }
+          ]
         },
         {
           id: 'ieee',
@@ -78,7 +101,13 @@ export const translations = {
           role: "Tasarım / Geliştirme",
           description: "TED Üniversitesi IEEE topluluğunun resmi web sayfası.",
           link: "#",
-          size: "medium-large"
+          size: "medium-large",
+          images: [
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.24.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.39.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.09.52.png', type: 'desktop' },
+            { src: '/images/ieee/Ekran Resmi 2026-03-28 13.10.16.png', type: 'desktop' }
+          ]
         },
         {
           id: 'stealth',
@@ -86,7 +115,8 @@ export const translations = {
           role: "Sistem Mimarisi",
           description: "Standart iş akışlarını otomatikleştirmeye odaklanan, gerçek dünyaya yönelik yeni uygulama.",
           link: "#",
-          size: "medium-small"
+          size: "medium-small",
+          images: []
         }
       ]
     },

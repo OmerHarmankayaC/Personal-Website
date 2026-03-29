@@ -51,7 +51,7 @@ export default function About() {
         ref={textRef}
         style={{ 
           fontSize: 'clamp(1.5rem, 3vw, 3rem)', 
-          fontFamily: 'var(--font-serif)',
+          fontFamily: 'var(--font-body)',
           lineHeight: '1.4',
           maxWidth: '1000px',
           color: 'var(--text)'
