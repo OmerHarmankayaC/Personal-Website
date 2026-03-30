@@ -23,7 +23,6 @@ export default function About() {
           scrollTrigger: {
             trigger: sectionRef.current,
             start: "top 70%",
-            end: "bottom center",
             toggleActions: "play none none reverse",
           }
         }
@@ -39,31 +38,35 @@ export default function About() {
       className="container"
       id="about"
       style={{ 
-        minHeight: '80vh', 
+        minHeight: '60vh', 
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center',
-        paddingTop: '10vh',
-        paddingBottom: '10vh'
+        paddingTop: '8vh',
+        paddingBottom: '8vh'
       }}
     >
       <h2 style={{ 
-        color: 'var(--text-muted)', 
-        fontSize: '1.4rem', 
-        letterSpacing: '0.18em', 
-        marginBottom: '2rem',
-        paddingLeft: '7vw',
-        fontWeight: 600,
-        textTransform: 'uppercase'
+        color: 'var(--text)', 
+        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', 
+        lineHeight: 1,
+        marginBottom: '2.5rem',
+        fontWeight: 400,
+        textTransform: 'none',
+        fontFamily: 'var(--font-display)',
+        letterSpacing: '-0.01em'
       }}>{t.about.title}</h2>
+
       <p 
         ref={textRef}
         style={{ 
-          fontSize: 'clamp(1.5rem, 3vw, 3rem)', 
+          fontSize: 'clamp(1.2rem, 2.2vw, 2.2rem)', 
           fontFamily: 'var(--font-body)',
           lineHeight: '1.4',
-          maxWidth: '1000px',
-          color: 'var(--text)'
+          maxWidth: '900px',
+          color: 'var(--text)',
+          fontWeight: 300,
+          opacity: 0.9
         }}
       >
         {t.about.text}

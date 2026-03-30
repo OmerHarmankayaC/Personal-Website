@@ -1,8 +1,12 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n/context';
+import { useCursor } from '../context/CursorContext';
+import VeraShowcase from './VeraShowcase';
 
 export default function Projects() {
-  const { t } = useI18n();
+  const { lang, t } = useI18n();
+  const { setCursorType } = useCursor();
 
   // Hospital DB ERD Visual (SVG)
   const HospitalDBVisual = () => (
@@ -46,19 +50,22 @@ export default function Projects() {
   );
 
   return (
-    <section className="container" id="projects" style={{ paddingBottom: '15vh' }}>
+    <section className="container" id="projects" style={{ paddingBottom: '20vh' }}>
       <h2 style={{ 
-        color: 'var(--text-muted)', 
-        fontSize: '1.4rem', 
-        letterSpacing: '0.18em', 
+        color: 'var(--text)', 
+        fontSize: 'clamp(3rem, 10vw, 6.5rem)', 
+        lineHeight: 1,
         marginBottom: '4rem',
-        paddingLeft: '7vw',
-        fontWeight: 600,
-        textTransform: 'uppercase'
+        paddingLeft: '0',
+        fontWeight: 700,
+        textTransform: 'none',
+        fontFamily: 'var(--font-display)',
+        letterSpacing: '-0.04em'
       }}>{t.projects.title}</h2>
       
       <div className="brutalist-grid" style={{ 
         display: 'grid', 
+        gridTemplateColumns: 'repeat(12, 1fr)',
         gap: '0px' 
       }}>
         {t.projects.items.map((item, idx) => {
@@ -66,6 +73,7 @@ export default function Projects() {
           const isVera = item.id === 'vera';
           const isIEEE = item.id === 'ieee';
           const isHospital = item.id === 'hospital-db';
+          const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
           
           let heroImage: any = null;
           if (item.images && item.images.length > 0) {
@@ -77,114 +85,163 @@ export default function Projects() {
           }
 
           return (
-            <motion.a 
+            <motion.div 
               key={idx}
-              href={isHospital ? undefined : item.link}
-              target={isHospital ? undefined : "_blank"}
-              rel={isHospital ? undefined : "noopener noreferrer"}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: idx * 0.1, ease: 'easeOut' }}
-              whileHover={{ backgroundColor: '#050505' }}
+              whileHover={!isMobile ? { backgroundColor: '#050505' } : {}}
               style={{ 
                 position: 'relative',
-                gridColumn: item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4'),
+                gridColumn: isMobile ? 'span 12' : (item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4')),
                 backgroundColor: '#000000',
                 border: '1px solid var(--border)',
-                padding: 'clamp(3rem, 6vw, 5rem)',
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: isVera && isMobile ? 'column' : 'row',
                 justifyContent: isVera ? 'center' : 'space-between',
-                minHeight: item.size === 'large' ? '80vh' : '65vh',
-                textDecoration: 'none',
+                minHeight: isMobile ? 'auto' : (item.size === 'large' ? '90vh' : '85vh'),
                 color: 'var(--text)',
                 transition: 'background-color 0.3s ease',
-                overflow: 'hidden',
-                cursor: 'none'
+                overflow: 'hidden'
               }}
+              onMouseEnter={() => !isMobile && setCursorType('project')}
+              onMouseLeave={() => !isMobile && setCursorType('default')}
             >
+              {/* GLOBAL LINK OVERLAY (Using Link for internal and keeping a consistent behavior) */}
+              <Link 
+                to={`/project/${item.id}`} 
+                style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  zIndex: 25, 
+                  cursor: isVera && !isMobile ? 'none' : 'pointer'
+                }}
+                onMouseEnter={() => !isMobile && setCursorType('project')}
+              />
+
               {/* VERA FINANCE: SPECIAL LAYOUT */}
               {isVera ? (
-                <div style={{ position: 'relative', zIndex: 30, width: '45%', display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '1.12rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem', fontWeight: 600, letterSpacing: '0.18em' }}>{item.role}</p>
-                  <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(3rem, 5vw, 4.5rem)', fontWeight: 700, marginBottom: '1.5rem', lineHeight: 1, textTransform: 'uppercase' }}>{item.title}</h3>
-                  <p style={{ fontFamily: 'var(--font-body)', fontWeight: 300, fontSize: '1rem', opacity: 0.55, marginBottom: '20px', maxWidth: '380px' }}>
-                    A personal finance platform with AI-powered receipt scanning and real-time market data. Concept to live product.
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>{item.tags}</p>
-                  
-                  <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '1.5rem', marginTop: 'auto' }}>
-                    <span style={{ fontFamily: 'var(--font-body)', fontWeight: 400, fontSize: '0.9rem' }}>View live product →</span>
+                <div style={{ 
+                  position: 'relative', 
+                  width: '100%', 
+                  height: isMobile ? 'auto' : '100%', 
+                  display: 'flex', 
+                  flexDirection: isMobile ? 'column' : 'row',
+                  padding: 'clamp(1.5rem, 5vw, 4rem)', 
+                  zIndex: 20 
+                }}>
+                  {/* Photo/Showcase Area on Mobile (Top) */}
+                  {isMobile && (
+                    <div style={{ width: '100%', height: '400px', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }} onMouseEnter={() => setCursorType('default')}>
+                       <VeraShowcase />
+                    </div>
+                  )}
+
+                  {/* Left Info Area */}
+                  <div 
+                    style={{ 
+                      position: 'relative', 
+                      zIndex: 30, 
+                      width: isMobile ? '100%' : '45%',
+                      textAlign: 'left',
+                      pointerEvents: 'none' 
+                    }}
+                    onMouseEnter={() => !isMobile && setCursorType('project')}
+                  >
+                    <div style={{ pointerEvents: 'auto' }}>
+                      <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)', color: 'var(--text)', fontWeight: 700, margin: '0 0 1rem 0', fontFamily: 'var(--font-display)' }}>{item.title}</h2>
+                      <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'var(--font-body)', fontWeight: 300, marginBottom: '0.5rem' }}>{item.description}</p>
+                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.05em' }}>{item.tags}</p>
+                      
+                      <span
+                        style={{ 
+                          display: 'inline-block',
+                          padding: '12px 24px',
+                          border: '1px solid var(--border)',
+                          fontSize: '0.8rem',
+                          fontFamily: 'var(--font-mono)',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          backgroundColor: 'rgba(255,255,255,0.03)',
+                          color: 'var(--text)'
+                        }}
+                      >
+                        {lang === 'TR' ? 'DETAYLARI GÖR' : 'VIEW DETAILS'}
+                      </span>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <>
+                <div style={{ padding: 'clamp(1.5rem, 5vw, 4rem)', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div style={{ position: 'relative', zIndex: 20 }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '1.12rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem', fontWeight: 600, letterSpacing: '0.18em' }}>{item.role}</p>
-                    <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem, 4vw, 3.5rem)', fontWeight: 700, textTransform: 'uppercase' }}>{item.title}</h3>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600, letterSpacing: '0.15em' }}>{item.role}</p>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 6vw, 3.8rem)', fontWeight: 700, textTransform: 'none', letterSpacing: '-0.04em', lineHeight: 1 }}>{item.title}</h3>
+                    
+                    <p style={{ 
+                      maxWidth: '500px', 
+                      color: 'var(--text)',
+                      fontFamily: 'var(--font-body)',
+                      fontWeight: 400,
+                      position: 'relative',
+                      zIndex: 20,
+                      marginTop: '1.5rem',
+                      lineHeight: 1.6,
+                      opacity: 0.85,
+                      fontSize: 'clamp(1.1rem, 4vw, 1.15rem)'
+                    }}>
+                      {item.description}
+                    </p>
                   </div>
 
                   <p style={{ 
-                    maxWidth: '400px', 
-                    alignSelf: item.size === 'large' ? 'flex-end' : 'flex-start', 
-                    textAlign: item.size === 'large' ? 'right' : 'left',
-                    color: 'var(--text)',
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 300,
-                    position: 'relative',
-                    zIndex: 30,
-                    textShadow: '0 4px 16px rgba(0,0,0,0.9)'
+                    position: 'relative', 
+                    zIndex: 20, 
+                    fontFamily: 'var(--font-mono)', 
+                    fontSize: '0.7rem', 
+                    color: 'var(--text-muted)',
+                    marginTop: '3rem',
+                    letterSpacing: '0.1em'
                   }}>
-                    {item.description}
+                    {item.tags}
                   </p>
-                  
-                  {item.tags && (
-                    <p style={{ 
-                      position: 'relative', 
-                      zIndex: 30, 
-                      fontFamily: 'var(--font-mono)', 
-                      fontSize: '0.7rem', 
-                      color: 'var(--text-muted)',
-                      marginTop: '1rem' 
-                    }}>
-                      {item.tags}
-                    </p>
-                  )}
-                </>
-              )}
-              
-              {/* VISUALS */}
-              {isVera && heroImage && (
-                <div style={{ position: 'absolute', right: 0, top: 0, width: '50%', height: '100%', overflow: 'hidden', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                  <motion.img 
-                    src={heroImage.src} 
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
-                    style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'right center', filter: 'brightness(0.95)' }} 
-                  />
-                  <div style={{ position: 'absolute', bottom: 0, right: 0, width: '100%', height: '40%', background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)', pointerEvents: 'none' }} />
                 </div>
               )}
+              
+              {/* VISUALS (Desktop Only for Absolutely Positioned Overlays) */}
+              {isVera && !isMobile ? (
+                <div 
+                  style={{ position: 'absolute', right: 0, top: 0, width: '55%', height: '100%', overflow: 'hidden', zIndex: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '4vh 0' }}
+                  onMouseEnter={() => setCursorType('project')} 
+                >
+                  <div 
+                    style={{ position: 'relative', zIndex: 2, cursor: 'default' }}
+                    onMouseEnter={(e) => { e.stopPropagation(); setCursorType('default'); }}
+                    onClick={(e) => e.stopPropagation()} 
+                    onMouseDown={(e) => e.stopPropagation()} 
+                  >
+                    <VeraShowcase />
+                  </div>
+                </div>
+              ) : null}
 
               {isIEEE && heroImage && (
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%', overflow: 'hidden', zIndex: 10, borderTop: '1px solid var(--border)' }}>
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '65%', overflow: 'hidden', zIndex: 5, borderTop: '1px solid var(--border)' }}>
                   <motion.img 
                     src={heroImage.src} 
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', filter: 'brightness(0.85)' }} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} 
                   />
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '70%', background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%)', pointerEvents: 'none' }} />
                 </div>
               )}
 
               {isHospital && (
-                <div style={{ position: 'absolute', bottom: 0, right: 0, width: '60%', height: '70%', overflow: 'hidden', zIndex: 10, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: '2rem' }}>
+                <div style={{ position: 'absolute', bottom: 0, right: 0, width: '90%', height: '60%', overflow: 'hidden', zIndex: 5, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: '1rem' }}>
                   <HospitalDBVisual />
                 </div>
               )}
-            </motion.a>
+            </motion.div>
           )
         })}
       </div>

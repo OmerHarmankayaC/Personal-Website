@@ -50,6 +50,10 @@ const LinkRow = ({ text, href, icon = "↗", id }: { text: string; href: string;
 
 export default function Footer() {
   const { t } = useI18n();
+  const isLongTitle = t.footer.title.length > 12;
+  const fontSize = isLongTitle ? 'clamp(2.5rem, 9.5vw, 16rem)' : 'clamp(4rem, 15vw, 22rem)';
+  const bottomOffset = isLongTitle ? '-3.8vw' : '-5vw';
+  const liftAmount = isLongTitle ? '-9.2vw' : '-6.5vw';
 
   return (
     <footer style={{ 
@@ -70,22 +74,23 @@ export default function Footer() {
         paddingLeft: '7vw' 
       }}>
         <motion.h2 
-          whileHover={{ color: '#ffffff' }}
-          initial={{ color: 'rgba(255,255,255,0.2)' }}
-          transition={{ duration: 0.4 }}
+          initial={{ color: 'rgba(255,255,255,0.1)' }}
+          whileInView={{ color: '#ffffff' }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 1.2 }}
           style={{ 
-            fontFamily: 'var(--font-serif)', 
-            fontWeight: 700, 
+            fontFamily: 'var(--font-display)', 
+            fontWeight: 400, 
             fontSize: 'clamp(52px, 8vw, 96px)', 
-            lineHeight: 0.92, 
-            letterSpacing: '-0.02em',
+            lineHeight: 1, 
+            letterSpacing: '-0.01em',
             marginBottom: '48px',
             textTransform: 'none',
             cursor: 'none'
           }}
         >
           Let's build<br />
-          <span style={{ fontWeight: 400 }}>something.</span>
+          <span style={{ fontWeight: 300, letterSpacing: '0.05em', fontFamily: 'var(--font-body)', textTransform: 'uppercase', fontSize: '0.4em', opacity: 0.6 }}>something.</span>
         </motion.h2>
 
         <p style={{ 
@@ -108,36 +113,45 @@ export default function Footer() {
         </div>
       </div>
 
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 'auto', position: 'relative', zIndex: 10 }}>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontFamily: 'var(--font-body)', fontWeight: 300 }}>© 2026</p>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: 'auto', position: 'relative', zIndex: 10, pointerEvents: 'none' }}>
+        <motion.p 
+          initial={{ opacity: 0.4 }}
+          whileInView={{ opacity: 0 }}
+          viewport={{ margin: "-200px" }}
+          style={{ 
+            color: '#ffffff', 
+            fontSize: '0.9rem', 
+            fontFamily: 'var(--font-body)', 
+            fontWeight: 300,
+            pointerEvents: 'none'
+          }}
+        >
+          © 2026 Ömer Harmankaya
+        </motion.p>
       </div>
 
-      {/* LET'S WORK Watermark */}
+      {/* LET'S WORK Watermark - Scroll Activated */}
       <motion.h1 
-        whileHover={{ 
-          y: '-6.5vw', // Increased lift to ensure complete reveal
-          opacity: 1, 
-          transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } 
-        }}
-        initial={{ y: 0, opacity: 0.06 }}
+        initial={{ y: 0, opacity: 0.05 }}
+        whileInView={{ y: liftAmount, opacity: 1 }}
+        viewport={{ once: false, margin: "-100px" }}
+        transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
         style={{ 
           position: 'absolute',
-          bottom: '-5vw', 
+          bottom: bottomOffset, 
           left: '50%',
           x: '-50%',
-          // Responsive font size: reduces scale for longer strings (Turkish)
-          fontSize: t.footer.title.length > 12 
-            ? 'clamp(3rem, 10vw, 18rem)' 
-            : 'clamp(4rem, 15vw, 22rem)', 
+          fontSize: fontSize, 
           lineHeight: 0.8,
           whiteSpace: 'nowrap',
           color: '#ffffff',
-          fontFamily: 'var(--font-serif)',
-          fontWeight: 800,
-          zIndex: 1,
-          textTransform: 'uppercase',
+          fontFamily: 'var(--font-display)',
+          fontWeight: 400,
+          zIndex: 5, 
+          textTransform: 'none',
+          letterSpacing: '-0.01em',
           cursor: 'none',
-          pointerEvents: 'auto',
+          pointerEvents: 'none',
           userSelect: 'none',
           willChange: 'transform, opacity'
         }}

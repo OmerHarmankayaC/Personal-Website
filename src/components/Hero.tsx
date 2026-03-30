@@ -33,6 +33,8 @@ export default function Hero() {
     // Save original styles to restore them perfectly
     const originalStyles = {
       overflow: document.documentElement.style.overflow,
+      overflowX: document.documentElement.style.overflowX,
+      bodyOverflow: document.body.style.overflow,
       bodyPosition: document.body.style.position,
       bodyWidth: document.body.style.width,
       bodyHeight: document.body.style.height,
@@ -40,40 +42,52 @@ export default function Hero() {
     };
 
     let ctx: gsap.Context;
+    let safetyTimeout: ReturnType<typeof setTimeout>;
+
+    const unlockScroll = () => {
+      document.documentElement.style.overflow = originalStyles.overflow || "auto";
+      document.documentElement.style.overflowX = originalStyles.overflowX || "hidden";
+      document.body.style.overflow = originalStyles.bodyOverflow || "auto";
+      document.body.style.position = originalStyles.bodyPosition || "";
+      document.body.style.width = originalStyles.bodyWidth || "";
+      document.body.style.height = originalStyles.bodyHeight || "";
+      document.body.style.top = originalStyles.bodyTop || "";
+      if (safetyTimeout) clearTimeout(safetyTimeout);
+    };
 
     // Ensure FONTS are loaded for precise metric-sensing
     document.fonts.ready.then(() => {
       if (!containerRef.current) return;
 
+      const isMobile = window.innerWidth < 768;
+
       ctx = gsap.context(() => {
-        // Robust Scroll Protection
+        // More robust scroll prevention: overflow hidden is smoother on mobile than position: fixed
         window.scrollTo(0, 0);
         document.documentElement.style.overflow = "hidden";
+        document.documentElement.style.overflowX = "hidden";
         document.body.style.overflow = "hidden";
-        document.body.style.position = "fixed";
-        document.body.style.width = "100%";
-        document.body.style.height = "100vh";
-        document.body.style.top = "0";
+        
+        // Safety timeout to ensure unlock (max anim + buffer = 6s)
+        safetyTimeout = setTimeout(unlockScroll, 6000);
 
         const tl = gsap.timeline({
-          onComplete: () => {
-            document.documentElement.style.overflow = originalStyles.overflow || "auto";
-            document.body.style.overflow = originalStyles.overflow || "auto";
-            document.body.style.position = originalStyles.bodyPosition || "";
-            document.body.style.width = originalStyles.bodyWidth || "";
-            document.body.style.height = originalStyles.bodyHeight || "";
-            document.body.style.top = originalStyles.bodyTop || "";
-          }
+          onComplete: unlockScroll
         });
 
         const word1Letters = gsap.utils.toArray<HTMLElement>('.word1-letter');
         const word2Letters = gsap.utils.toArray<HTMLElement>('.word2-letter');
 
-        // MEASURE: Sensible assembly gap (5rem equivalent in center)
+        // MEASURE: Sensible assembly gap
         const w1Width = word1Ref.current?.offsetWidth || 0;
         const w2Width = word2Ref.current?.offsetWidth || 0;
-        const assemblyGap = 120; // Expanded for distinct side-by-side assembly
+        const assemblyGap = isMobile ? 30 : 120; // Reduced for mobile
         const totalW = w1Width + assemblyGap + w2Width;
+        
+        // DYNAMIC SCALE: Ensure the assembly never overflows the viewport (90% boundary)
+        const maxAllowedW = window.innerWidth * 0.9;
+        const baseScale = isMobile ? 1.0 : 1.15;
+        const scaleFactor = Math.min(baseScale, maxAllowedW / totalW);
 
         // PHASE 1: Centered One-Line Assembly
         gsap.set(nameContainerRef.current, { 
@@ -82,7 +96,7 @@ export default function Hero() {
           xPercent: -50,
           yPercent: -50,
           top: '50%',
-          scale: 1.15,
+          scale: scaleFactor, // Now dynamic to fit screen
           opacity: 1
         });
 
@@ -91,62 +105,59 @@ export default function Hero() {
         gsap.set(word2WrapperRef.current, { x: w1Width + assemblyGap, y: 0, position: 'absolute' });
 
         gsap.set([...word1Letters, ...word2Letters], {
-          y: () => -(Math.random() * 60 + 60) + 'vh',
+          y: () => -(Math.random() * 50 + 100), 
           opacity: 0,
-          rotate: () => Math.random() * 12 - 6
+          rotate: () => Math.random() * 6 - 3 
         });
 
         // Assemble ÖMER
         tl.to(word1Letters, {
-          y: 0, opacity: 1, rotate: 0, duration: 0.8, ease: "elastic.out(1, 0.6)", stagger: 0.05, delay: 0.1
+          y: 0, opacity: 1, rotate: 0, duration: 1.2, ease: "power4.out", stagger: 0.04, delay: 0.1
         }, 0);
 
-        const word1Land = 0.1 + (word1Letters.length * 0.05) + 0.15;
+        const word1Land = 0.1 + (word1Letters.length * 0.04) + 0.1;
 
         // Assemble HARMANKAYA
         tl.to(word2Letters, {
-          y: 0, opacity: 1, rotate: 0, duration: 0.8, ease: "elastic.out(1, 0.6)", stagger: 0.05
+          y: 0, opacity: 1, rotate: 0, duration: 1.2, ease: "power4.out", stagger: 0.04
         }, word1Land);
 
-        // PHASE 2: Baseline Settle (12vw Stacked baseline)
+        // PHASE 2: Baseline Settle
         const finished = word1Land + (word2Letters.length * 0.05) + 0.8;
         const settleAt = finished + 0.35;
 
         // Slide the container to baseline
         tl.to(nameContainerRef.current, {
-          left: '12vw',
+          left: isMobile ? '5vw' : '12vw', // More edge-to-edge on mobile
           xPercent: 0,
-          scale: 1.0,
+          scale: 1.0, // Settle at 1:1 scale
           duration: 1.3,
           ease: "power3.inOut"
         }, settleAt);
 
-        // WORD 2: Exact vertical stacking below WORD 1
+        // WORD 2: Exact vertical stacking
         tl.to(word2WrapperRef.current, {
-          x: 0, // Aligns perfectly with left-edge (left:0) of container
-          y: () => (word1Ref.current?.offsetHeight || 80) + 12, // Pixel-perfect stack distance
+          x: 0, 
+          y: () => (word1Ref.current?.offsetHeight || 80) + (isMobile ? 4 : 12), // Tighter stack on mobile
           duration: 1.3,
           ease: "power3.inOut"
         }, settleAt);
 
         // UI Reveal
         tl.fromTo(subtitle1Ref.current, { opacity: 0 }, { opacity: 1, duration: 0.8 }, settleAt + 0.4);
-        tl.fromTo([subtitle2Ref.current, scrollIndicatorRef.current], { opacity: 0 }, { opacity: 0.5, stagger: 0.2 }, settleAt + 0.6);
-        tl.fromTo(".nav-telemetry", { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.15 }, settleAt + 1.2);
+        tl.fromTo(subtitle2Ref.current, { opacity: 0 }, { opacity: 0 }, settleAt + 0.6); 
+        tl.to(subtitle2Ref.current, { opacity: 0.7, duration: 0.8 }, settleAt + 0.8);
+        tl.fromTo(".nav-telemetry", { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.15 }, settleAt + 0.8);
+        tl.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 0.5, duration: 1, ease: 'power2.inOut' }, settleAt + 1.8);
 
       }, containerRef);
     });
 
     return () => {
       if (ctx) ctx.revert();
-      document.documentElement.style.overflow = originalStyles.overflow || "auto";
-      document.body.style.overflow = originalStyles.overflow || "auto";
-      document.body.style.position = originalStyles.bodyPosition || "";
-      document.body.style.width = originalStyles.bodyWidth || "";
-      document.body.style.height = originalStyles.bodyHeight || "";
-      document.body.style.top = originalStyles.bodyTop || "";
+      unlockScroll();
     };
-  }, []);
+  }, [lang]); // Re-run on lang change to ensure name assembly reflects new lang metrics if needed
 
   return (
     <section 
@@ -154,14 +165,14 @@ export default function Hero() {
       style={{ height: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', backgroundColor: 'var(--bg)' }}
     >
         {/* Navigation Elements / UI Markers */}
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: '24px', left: '24px', width: '32px', height: '32px', borderTop: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: '24px', right: '24px', width: '32px', height: '32px', borderTop: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '24px', left: '24px', width: '32px', height: '32px', borderBottom: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '24px', right: '24px', width: '32px', height: '32px', borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: '16px', left: '16px', width: '24px', height: '24px', borderTop: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: '16px', right: '16px', width: '24px', height: '24px', borderTop: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '16px', left: '16px', width: '24px', height: '24px', borderBottom: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '16px', right: '16px', width: '24px', height: '24px', borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
 
         {/* Global Localizer */}
         <div className="nav-telemetry" style={{ 
-            opacity: 0, position: 'absolute', top: 40, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '8px', fontSize: '0.8rem', fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: '0.1em' 
+            opacity: 0, position: 'absolute', top: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '8px', fontSize: '0.7rem', fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: '0.1em' 
           }}
         >
           <button onClick={() => setLang('TR')} style={{ color: lang === 'TR' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}>TR</button>
@@ -170,9 +181,9 @@ export default function Hero() {
         </div>
 
         {/* Dynamic Telemetry Data */}
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 40, left: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}>{t.hero.tags[0]}</div>
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 40, right: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}>{t.hero.tags[1]}</div>
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 40, right: 40, fontSize: '0.65rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.2em' }}>{t.hero.tags[2]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, left: ' clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[0]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[1]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[2]}</div>
 
         {/* MASTER NAME ANCHOR */}
         <div 
@@ -184,8 +195,8 @@ export default function Hero() {
             ref={word1Ref}
             style={{ 
               position: 'absolute', left: 0, top: 0, 
-              fontSize: 'clamp(2rem, 5.5vw, 8rem)', fontWeight: 700, lineHeight: 1, 
-              letterSpacing: '-0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-serif)', 
+              fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 700, lineHeight: 0.9, 
+              letterSpacing: '-0.04em', textTransform: 'none', fontFamily: 'var(--font-display)', 
               whiteSpace: 'nowrap', margin: 0, opacity: 1 
             }}
           >
@@ -202,8 +213,8 @@ export default function Hero() {
             <h1 
               ref={word2Ref}
               style={{ 
-                fontSize: 'clamp(2rem, 5.5vw, 8rem)', fontWeight: 700, lineHeight: 1, 
-                letterSpacing: '-0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-serif)', 
+                fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 700, lineHeight: 0.9, 
+                letterSpacing: '-0.04em', textTransform: 'none', fontFamily: 'var(--font-display)', 
                 whiteSpace: 'nowrap', margin: 0, opacity: 1 
               }}
             >
@@ -213,12 +224,13 @@ export default function Hero() {
             </h1>
 
             {/* Subtitles: Architectural Vertical Breathing Room */}
-            <div style={{ marginTop: '6vh', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(0.9rem, 1.2vw, 1.2rem)', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', fontWeight: 300 }}>{t.hero.subtitle1}</p>
-              <p ref={subtitle2Ref} style={{ opacity: 0, fontSize: 'clamp(0.75rem, 0.8vw, 0.85rem)', fontFamily: 'var(--font-body)', fontWeight: 300, letterSpacing: '0.05em' }}>{t.hero.subtitle2}</p>
+            <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.6rem', maxWidth: '80vw' }}>
+              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(1rem, 4vw, 1.25rem)', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', fontWeight: 400, lineHeight: 1.2 }}>{t.hero.subtitle1}</p>
+              <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.85rem, 3.5vw, 0.9rem)', fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: '0.02em', opacity: 0, lineHeight: 1.4 }}>{t.hero.subtitle2}</p>
             </div>
           </div>
         </div>
+
 
         {/* Immersive Scroll Indicator */}
         <motion.div
