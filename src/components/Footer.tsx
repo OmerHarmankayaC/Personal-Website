@@ -89,8 +89,8 @@ export default function Footer() {
             cursor: 'none'
           }}
         >
-          Let's build<br />
-          <span style={{ fontWeight: 300, letterSpacing: '0.05em', fontFamily: 'var(--font-body)', textTransform: 'uppercase', fontSize: '0.4em', opacity: 0.6 }}>something.</span>
+          {t.footer.cta[0]}<br />
+          <span style={{ fontWeight: 300, letterSpacing: '0.05em', fontFamily: 'var(--font-body)', textTransform: 'uppercase', fontSize: '0.4em', opacity: 0.6 }}>{t.footer.cta[1]}</span>
         </motion.h2>
 
         <p style={{ 
@@ -102,14 +102,14 @@ export default function Footer() {
           marginBottom: '56px',
           lineHeight: 1.5
         }}>
-          I'm open to opportunities, collaborations, and interesting conversations.
+          {t.footer.desc}
         </p>
 
         <div style={{ maxWidth: '600px' }}>
           <LinkRow text="omr.harmankaya@gmail.com" href="mailto:omr.harmankaya@gmail.com" />
           <LinkRow text="linkedin.com/in/omer-harmankaya" href="https://www.linkedin.com/in/omer-harmankaya" />
           <LinkRow text="github.com/OmerHarmankayaC" href="https://github.com/OmerHarmankayaC" />
-          <LinkRow text="Download CV" href="#" icon="↓" id="cv-download" />
+          <LinkRow text={t.footer.cv} href="#" icon="↓" id="cv-download" />
         </div>
       </div>
 

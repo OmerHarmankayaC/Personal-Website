@@ -59,9 +59,42 @@ export default function Hero() {
     document.fonts.ready.then(() => {
       if (!containerRef.current) return;
 
+      const hash = 'hero_animated_v1';
+      const hasAnimated = sessionStorage.getItem(hash);
       const isMobile = window.innerWidth < 768;
 
       ctx = gsap.context(() => {
+        if (hasAnimated) {
+          // SKIP ANIMATION - SET FINAL STATE IMMEDIATELY
+          
+          gsap.set(nameContainerRef.current, { 
+            left: isMobile ? '5vw' : '12vw',
+            top: '50%',
+            yPercent: -50,
+            xPercent: 0,
+            opacity: 1,
+            scale: 1
+          });
+
+          gsap.set(word1Ref.current, { left: 0, top: 0, position: 'absolute', opacity: 1 });
+          gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
+          gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
+          
+          gsap.set(word2WrapperRef.current, { 
+            x: 0, 
+            y: (word1Ref.current?.offsetHeight || 80) + (isMobile ? 4 : 12),
+            position: 'absolute',
+            opacity: 1
+          });
+
+          gsap.set([subtitle1Ref.current, subtitle2Ref.current, ".nav-telemetry", scrollIndicatorRef.current], { opacity: 1 });
+          gsap.set(subtitle2Ref.current, { opacity: 0.7 });
+          gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+          
+          unlockScroll();
+          return;
+        }
+
         // More robust scroll prevention: overflow hidden is smoother on mobile than position: fixed
         window.scrollTo(0, 0);
         document.documentElement.style.overflow = "hidden";
@@ -72,7 +105,10 @@ export default function Hero() {
         safetyTimeout = setTimeout(unlockScroll, 6000);
 
         const tl = gsap.timeline({
-          onComplete: unlockScroll
+          onComplete: () => {
+            sessionStorage.setItem(hash, 'true');
+            unlockScroll();
+          }
         });
 
         const word1Letters = gsap.utils.toArray<HTMLElement>('.word1-letter');
@@ -144,9 +180,8 @@ export default function Hero() {
         }, settleAt);
 
         // UI Reveal
-        tl.fromTo(subtitle1Ref.current, { opacity: 0 }, { opacity: 1, duration: 0.8 }, settleAt + 0.4);
-        tl.fromTo(subtitle2Ref.current, { opacity: 0 }, { opacity: 0 }, settleAt + 0.6); 
-        tl.to(subtitle2Ref.current, { opacity: 0.7, duration: 0.8 }, settleAt + 0.8);
+        tl.fromTo(subtitle1Ref.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8 }, settleAt + 0.4);
+        tl.fromTo(subtitle2Ref.current, { opacity: 0, y: 10 }, { opacity: 0.7, y: 0, duration: 0.8 }, settleAt + 0.7);
         tl.fromTo(".nav-telemetry", { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.15 }, settleAt + 0.8);
         tl.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 0.5, duration: 1, ease: 'power2.inOut' }, settleAt + 1.8);
 
@@ -181,9 +216,9 @@ export default function Hero() {
         </div>
 
         {/* Dynamic Telemetry Data */}
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, left: ' clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[0]}</div>
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[1]}</div>
-        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.55rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[2]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, left: ' clamp(16px, 10vw, 40px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[0]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[1]}</div>
+        <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[2]}</div>
 
         {/* MASTER NAME ANCHOR */}
         <div 
@@ -224,9 +259,9 @@ export default function Hero() {
             </h1>
 
             {/* Subtitles: Architectural Vertical Breathing Room */}
-            <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.6rem', maxWidth: '80vw' }}>
-              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(1rem, 4vw, 1.25rem)', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', fontFamily: 'var(--font-body)', fontWeight: 400, lineHeight: 1.2 }}>{t.hero.subtitle1}</p>
-              <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.85rem, 3.5vw, 0.9rem)', fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: '0.02em', opacity: 0, lineHeight: 1.4 }}>{t.hero.subtitle2}</p>
+            <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.8rem', maxWidth: '80vw' }}>
+              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(1rem, 4vw, 1.4rem)', letterSpacing: '0.05em', textTransform: 'none', color: 'var(--text-muted)', fontFamily: 'var(--font-display)', fontWeight: 600, lineHeight: 1.2 }}>{t.hero.subtitle1}</p>
+              <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.85rem, 3.5vw, 1.1rem)', fontFamily: 'var(--font-display)', fontWeight: 400, letterSpacing: '0.02em', opacity: 0, lineHeight: 1.4 }}>{t.hero.subtitle2}</p>
             </div>
           </div>
         </div>

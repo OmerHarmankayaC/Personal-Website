@@ -5,7 +5,7 @@ import { useCursor } from '../context/CursorContext';
 import VeraShowcase from './VeraShowcase';
 
 export default function Projects() {
-  const { lang, t } = useI18n();
+  const { t } = useI18n();
   const { setCursorType } = useCursor();
 
   // Hospital DB ERD Visual (SVG)
@@ -154,21 +154,6 @@ export default function Projects() {
                       <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'var(--font-body)', fontWeight: 300, marginBottom: '0.5rem' }}>{item.description}</p>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.05em' }}>{item.tags}</p>
                       
-                      <span
-                        style={{ 
-                          display: 'inline-block',
-                          padding: '12px 24px',
-                          border: '1px solid var(--border)',
-                          fontSize: '0.8rem',
-                          fontFamily: 'var(--font-mono)',
-                          letterSpacing: '0.1em',
-                          textTransform: 'uppercase',
-                          backgroundColor: 'rgba(255,255,255,0.03)',
-                          color: 'var(--text)'
-                        }}
-                      >
-                        {lang === 'TR' ? 'DETAYLARI GÖR' : 'VIEW DETAILS'}
-                      </span>
                     </div>
                   </div>
                 </div>

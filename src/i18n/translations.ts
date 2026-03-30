@@ -7,7 +7,23 @@ export const translations = {
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Engineering Systems. Building Realities.",
       subtitle2: "Computer & Industrial Engineering @ TED University",
-      scroll: "Scroll"
+      scroll: "Scroll",
+      cursor: {
+        explore: "Explore",
+        back: "Back"
+      },
+      liveProduct: "See Live Product",
+      archive: "Archive",
+      projectMeta: {
+        year: "Year",
+        role: "Role",
+        category: "Category",
+        platform: "Platform",
+        challenge: "The Challenge",
+        solution: "The Solution",
+        next: "Next Project",
+        techStack: "Tech Stack"
+      }
     },
     about: {
       title: "About",
@@ -38,7 +54,7 @@ export const translations = {
             { src: '/images/vera/app/goals.png', type: 'mobile' },
             { src: '/images/vera/app/inventory.png', type: 'mobile' }
           ],
-          tags: ""
+          tags: "TypeScript // Next.js // AI"
         },
         {
           id: 'ieee',
@@ -60,7 +76,7 @@ export const translations = {
             { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
             { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ],
-          tags: ""
+          tags: "React // GSAP // Community"
         },
         {
           id: 'hospital-db',
@@ -77,7 +93,7 @@ export const translations = {
           link: "#",
           size: "medium-small",
           images: [],
-          tags: ""
+          tags: "SQL // Architecture // Performance"
         }
       ]
     },
@@ -85,7 +101,10 @@ export const translations = {
       email: "Email",
       linkedin: "LinkedIn",
       github: "GitHub",
-      title: "LET'S WORK"
+      cv: "Download CV",
+      title: "LET'S WORK",
+      cta: ["Let's build", "something."],
+      desc: "I'm open to opportunities, collaborations, and interesting conversations."
     }
   },
   TR: {
@@ -94,11 +113,27 @@ export const translations = {
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Sistem Mühendisliği. Dijital Gerçeklikler İnşa Etmek.",
       subtitle2: "Bilgisayar ve Endüstri Mühendisliği @ TED Üniversitesi",
-      scroll: "Kaydır"
+      scroll: "Kaydır",
+      cursor: {
+        explore: "Keşfet",
+        back: "Geri"
+      },
+      liveProduct: "Canlı Ürünü Gör",
+      archive: "Çalışmalar",
+      projectMeta: {
+        year: "YIL",
+        role: "ROL",
+        category: "KATEGORİ",
+        platform: "PLATFORM",
+        challenge: "Problem",
+        solution: "Çözüm",
+        next: "SIRADAKİ PROJE",
+        techStack: "Teknoloji Yığını"
+      }
     },
     about: {
       title: "Hakkımda",
-      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar Mühendisliği ve Endüstri Mühendisliği okuyorum — zorunda olduğum için değil, sistemlerin nasıl kurulduğuna ve nasıl optimize edildiğine gerçekten ilgi duyduğum için. En ilginç problemler bu kesişim noktasında yaşıyor.\n\nYapay zekayı temel bir metodoloji olarak kullanarak inşa ediyorum. Bir kestirme yol değil — bir zanaat. Sonuç, yayına giren işlerdir: canlı bir fintech uygulaması, bir topluluğun tüm web varlığı, gerçek dünyada var olan ürünler."
+      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar Mühendisliği ve Endüstri Mühendisliği öğrencisiyim. Bu iki disiplinin kesişiminde, sistemlerin hem mimarisini inşa etmek hem de bu sistemleri en yüksek verimlilikle optimize etmek üzerine odaklanıyorum.\n\nYapay zekayı sıradan bir araç değil, projelerimin çekirdeğine yerleştirdiğim bir zanaat olarak görüyorum. Bugüne kadar hayata geçirdiğim projeler; aktif bir fintech uygulamasından, bir topluluğun uçtan uca dijital varlığına kadar uzanan, gerçek dünyada değer yaratan somut çıktılardır."
     },
     projects: {
       title: "Seçili Çalışmalar",
@@ -125,7 +160,7 @@ export const translations = {
             { src: '/images/vera/app/goals.png', type: 'mobile' },
             { src: '/images/vera/app/inventory.png', type: 'mobile' }
           ],
-          tags: ""
+          tags: "TypeScript // Next.js // Yapay Zeka"
         },
         {
           id: 'ieee',
@@ -147,7 +182,7 @@ export const translations = {
             { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
             { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ],
-          tags: ""
+          tags: "React // GSAP // Topluluk"
         },
         {
           id: 'hospital-db',
@@ -164,7 +199,7 @@ export const translations = {
           link: "#",
           size: "medium-small",
           images: [],
-          tags: ""
+          tags: "SQL // Mimari // Performans"
         }
       ]
     },
@@ -172,7 +207,10 @@ export const translations = {
       email: "E-Posta",
       linkedin: "LinkedIn",
       github: "GitHub",
-      title: "BİRLİKTE ÇALIŞALIM"
+      cv: "Özgeçmiş İndir",
+      title: "BİRLİKTE ÇALIŞALIM",
+      cta: ["Hayalindekini", "inşa edelim."],
+      desc: "Yeni fırsatlara, iş birliklerine ve ilginç sohbetlere her zaman açığım."
     }
   }
 };

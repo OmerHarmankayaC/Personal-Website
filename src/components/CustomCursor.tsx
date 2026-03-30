@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion, useMotionValue, AnimatePresence } from 'framer-motion';
 import { useCursor } from '../context/CursorContext';
+import { useI18n } from '../i18n/context';
 
 export default function CustomCursor() {
+  const { t } = useI18n();
   const { cursorType } = useCursor();
   const [isMobile, setIsMobile] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -94,7 +96,7 @@ export default function CustomCursor() {
               whiteSpace: 'nowrap'
             }}
           >
-            Explore
+            {t.hero.cursor.explore}
           </motion.span>
         )}
         {isBack && (
@@ -115,7 +117,7 @@ export default function CustomCursor() {
               whiteSpace: 'nowrap'
             }}
           >
-            Back
+            {t.hero.cursor.back}
           </motion.span>
         )}
       </AnimatePresence>

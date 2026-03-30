@@ -3,11 +3,11 @@ import { motion, useScroll, useSpring } from 'framer-motion';
 import { useI18n } from '../i18n/context';
 import { useCursor } from '../context/CursorContext';
 import { useEffect } from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 
 export default function ProjectDetail() {
   const { id } = useParams();
-  const { lang, t } = useI18n();
+  const { t } = useI18n();
   const { setCursorType } = useCursor();
   
   const projectIndex = t.projects.items.findIndex((p: any) => p.id === id);
@@ -105,7 +105,7 @@ export default function ProjectDetail() {
             }}
           >
             <ArrowLeft size={12} />
-            {lang === 'TR' ? 'Çalışmalara Dön' : 'Archive'}
+            {t.hero.archive}
           </Link>
         </motion.div>
 
@@ -124,29 +124,88 @@ export default function ProjectDetail() {
             {project.title}
           </motion.h1>
 
-          <motion.div 
-            variants={itemVariants}
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-              gap: '2rem',
-              padding: '2rem 0',
-              borderTop: '1px solid var(--border)',
-              borderBottom: '1px solid var(--border)'
-            }}
-          >
-            {[
-              { label: lang === 'TR' ? 'YIL' : 'YEAR', value: project.year },
-              { label: lang === 'TR' ? 'ROL' : 'ROLE', value: project.role },
-              { label: lang === 'TR' ? 'KATEGORİ' : 'CATEGORY', value: project.category },
-              { label: lang === 'TR' ? 'PLATFORM' : 'PLATFORM', value: project.platform }
-            ].map((meta, i) => (
-              <div key={i}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
-                <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500 }}>{meta.value}</p>
+            {/* Metadata Grid */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
+                gap: '2.5rem',
+                flex: 1
+              }}>
+                {[
+                  { label: t.hero.projectMeta.year, value: project.year },
+                  { label: t.hero.projectMeta.role, value: project.role },
+                  { label: t.hero.projectMeta.category, value: project.category },
+                  { label: t.hero.projectMeta.platform, value: project.platform }
+                ].map((meta, i) => (
+                  <div key={i}>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
+                    <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500 }}>{meta.value}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </motion.div>
+
+              {project.link && project.link !== '#' && (
+                <motion.a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variants={itemVariants}
+                  whileHover={{ backgroundColor: 'var(--text)', color: 'var(--bg)' }}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '16px 32px',
+                    border: '1px solid var(--border)',
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    color: 'var(--text)',
+                    transition: 'all 0.3s ease',
+                    marginBottom: '2px'
+                  }}
+                >
+                  {t.hero.liveProduct}
+                  <ExternalLink size={14} />
+                </motion.a>
+              )}
+            </div>
+
+            {/* Tech Stack Chips */}
+            {project.techStack && (
+              <motion.div 
+                variants={itemVariants}
+                style={{ 
+                  display: 'flex', 
+                  flexWrap: 'wrap', 
+                  gap: '0.75rem', 
+                  marginTop: '4rem',
+                  paddingTop: '2rem',
+                  borderTop: '1px solid rgba(255,255,255,0.05)'
+                }}
+              >
+                <p style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{t.hero.projectMeta.techStack}</p>
+                {project.techStack.map((tech: string, i: number) => (
+                  <span 
+                    key={i} 
+                    style={{ 
+                      padding: '6px 14px', 
+                      backgroundColor: 'rgba(255,255,255,0.03)', 
+                      border: '1px solid rgba(255,255,255,0.1)', 
+                      borderRadius: '4px',
+                      fontSize: '0.75rem',
+                      fontFamily: 'var(--font-mono)',
+                      color: 'var(--text-muted)'
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </motion.div>
+            )}
         </div>
 
         {/* Main Hero Image with subtle parallax effect on hover */}
@@ -202,7 +261,7 @@ export default function ProjectDetail() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }}>
               <motion.div variants={itemVariants}>
                 <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                  {lang === 'TR' ? 'Zorluk' : 'The Challenge'}
+                  {t.hero.projectMeta.challenge}
                 </h3>
                 <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
                   {project.challenge}
@@ -210,7 +269,7 @@ export default function ProjectDetail() {
               </motion.div>
               <motion.div variants={itemVariants}>
                 <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                  {lang === 'TR' ? 'Çözüm' : 'The Solution'}
+                  {t.hero.projectMeta.solution}
                 </h3>
                 <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
                   {project.solution}
@@ -220,40 +279,68 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        {/* Gallery Section */}
+        {/* Premium Gallery Layout with Parallax */}
         {project.images && project.images.length > 1 && (
           <div style={{ marginBottom: '15rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10rem' }}>
-               {project.images.slice(1).map((img: any, i: number) => (
-                 <motion.div 
-                   key={i}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    initial={{ opacity: 0, y: 50 }}
-                    viewport={{ once: true, margin: '-100px' }}
-                    transition={{ duration: 1.2, ease: [0.215, 0.61, 0.355, 1] }}
-                    style={{ 
-                      width: '100%', 
-                      height: img.type === 'mobile' ? '90vh' : 'auto',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      backgroundColor: '#050505',
-                      padding: img.type === 'mobile' ? '5vh 0' : '0'
-                    }}
-                 >
-                   <img 
-                    src={img.src} 
-                    alt={`${project.title} detail ${i}`} 
-                    style={{ 
-                      width: img.type === 'mobile' ? 'auto' : '100%', 
-                      height: img.type === 'mobile' ? '100%' : 'auto',
-                      objectFit: img.type === 'mobile' ? 'contain' : 'cover',
-                      display: 'block'
-                    }} 
-                   />
-                 </motion.div>
-               ))}
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(12, 1fr)', 
+              gap: 'clamp(2rem, 8vw, 8rem)',
+              alignItems: 'start'
+            }}>
+               {project.images.slice(1).map((img: any, i: number) => {
+                 const isEven = i % 2 === 0;
+                 const isMobileType = img.type === 'mobile';
+                 
+                 // Dynamic Spans for a more organic feel
+                 let gridColumn = 'span 12';
+                 if (isMobileType) {
+                   gridColumn = isEven ? '2 / span 5' : '7 / span 5';
+                 } else if (i % 3 === 0) {
+                   gridColumn = '2 / span 10'; // Inset full width
+                 }
+
+                 return (
+                   <motion.div 
+                     key={i}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 100 }}
+                      viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ 
+                        gridColumn,
+                        width: '100%', 
+                        height: isMobileType ? 'clamp(500px, 80vh, 1000px)' : 'auto',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#020202',
+                        marginTop: !isMobileType && i > 0 ? '8rem' : '0',
+                        border: '1px solid rgba(255,255,255,0.05)',
+                        boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)',
+                        position: 'relative'
+                      }}
+                   >
+                     <motion.img 
+                      src={img.src} 
+                      alt={`${project.title} detail ${i}`} 
+                      initial={{ scale: 1.15 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ 
+                        width: isMobileType ? 'auto' : '100%', 
+                        height: isMobileType ? '100%' : 'auto',
+                        objectFit: isMobileType ? 'contain' : 'cover',
+                        display: 'block'
+                      }} 
+                     />
+                     
+                     {/* Subtle Overlay Glow */}
+                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%)', pointerEvents: 'none' }} />
+                   </motion.div>
+                 );
+               })}
             </div>
           </div>
         )}
@@ -269,11 +356,11 @@ export default function ProjectDetail() {
           initial={{ opacity: 0 }}
         >
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.2em' }}>
-            {lang === 'TR' ? 'SIRADAKİ PROJE' : 'NEXT PROJECT'}
+            {t.hero.projectMeta.next}
           </p>
           <Link 
             to={`/project/${nextProject.id}`}
-            onMouseEnter={() => setCursorType('project')}
+            onMouseEnter={() => setCursorType('default')}
             onMouseLeave={() => setCursorType('default')}
             style={{ textDecoration: 'none' }}
           >
