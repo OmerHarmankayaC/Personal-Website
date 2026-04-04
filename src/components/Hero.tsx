@@ -69,7 +69,7 @@ export default function Hero() {
           
           gsap.set(nameContainerRef.current, { 
             left: isMobile ? '5vw' : '12vw',
-            top: '50%',
+            top: '42%',
             yPercent: -50,
             xPercent: 0,
             opacity: 1,
@@ -131,7 +131,7 @@ export default function Hero() {
           left: '50%',
           xPercent: -50,
           yPercent: -50,
-          top: '50%',
+          top: '42%',
           scale: scaleFactor, // Now dynamic to fit screen
           opacity: 1
         });
@@ -205,14 +205,13 @@ export default function Hero() {
         <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '16px', left: '16px', width: '24px', height: '24px', borderBottom: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
         <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '16px', right: '16px', width: '24px', height: '24px', borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
 
-        {/* Global Localizer */}
         <div className="nav-telemetry" style={{ 
-            opacity: 0, position: 'absolute', top: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '8px', fontSize: '0.7rem', fontFamily: 'var(--font-body)', fontWeight: 400, letterSpacing: '0.1em' 
+            opacity: 0, position: 'absolute', top: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '12px', fontSize: '0.9rem', fontFamily: 'var(--font-display)', fontWeight: 600, letterSpacing: '0.1em' 
           }}
         >
-          <button onClick={() => setLang('TR')} style={{ color: lang === 'TR' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}>TR</button>
+          <button onClick={() => setLang('TR')} style={{ color: lang === 'TR' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>TR</button>
           <span style={{ color: 'var(--border)' }}>/</span>
-          <button onClick={() => setLang('EN')} style={{ color: lang === 'EN' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}>EN</button>
+          <button onClick={() => setLang('EN')} style={{ color: lang === 'EN' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>EN</button>
         </div>
 
         {/* Dynamic Telemetry Data */}
@@ -220,10 +219,9 @@ export default function Hero() {
         <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[1]}</div>
         <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 32, right: 'clamp(16px, 10vw, 40px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em', display: window.innerWidth < 600 ? 'none' : 'block' }}>{t.hero.tags[2]}</div>
 
-        {/* MASTER NAME ANCHOR */}
         <div 
           ref={nameContainerRef}
-          style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', opacity: 0, willChange: 'transform, opacity' }}
+          style={{ position: 'absolute', left: '50%', top: '42%', transform: 'translate(-50%, -50%)', opacity: 0, willChange: 'transform, opacity' }}
         >
           {/* Row 1: Word 1 */}
           <h1 
@@ -270,7 +268,19 @@ export default function Hero() {
         {/* Immersive Scroll Indicator */}
         <motion.div
           ref={scrollIndicatorRef}
-          style={{ position: 'absolute', bottom: '40px', left: '50vw', x: '-50%', fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--text)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', opacity: scrollIndicatorOpacity, y: scrollIndicatorY }}
+          style={{ 
+            position: 'absolute', bottom: '40px', left: '50vw', x: '-50%', 
+            fontFamily: 'var(--font-display)',
+            fontSize: '1.1rem', 
+            fontWeight: 600,
+            letterSpacing: '0.2em', 
+            textTransform: 'uppercase', 
+            color: 'var(--text)', 
+            display: 'flex', flexDirection: 'column', alignItems: 'center', 
+            gap: '12px', 
+            opacity: scrollIndicatorOpacity, 
+            y: scrollIndicatorY 
+          }}
         >
           <div style={{ height: '40px', width: '1px', backgroundColor: 'var(--border)' }}></div>
           {t.hero.scroll}

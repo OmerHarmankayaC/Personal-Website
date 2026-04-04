@@ -91,7 +91,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: idx * 0.1, ease: 'easeOut' }}
-              whileHover={!isMobile ? { backgroundColor: '#050505' } : {}}
+              whileHover={!isMobile ? { borderColor: 'rgba(255,255,255,0.2)' } : {}}
               style={{ 
                 position: 'relative',
                 gridColumn: isMobile ? 'span 12' : (item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4')),

@@ -1,20 +1,177 @@
 import { useParams, Link } from 'react-router-dom';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useI18n } from '../i18n/context';
 import { useCursor } from '../context/CursorContext';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+
+const ieeeFrames = [
+  '/pictures/IEEE-WebSite/scroll-animation/1st.png',
+  '/pictures/IEEE-WebSite/scroll-animation/2nd.png',
+  '/pictures/IEEE-WebSite/scroll-animation/3rd.png',
+  '/pictures/IEEE-WebSite/scroll-animation/4th.png',
+  '/pictures/IEEE-WebSite/scroll-animation/5th.png',
+  '/pictures/IEEE-WebSite/scroll-animation/6th.png',
+  '/pictures/IEEE-WebSite/scroll-animation/7th.png',
+  '/pictures/IEEE-WebSite/scroll-animation/8th.png',
+  '/pictures/IEEE-WebSite/scroll-animation/9th.png',
+];
+
+type IEEEMockBrowserProps = {
+  sectionRef: React.RefObject<HTMLDivElement | null>;
+};
+
+function IEEEMockBrowser({ sectionRef }: IEEEMockBrowserProps) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [maxShift, setMaxShift] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"]
+  });
+
+  useEffect(() => {
+    const measure = () => {
+      if (!viewportRef.current || !stripRef.current) return;
+      const viewportHeight = viewportRef.current.clientHeight;
+      const stripHeight = stripRef.current.scrollHeight;
+      setMaxShift(viewportHeight - stripHeight);
+    };
+
+    measure();
+    window.addEventListener('resize', measure);
+    const observer = new ResizeObserver(measure);
+    if (viewportRef.current) observer.observe(viewportRef.current);
+    if (stripRef.current) observer.observe(stripRef.current);
+
+    return () => {
+      window.removeEventListener('resize', measure);
+      observer.disconnect();
+    };
+  }, []);
+
+  const stripY = useTransform(scrollYProgress, [0, 1], [0, maxShift]);
+
+  return (
+    <div 
+      style={{ 
+        gridColumn: 'span 7', 
+        position: 'sticky', 
+        top: '12vh', // Stationary position in screen
+        alignSelf: 'start', 
+        height: '76vh', 
+        zIndex: 5 // Ensure it stays on top of any chapters
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          border: '1px solid var(--border)',
+          backgroundColor: '#101011',
+          boxShadow: '0 50px 100px -20px rgba(0,0,0,0.7)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+        }}
+      >
+        {/* Browser Toolbar Mockup */}
+        <div
+          style={{
+            height: '40px',
+            backgroundColor: '#121214',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 16px',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            gap: '8px',
+            zIndex: 10,
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ff5f56' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#ffbd2e' }} />
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#27c93f' }} />
+          <div
+            style={{
+              flex: 1,
+              height: '24px',
+              backgroundColor: 'rgba(255,255,255,0.06)',
+              borderRadius: '4px',
+              margin: '0 24px',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '0 12px',
+              fontSize: '0.65rem',
+              color: 'var(--text-muted)',
+              fontFamily: 'var(--font-mono)',
+            }}
+          >
+            ieee.tedu.edu.tr
+          </div>
+        </div>
+
+        {/* Parallax Content Area */}
+        <div ref={viewportRef} style={{ flex: 1, overflow: 'hidden', backgroundColor: '#fff', pointerEvents: 'none' }}>
+          <motion.div 
+            ref={stripRef} 
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              y: stripY,
+              backgroundColor: '#fff' // Ensure no background leakage
+            }}
+          >
+            {ieeeFrames.map((src, index) => (
+              <img
+                key={src}
+                src={src}
+                alt={`IEEE site frame ${index + 1}`}
+                draggable={false}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  userSelect: 'none',
+                  pointerEvents: 'none',
+                  // Subtract 1px from all images except the first to avoid sub-pixel gaps
+                  marginTop: index === 0 ? 0 : '-1px',
+                  // Performance/Quality adjustments
+                  WebkitBackfaceVisibility: 'hidden'
+                }}
+              />
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Interaction blocker to prevent accidental drags */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 20 }} aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const { t } = useI18n();
   const { setCursorType } = useCursor();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const parallaxSectionRef = useRef<HTMLDivElement>(null);
   
   const projectIndex = t.projects.items.findIndex((p: any) => p.id === id);
   const project = t.projects.items[projectIndex];
   const nextProject = t.projects.items[(projectIndex + 1) % t.projects.items.length];
 
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: scrollRef,
+    offset: ["start end", "end start"]
+  });
+
+  const isIEEE = id === 'ieee';
+
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -22,8 +179,11 @@ export default function ProjectDetail() {
   });
 
   useEffect(() => {
+    // Force scroll to top
     window.scrollTo(0, 0);
-  }, [id]);
+    // Force cursor reset to default
+    setCursorType('default');
+  }, [id, setCursorType]);
 
   if (!project) return <div>Project not found</div>;
 
@@ -74,7 +234,7 @@ export default function ProjectDetail() {
         }}
       />
 
-      <div className="container">
+      <div className="container" ref={scrollRef}>
         {/* Navigation */}
         <motion.div variants={itemVariants} style={{ marginBottom: '4rem' }}>
           <Link 
@@ -208,79 +368,194 @@ export default function ProjectDetail() {
             )}
         </div>
 
-        {/* Main Hero Image with subtle parallax effect on hover */}
-        {project.images && project.images.length > 0 && (
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ scale: 0.995 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
+        {/* Layout Switcher */}
+        {isIEEE ? (
+          <div 
+            ref={parallaxSectionRef}
             style={{ 
-              width: '100%', 
-              height: '85vh', 
-              overflow: 'hidden',
-              backgroundColor: '#050505',
-              marginBottom: '10rem'
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(12, 1fr)', 
+              gap: '4rem', 
+              position: 'relative',
+              minHeight: '600vh', // Significant height for more control
             }}
           >
-            <motion.img 
-              src={project.images[0].src} 
-              alt={project.title} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              initial={{ scale: 1.1 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1.5, ease: 'easeOut' }}
-            />
-          </motion.div>
-        )}
+            <IEEEMockBrowser sectionRef={parallaxSectionRef} />
 
-        {/* Project Content */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(12, 1fr)', 
-          gap: '4rem',
-          marginBottom: '15rem'
-        }}>
-          <div style={{ gridColumn: 'span 12', maxWidth: '800px' }}>
-            <motion.p 
-              variants={itemVariants}
-              whileInView="visible"
-              viewport={{ once: true }}
-              style={{ 
-                fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-                lineHeight: 1.2,
-                color: 'var(--text)',
-                marginBottom: '6rem',
-                fontFamily: 'var(--font-body)',
-                fontWeight: 300,
-                letterSpacing: '-0.02em'
-              }}
-            >
-              {project.fullDescription}
-            </motion.p>
+            {/* Scrolling Right: Project Info Chapters */}
+            <div style={{ 
+              gridColumn: 'span 5', 
+              position: 'sticky', 
+              top: '12vh', 
+              height: '76vh', 
+              display: 'flex', 
+              alignItems: 'center' 
+            }}>
+              <div style={{ position: 'relative', width: '100%' }}>
+                {/* Chapter 1: Description */}
+                <motion.div 
+                  style={{ 
+                    position: 'absolute', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    width: '100%',
+                    opacity: useTransform(
+                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      [0, 0.1, 0.3, 0.4],
+                      [0, 1, 1, 0]
+                    )
+                  }}
+                >
+                  <p style={{ 
+                    fontFamily: 'var(--font-mono)', 
+                    fontSize: '0.7rem', 
+                    color: 'var(--accent)', 
+                    textTransform: 'uppercase', 
+                    letterSpacing: '0.2em',
+                    marginBottom: '1.5rem'
+                  }}>
+                    Overview
+                  </p>
+                  <p style={{ 
+                    fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', 
+                    lineHeight: 1.6,
+                    color: 'var(--text)',
+                    fontFamily: 'var(--font-body)',
+                    fontWeight: 300,
+                  }}>
+                    {project.description}
+                  </p>
+                  <p style={{ 
+                    fontSize: '1rem', 
+                    lineHeight: 1.6,
+                    color: 'var(--text-muted)',
+                    fontFamily: 'var(--font-body)',
+                    marginTop: '2rem'
+                  }}>
+                    {project.fullDescription}
+                  </p>
+                </motion.div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }}>
-              <motion.div variants={itemVariants}>
-                <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                  {t.hero.projectMeta.challenge}
-                </h3>
-                <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                  {project.challenge}
-                </p>
-              </motion.div>
-              <motion.div variants={itemVariants}>
-                <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                  {t.hero.projectMeta.solution}
-                </h3>
-                <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                  {project.solution}
-                </p>
-              </motion.div>
+                {/* Chapter 2: The Challenge */}
+                <motion.div 
+                   style={{ 
+                    position: 'absolute', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    width: '100%',
+                    opacity: useTransform(
+                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      [0.45, 0.55, 0.7, 0.8],
+                      [0, 1, 1, 0]
+                    )
+                  }}
+                >
+                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                    {t.hero.projectMeta.challenge}
+                  </h3>
+                  <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                    {project.challenge}
+                  </p>
+                </motion.div>
+
+                {/* Chapter 3: The Solution */}
+                <motion.div 
+                   style={{ 
+                    position: 'absolute', 
+                    top: '50%', 
+                    transform: 'translateY(-50%)',
+                    width: '100%',
+                    opacity: useTransform(
+                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      [0.85, 0.95, 1.0],
+                      [0, 1, 1]
+                    )
+                  }}
+                >
+                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                    {t.hero.projectMeta.solution}
+                  </h3>
+                  <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                    {project.solution}
+                  </p>
+                </motion.div>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          /* STANDARD LAYOUT FOR OTHERS */
+          <>
+            {project.images && project.images.length > 0 && (
+              <motion.div 
+                variants={itemVariants}
+                whileHover={{ scale: 0.995 }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+                style={{ 
+                  width: '100%', 
+                  height: '85vh', 
+                  overflow: 'hidden',
+                  backgroundColor: '#000000',
+                  marginBottom: '10rem'
+                }}
+              >
+                <motion.img 
+                  src={project.images[0].src} 
+                  alt={project.title} 
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                />
+              </motion.div>
+            )}
+
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(12, 1fr)', 
+              gap: '4rem',
+              marginBottom: '15rem'
+            }}>
+              <div style={{ gridColumn: 'span 12', maxWidth: '800px' }}>
+                <motion.p 
+                  variants={itemVariants}
+                  style={{ 
+                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
+                    lineHeight: 1.2,
+                    color: 'var(--text)',
+                    marginBottom: '6rem',
+                    fontFamily: 'var(--font-body)',
+                    fontWeight: 300,
+                    letterSpacing: '-0.02em'
+                  }}
+                >
+                  {project.fullDescription}
+                </motion.p>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }}>
+                  <motion.div variants={itemVariants}>
+                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                      {t.hero.projectMeta.challenge}
+                    </h3>
+                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                      {project.challenge}
+                    </p>
+                  </motion.div>
+                  <motion.div variants={itemVariants}>
+                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                      {t.hero.projectMeta.solution}
+                    </h3>
+                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                      {project.solution}
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Premium Gallery Layout with Parallax */}
-        {project.images && project.images.length > 1 && (
+        {project.images && project.images.length > 1 && !isIEEE && (
           <div style={{ marginBottom: '15rem' }}>
             <div style={{ 
               display: 'grid', 
@@ -315,7 +590,7 @@ export default function ProjectDetail() {
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: '#020202',
+                        backgroundColor: '#000000',
                         marginTop: !isMobileType && i > 0 ? '8rem' : '0',
                         border: '1px solid rgba(255,255,255,0.05)',
                         boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)',

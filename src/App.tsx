@@ -15,6 +15,10 @@ function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
+    // If lenis is available globally, use it for immediate scroll
+    if ((window as any).lenis) {
+      (window as any).lenis.scrollTo(0, { immediate: true });
+    }
   }, [pathname]);
   return null;
 }
@@ -32,10 +36,17 @@ function MainLayout() {
 
 function App() {
   useEffect(() => {
+    // Force browser to not restore scroll position
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     const lenis = new Lenis({
       lerp: 0.1,
       wheelMultiplier: 1,
     });
+
+    (window as any).lenis = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -45,6 +56,7 @@ function App() {
 
     return () => {
       lenis.destroy();
+      (window as any).lenis = null;
     };
   }, []);
 
