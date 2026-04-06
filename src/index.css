@@ -119,6 +119,14 @@ button {
   overflow: visible; /* Changed from overflow-x: hidden to allow sticky to work on all browsers */
 }
 
+/* Global Scroll Lock Utility */
+.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+  touch-action: none;
+  pointer-events: none;
+}
+
 /* Hide scrollbar for brutalist look */
 ::-webkit-scrollbar {
   display: none;

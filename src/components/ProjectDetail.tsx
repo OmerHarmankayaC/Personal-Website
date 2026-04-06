@@ -2,8 +2,12 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useI18n } from '../i18n/context';
 import { useCursor } from '../context/CursorContext';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ieeeFrames = [
   '/pictures/IEEE-WebSite/scroll-animation/1st.png',
@@ -18,18 +22,14 @@ const ieeeFrames = [
 ];
 
 type IEEEMockBrowserProps = {
-  sectionRef: React.RefObject<HTMLDivElement | null>;
+  scrollYProgress: any;
 };
 
-function IEEEMockBrowser({ sectionRef }: IEEEMockBrowserProps) {
+function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [maxShift, setMaxShift] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"]
-  });
 
   useEffect(() => {
     const measure = () => {
@@ -160,6 +160,12 @@ export default function ProjectDetail() {
   const { setCursorType } = useCursor();
   const scrollRef = useRef<HTMLDivElement>(null);
   const parallaxSectionRef = useRef<HTMLDivElement>(null);
+
+  // Shared motion value for internal progress (driven by ScrollTrigger)
+  const internalProgress = useSpring(0, { stiffness: 100, damping: 30 });
+  
+  // Backwards compatibility for the chapters
+  const sectionProgress = internalProgress;
   
   const projectIndex = t.projects.items.findIndex((p: any) => p.id === id);
   const project = t.projects.items[projectIndex];
@@ -184,6 +190,32 @@ export default function ProjectDetail() {
     // Force cursor reset to default
     setCursorType('default');
   }, [id, setCursorType]);
+
+  useEffect(() => {
+    // Immediate scroll reset on mount
+    window.scrollTo(0, 0);
+  }, [id]);
+
+  useLayoutEffect(() => {
+    if (!isIEEE || !parallaxSectionRef.current) return;
+
+    // We use ScrollTrigger to strictly PIN the section at the top
+    // this creates a "forced watch" until the end of the scroll trigger
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: parallaxSectionRef.current,
+        start: "top 12vh",
+        end: "+=500%", // The "duration" of the lock
+        pin: true,
+        pinSpacing: true,
+        onUpdate: (self) => {
+          internalProgress.set(self.progress);
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, [isIEEE]);
 
   if (!project) return <div>Project not found</div>;
 
@@ -269,42 +301,73 @@ export default function ProjectDetail() {
           </Link>
         </motion.div>
 
-        {/* Hero Header */}
-        <div style={{ marginBottom: '6rem' }}>
+        {/* Hero Header: Full Editorial Intro */}
+        <div style={{ minHeight: '90vh', paddingBottom: '10vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          {/* Section Marker / Role */}
+          <motion.p 
+            variants={itemVariants}
+            style={{ 
+              fontFamily: 'var(--font-mono)', 
+              fontSize: '0.75rem', 
+              color: 'var(--accent)', 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.3em',
+              marginBottom: '2rem'
+            }}
+          >
+            {project.role}
+          </motion.p>
+
           <motion.h1 
             variants={itemVariants}
             style={{ 
               fontSize: 'clamp(3.5rem, 12vw, 10rem)', 
               fontFamily: 'var(--font-display)',
               lineHeight: 0.85,
-              marginBottom: '4rem',
+              marginBottom: '2.5rem',
               letterSpacing: '-0.05em'
             }}
           >
             {project.title}
           </motion.h1>
 
-            {/* Metadata Grid */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', 
-                gap: '2.5rem',
-                flex: 1
-              }}>
-                {[
-                  { label: t.hero.projectMeta.year, value: project.year },
-                  { label: t.hero.projectMeta.role, value: project.role },
-                  { label: t.hero.projectMeta.category, value: project.category },
-                  { label: t.hero.projectMeta.platform, value: project.platform }
-                ].map((meta, i) => (
-                  <div key={i}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
-                    <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500 }}>{meta.value}</p>
-                  </div>
-                ))}
-              </div>
+          <motion.p 
+            variants={itemVariants}
+            style={{ 
+              fontSize: 'clamp(1.1rem, 3.5vw, 1.8rem)', 
+              fontFamily: 'var(--font-display)',
+              fontWeight: 400,
+              maxWidth: '800px',
+              lineHeight: 1.3,
+              marginBottom: '5rem',
+              color: 'var(--text-muted)'
+            }}
+          >
+            {project.description}
+          </motion.p>
 
+          {/* Combined Metadata & Tech Stack Grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '3rem', alignItems: 'flex-start' }}>
+            <div style={{ 
+              gridColumn: 'span 8',
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+              gap: '2.5rem',
+            }}>
+              {[
+                { label: t.hero.projectMeta.year, value: project.year },
+                { label: t.hero.projectMeta.role, value: project.role },
+                { label: t.hero.projectMeta.category, value: project.category },
+                { label: t.hero.projectMeta.platform, value: project.platform }
+              ].map((meta, i) => (
+                <div key={i}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
+                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500 }}>{meta.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ gridColumn: 'span 4', display: 'flex', justifyContent: 'flex-end' }}>
               {project.link && project.link !== '#' && (
                 <motion.a
                   href={project.link}
@@ -325,7 +388,6 @@ export default function ProjectDetail() {
                     textDecoration: 'none',
                     color: 'var(--text)',
                     transition: 'all 0.3s ease',
-                    marginBottom: '2px'
                   }}
                 >
                   {t.hero.liveProduct}
@@ -334,20 +396,20 @@ export default function ProjectDetail() {
               )}
             </div>
 
-            {/* Tech Stack Chips */}
+            {/* In-Line Tech Stack for vertical density */}
             {project.techStack && (
               <motion.div 
                 variants={itemVariants}
                 style={{ 
+                  gridColumn: 'span 12',
                   display: 'flex', 
                   flexWrap: 'wrap', 
                   gap: '0.75rem', 
-                  marginTop: '4rem',
+                  marginTop: '1.5rem',
                   paddingTop: '2rem',
                   borderTop: '1px solid rgba(255,255,255,0.05)'
                 }}
               >
-                <p style={{ width: '100%', fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{t.hero.projectMeta.techStack}</p>
                 {project.techStack.map((tech: string, i: number) => (
                   <span 
                     key={i} 
@@ -366,6 +428,7 @@ export default function ProjectDetail() {
                 ))}
               </motion.div>
             )}
+          </div>
         </div>
 
         {/* Layout Switcher */}
@@ -377,10 +440,11 @@ export default function ProjectDetail() {
               gridTemplateColumns: 'repeat(12, 1fr)', 
               gap: '4rem', 
               position: 'relative',
-              minHeight: '600vh', // Significant height for more control
+              marginTop: '5vh', // Small vertical buffer
+              height: '80vh', 
             }}
           >
-            <IEEEMockBrowser sectionRef={parallaxSectionRef} />
+            <IEEEMockBrowser scrollYProgress={sectionProgress} />
 
             {/* Scrolling Right: Project Info Chapters */}
             <div style={{ 
@@ -400,7 +464,7 @@ export default function ProjectDetail() {
                     transform: 'translateY(-50%)',
                     width: '100%',
                     opacity: useTransform(
-                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      sectionProgress,
                       [0, 0.1, 0.3, 0.4],
                       [0, 1, 1, 0]
                     )
@@ -444,7 +508,7 @@ export default function ProjectDetail() {
                     transform: 'translateY(-50%)',
                     width: '100%',
                     opacity: useTransform(
-                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      sectionProgress,
                       [0.45, 0.55, 0.7, 0.8],
                       [0, 1, 1, 0]
                     )
@@ -466,7 +530,7 @@ export default function ProjectDetail() {
                     transform: 'translateY(-50%)',
                     width: '100%',
                     opacity: useTransform(
-                      useScroll({ target: parallaxSectionRef, offset: ["start start", "end end"] }).scrollYProgress,
+                      sectionProgress,
                       [0.85, 0.95, 1.0],
                       [0, 1, 1]
                     )

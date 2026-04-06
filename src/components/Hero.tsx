@@ -105,9 +105,13 @@ export default function Hero() {
         safetyTimeout = setTimeout(unlockScroll, 6000);
 
         const tl = gsap.timeline({
+          onStart: () => {
+             if ((window as any).lenis) (window as any).lenis.stop();
+          },
           onComplete: () => {
             sessionStorage.setItem(hash, 'true');
             unlockScroll();
+            if ((window as any).lenis) (window as any).lenis.start();
           }
         });
 
