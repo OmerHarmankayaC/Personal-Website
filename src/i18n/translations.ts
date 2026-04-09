@@ -22,7 +22,8 @@ export const translations = {
         challenge: "The Challenge",
         solution: "The Solution",
         next: "Next Project",
-        techStack: "Tech Stack"
+        techStack: "Tech Stack",
+        viewCaseStudy: "See Details"
       }
     },
     about: {
@@ -111,32 +112,33 @@ export const translations = {
     hero: {
       tags: ["SYS.01 // CE-IE", "SÜRÜM_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
-      subtitle1: "Sistem Mühendisliği. Dijital Gerçeklikler İnşa Etmek.",
-      subtitle2: "Bilgisayar ve Endüstri Mühendisliği @ TED Üniversitesi",
+      subtitle1: "Sistemleri Tasarlamak. Dijital Gerçeklikler İnşa Etmek.",
+      subtitle2: "Bilgisayar & Endüstri Mühendisliği @ TED Üniversitesi",
       scroll: "Kaydır",
       cursor: {
         explore: "Keşfet",
         back: "Geri"
       },
-      liveProduct: "Canlı Ürünü Gör",
-      archive: "Çalışmalar",
+      liveProduct: "Canlı Önizleme",
+      archive: "Arşiv",
       projectMeta: {
-        year: "YIL",
-        role: "ROL",
-        category: "KATEGORİ",
-        platform: "PLATFORM",
-        challenge: "Problem",
-        solution: "Çözüm",
-        next: "SIRADAKİ PROJE",
-        techStack: "Teknoloji Yığını"
+        year: "Yıl",
+        role: "Rol",
+        category: "Kategori",
+        platform: "Platform",
+        challenge: "Mevcut Problem",
+        solution: "Çözüm Yaklaşımı",
+        next: "Sıradaki Proje",
+        techStack: "Kullanılan Teknolojiler",
+        viewCaseStudy: "Projeyi İncele"
       }
     },
     about: {
       title: "Hakkımda",
-      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar Mühendisliği ve Endüstri Mühendisliği öğrencisiyim. Bu iki disiplinin kesişiminde, sistemlerin hem mimarisini inşa etmek hem de bu sistemleri en yüksek verimlilikle optimize etmek üzerine odaklanıyorum.\n\nYapay zekayı sıradan bir araç değil, projelerimin çekirdeğine yerleştirdiğim bir zanaat olarak görüyorum. Bugüne kadar hayata geçirdiğim projeler; aktif bir fintech uygulamasından, bir topluluğun uçtan uca dijital varlığına kadar uzanan, gerçek dünyada değer yaratan somut çıktılardır."
+      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar ve Endüstri Mühendisliği okuyorum — yalnızca akademik bir zorunluluktan değil; sistemlerin en temel seviyede nasıl inşa edildiği ve en uç noktaya kadar nasıl optimize edilebileceği beni gerçekten cezbettiği için. Bence en ilginç ve çözmesi en keyifli problemler tam bu kesişim noktasında ortaya çıkıyor.\n\nProjelerimi hayata geçirirken yapay zekayı günü kurtaran basit bir kısayol olarak değil, temel bir metodoloji, adeta bir zanaat olarak ele alıyorum. Tüm bu çabanın arkasında; aktif bir finans asistanı, koca bir topluluğun uçtan uca dijital vizyonu ve gerçek dünyada insanlar tarafından bizzat kullanılan somut ürünler yatıyor."
     },
     projects: {
-      title: "Seçili Çalışmalar",
+      title: "Öne Çıkan Çalışmalar",
       items: [
         {
           id: 'vera',
@@ -145,11 +147,11 @@ export const translations = {
           year: "2026",
           category: "Fintech",
           platform: "Web / Mobil",
-          role: "Kurucu",
-          description: "Dahili yapay zeka fiş tarama, envanter, hedefler, varlıklar ve bütçe takibi içeren kişisel finans uygulaması.",
-          fullDescription: "Gerçekten faydalı bir şey inşa etme arzusuyla geliştirilmiş kişisel bir proje. Vera Finance; yapay zeka ile fiş tarama, envanter yönetimi ve gelir/gider takibi sunan kapsamlı bir finans izleyicisidir. Gerçek dünyadaki bir ihtiyaca hizmet etmesinden ve yayınlanmaya çok yakın olmasından büyük gurur duyuyorum.",
-          challenge: "Düşük gecikme süresi ve yüksek doğruluk sağlarken binlerce işlemi gerçek zamanlı olarak işlemek ve kategorize etmek.",
-          solution: "İşlem kalıbı eşleştirme için özel bir vektör veritabanı ve finansal kategorizasyon için özel olarak eğitilmiş bir model kullanarak sağlam bir sunucusuz mimari uygulandı.",
+          role: "Kurucu & Geliştirici",
+          description: "Yapay zeka destekli fiş tarama, envanter, hedef, varlık ve bütçe takibi özelliklerine sahip kapsamlı kişisel finans asistanı.",
+          fullDescription: "Piyasadaki finans uygulamalarının yetersizliklerinden yola çıkarak, gerçekten işe yarayacak bir ürün ortaya koyma tutkusuyla geliştirdiğim kişisel bir proje. Vera Finance; yapay zeka vizyon modelleriyle saniyeler içinde fişlerinizi dijitalleştiren, akıllı envanter yönetimi ve detaylı gelir-gider takibi sunan bir ekosistem. Özellikle gerçek hayatta bizzat yaşadığımız bir probleme doğrudan teknolojik bir çözüm üretmesi ve artık aktif kullanıma hazır olması projeye olan inancımı artırıyor.",
+          challenge: "Binlerce kullanıcının finansal verisini ve mikro işlemini akıcı, gerçek zamanlı bir şekilde işlerken; aynı zamanda yapay zeka operasyonlarındaki doğruluğu maksimumda, gecikme süresini (latency) ise minimumda tutabilmek.",
+          solution: "Büyük dil ve vizyon modellerindeki işlem kalıplarını saniyeler içinde analiz edip ayıklayan özel bir vektör veritabanı kuruldu. Finansal verilerin hata payı olmaksızın doğru kategorilere ayrılması için ince ayar (fine-tune) yapılmış modellere dayanan oldukça verimli ve maliyet etkin bir Serverless (sunucusuz) mimari inşa edildi.",
           link: "https://vera.staticorbit.dev/",
           size: "large",
           images: [
@@ -165,15 +167,15 @@ export const translations = {
         {
           id: 'ieee',
           featured: true,
-          title: "IEEE TEDU WEB SİTESİ",
+          title: "IEEE TEDU PLATFORMU",
           year: "2026",
           category: "Topluluk / Blog",
-          platform: "Web Site",
-          role: "Tasarım / Geliştirme",
-          description: "IEEE TEDU Öğrenci Toplulukları için hazırlanan, tanıtım ve blog odaklı web sitesi.",
-          fullDescription: "Topluluğumuzun dijital bir varlığı olmadığını fark edince inisiyatif alarak bu tanıtım ve blog platformunu geliştirdim. Çıkan sonucun görsel olarak çekici, sade ama oldukça etkili olmasından dolayı gurur duyuyorum.",
-          challenge: "Mobil cihazlarda hızlı ve duyarlı bir kullanıcı deneyimi sağlarken, birden fazla öğrenci komitesinden gelen büyük miktarda dinamik içeriği yönetmek.",
-          solution: "Gerçek zamanlı güncellemeler için Firebase kullanarak dağıtılmış bir içerik mimarisi geliştirildi ve görsel komite kartlarının yüksek performanslı sunumu için varlık teslimi optimize edildi.",
+          platform: "Web",
+          role: "Tasarım & Geliştirme",
+          description: "IEEE TEDU Öğrenci Toplulukları için sıfırdan oluşturulmuş resmi tanıtım ve blog platformu.",
+          fullDescription: "Topluluğumuzun güçlü bir mühendislik vizyonu olmasına rağmen, bunu yansıtacak dijital bir yüzünün eksik olduğunu fark ettim. Bunun üzerine inisiyatif alıp tüm topluluk komitelerini tek çatı altında toplayan bu tanıtım ve etkinlik platformunu sıfırdan kodladım. Sonucun görsel açıdan oldukça modern, premium ve bir o kadar da sade olması, ortaya çıkardığımız işin başarısını kanıtlar nitelikte.",
+          challenge: "Birbirinden farklı 6'dan fazla alt komitenin sürekli ve aktif bir biçimde akıttığı yoğun ve dinamik içeriği ölçeklenebilir bir formatta yönetmek. Aynı zamanda bu veri yoğunluğunu, bilhassa mobil cihazlarda pürüzsüz ve yüksek performanslı bir kullanıcı deneyimi eşliğinde sunabilmek.",
+          solution: "Topluluk yöneticilerinin gönderilerini kod yazmadan paylaşabilmesi için Firebase altyapısında gerçek zamanlı, tepkisel (reactive) bir mimari oluşturuldu. Özellikle yüksek çözünürlüklü grafiklerin ve görsel komite kartlarının performans kaybı yaratmaması adına dinamik önbellekleme (caching) ve akıllı imaj optimizasyonları devreye alındı.",
           link: "https://ieee-tedu.vercel.app/",
           size: "medium-large",
           images: [
@@ -187,15 +189,15 @@ export const translations = {
         {
           id: 'hospital-db',
           featured: true,
-          title: "Hospital dbms",
+          title: "Hospital DBMS",
           year: "2025",
           category: "Veritabanı Sistemleri",
           platform: "Backend / SQL",
-          role: "Sistem Mimarisi",
-          description: "Hipotetik bir hastane için veritabanı yönetim sistemi.",
-          fullDescription: "Bir üniversite projesi kapsamında ekip olarak geliştirilen ve C# ile MsSQL kullanan bu veritabanı yönetim sistemi hipotetik bir hastane için tasarlandı. Tüm veritabanı şemasını baştan uca benim oluşturmuş olmam projede en gurur duyduğum kısımdır.",
-          challenge: "Çoklu kullanıcı ortamında 20'den fazla birbirine bağlı tabloda katı veri bütünlüğü ve karmaşık ilişki eşlemesi sağlamak.",
-          solution: "Gelişmiş SQL kısıtlamaları, otomatik denetim için tetikleyiciler ve yüksek frekanslı tıbbi kayıt aramaları için optimize edilmiş indeksleme stratejileri uygulayan çok katmanlı bir şema tasarlandı.",
+          role: "Sistem ve Şema Mimarisi",
+          description: "Büyük ölçekli, varsayımsal bir genel hastane modeli için inşa edilmiş kapsamlı ilişkisel veritabanı yönetim ekosistemi.",
+          fullDescription: "Bir üniversite bitirme projesi kapsamında ekip olarak geliştirilen bu proje; binlerce personeli, kliniği ve hastayı barındıran hipotetik bir hastanenin uçtan uca altyapısını modellediğimiz dev bir sistem. C# ve MsSQL ekseninde şekillenen bu yapıda tüm veritabanı şemasını en ince ayrıntılarına kadar bizzat tasarlayıp normalize etmiş olmak, arka ucu tamamen ayakta tutmayı sağlayan kritik bir basamaktı ve projenin en başarılı kısımlarından biriydi.",
+          challenge: "Aynı anda binlerce doktor ve hastanın aktif işlem yapabileceği bu son derece eşzamanlı (high-concurrency) ekosistemde; 20'yi aşkın iç içe geçmiş tablonun veri yozlaşmasına (data corruption) uğramaması ve karmaşık bağıntı haritasının kusursuz işletilmesini garanti edebilmek.",
+          solution: "Veri tutarlılığını sağlamlaştırmak için kapsamlı ve katı SQL kuralları (constraints) devreye sokuldu. İdari takip süreçlerini her işlemde otomatize etmek için dinamik arka plan tetikleyicileri (triggers) programlandı; ve devasa tıbbi arşivlerde saniyelik tarama süreleri elde edebilmek adına çok katmanlı, efektif bir indeksleme algoritması kurgulandı.",
           link: "#",
           size: "medium-small",
           images: [],
@@ -207,10 +209,10 @@ export const translations = {
       email: "E-Posta",
       linkedin: "LinkedIn",
       github: "GitHub",
-      cv: "Özgeçmiş İndir",
+      cv: "CV İndir",
       title: "BİRLİKTE ÇALIŞALIM",
-      cta: ["Hayalindekini", "inşa edelim."],
-      desc: "Yeni fırsatlara, iş birliklerine ve ilginç sohbetlere her zaman açığım."
+      cta: ["Geleceği birlikte", "inşa edelim."],
+      desc: "Vizyoner fikirlere, yeni girişimlere, cesur projelere ve ufuk açıcı sohbetlere her zaman açığım."
     }
   }
 };

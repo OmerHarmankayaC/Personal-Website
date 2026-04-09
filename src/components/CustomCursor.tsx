@@ -63,8 +63,8 @@ export default function CustomCursor() {
         willChange: 'transform'
       }}
       animate={{
-        width: isProject ? 110 : (isBack ? 80 : 18),
-        height: isProject ? 42 : (isBack ? 42 : 18),
+        width: isProject ? 130 : (isBack ? 100 : 18),
+        height: isProject ? 48 : (isBack ? 48 : 18),
         borderRadius: (isProject || isBack) ? '24px' : '50%',
         backgroundColor: '#ffffff',
         mixBlendMode: 'difference',
@@ -89,7 +89,7 @@ export default function CustomCursor() {
               color: '#ffffff',
               mixBlendMode: 'difference',
               fontFamily: 'var(--font-display)',
-              fontSize: '13px',
+              fontSize: '16.5px',
               fontWeight: 900,
               letterSpacing: '0.05em',
               textTransform: 'uppercase',
@@ -110,7 +110,7 @@ export default function CustomCursor() {
               color: '#ffffff',
               mixBlendMode: 'difference',
               fontFamily: 'var(--font-display)',
-              fontSize: '13px',
+              fontSize: '16.5px',
               fontWeight: 900,
               letterSpacing: '0.05em',
               textTransform: 'uppercase',

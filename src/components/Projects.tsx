@@ -153,6 +153,23 @@ export default function Projects() {
                       <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)', color: 'var(--text)', fontWeight: 400, margin: '0 0 1rem 0', fontFamily: 'var(--font-display)', textTransform: 'uppercase', letterSpacing: '0.01em' }}>{item.title}</h2>
                       <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'var(--font-body)', fontWeight: 300, marginBottom: '0.5rem' }}>{item.description}</p>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.05em' }}>{item.tags}</p>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text)' }}>
+                        <span style={{ 
+                          fontFamily: 'var(--font-mono)', 
+                          fontSize: '0.75rem', 
+                          textTransform: 'uppercase', 
+                          letterSpacing: '0.1em', 
+                          borderBottom: '1px solid rgba(255,255,255,0.3)',
+                          paddingBottom: '2px'
+                        }}>
+                          {t.hero.projectMeta.viewCaseStudy}
+                        </span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
                       
                     </div>
                   </div>
@@ -184,11 +201,29 @@ export default function Projects() {
                       fontFamily: 'var(--font-mono)', 
                       fontSize: '0.7rem', 
                       color: 'var(--text-muted)',
-                      marginTop: '3rem',
-                      letterSpacing: '0.1em'
+                      marginTop: '1.5rem',
+                      letterSpacing: '0.1em',
+                      marginBottom: '1rem'
                     }}>
                       {item.tags}
                     </p>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text)' }}>
+                        <span style={{ 
+                          fontFamily: 'var(--font-mono)', 
+                          fontSize: '0.75rem', 
+                          textTransform: 'uppercase', 
+                          letterSpacing: '0.1em', 
+                          borderBottom: '1px solid rgba(255,255,255,0.3)',
+                          paddingBottom: '2px'
+                        }}>
+                          {t.hero.projectMeta.viewCaseStudy}
+                        </span>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <line x1="5" y1="12" x2="19" y2="12"></line>
+                          <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                      </div>
                   </div>
                 </div>
               )}
@@ -211,7 +246,7 @@ export default function Projects() {
               ) : null}
 
               {isIEEE && heroImage && (
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%', overflow: 'hidden', zIndex: 5, padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '42%', overflow: 'hidden', zIndex: 5, padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                   <motion.img 
                     src={heroImage.src} 
                     whileHover={{ scale: 1.03 }}

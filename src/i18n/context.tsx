@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { type Language, translations } from './translations';
 
 interface I18nContextProps {
@@ -12,6 +12,10 @@ const I18nContext = createContext<I18nContextProps | undefined>(undefined);
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
   // Default to English per user request ("do not impleemnt automatic language selector. set the default to english")
   const [lang, setLang] = useState<Language>('EN');
+
+  useEffect(() => {
+    document.documentElement.lang = lang === 'TR' ? 'tr' : 'en';
+  }, [lang]);
 
   const value = {
     lang,
