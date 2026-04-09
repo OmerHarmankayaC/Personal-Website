@@ -60,7 +60,7 @@ export default function CustomCursor() {
         justifyContent: 'center',
         translateX: '-50%',
         translateY: '-50%',
-        willChange: 'width, height, transform, border-radius'
+        willChange: 'transform'
       }}
       animate={{
         width: isProject ? 110 : (isBack ? 80 : 18),

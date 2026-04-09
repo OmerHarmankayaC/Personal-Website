@@ -54,13 +54,13 @@ export default function Projects() {
       <h2 style={{ 
         color: 'var(--text)', 
         fontSize: 'clamp(3rem, 10vw, 6.5rem)', 
-        lineHeight: 1,
+        lineHeight: 0.9,
         marginBottom: '4rem',
         paddingLeft: '0',
-        fontWeight: 700,
-        textTransform: 'none',
+        fontWeight: 400,
+        textTransform: 'uppercase',
         fontFamily: 'var(--font-display)',
-        letterSpacing: '-0.04em'
+        letterSpacing: '0.02em'
       }}>{t.projects.title}</h2>
       
       <div className="brutalist-grid" style={{ 
@@ -68,7 +68,7 @@ export default function Projects() {
         gridTemplateColumns: 'repeat(12, 1fr)',
         gap: '0px' 
       }}>
-        {t.projects.items.map((item, idx) => {
+        {t.projects.items.filter((i: any) => i.featured !== false).map((item: any, idx) => {
           
           const isVera = item.id === 'vera';
           const isIEEE = item.id === 'ieee';
@@ -91,12 +91,12 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.8, delay: idx * 0.1, ease: 'easeOut' }}
-              whileHover={!isMobile ? { borderColor: 'rgba(255,255,255,0.2)' } : {}}
+              whileHover={{}}
               style={{ 
                 position: 'relative',
                 gridColumn: isMobile ? 'span 12' : (item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4')),
                 backgroundColor: '#000000',
-                border: '1px solid var(--border)',
+                border: '1px solid rgba(255,255,255,0.15)',
                 display: 'flex',
                 flexDirection: isVera && isMobile ? 'column' : 'row',
                 justifyContent: isVera ? 'center' : 'space-between',
@@ -150,7 +150,7 @@ export default function Projects() {
                     onMouseEnter={() => !isMobile && setCursorType('project')}
                   >
                     <div style={{ pointerEvents: 'auto' }}>
-                      <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)', color: 'var(--text)', fontWeight: 700, margin: '0 0 1rem 0', fontFamily: 'var(--font-display)' }}>{item.title}</h2>
+                      <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)', color: 'var(--text)', fontWeight: 400, margin: '0 0 1rem 0', fontFamily: 'var(--font-display)', textTransform: 'uppercase', letterSpacing: '0.01em' }}>{item.title}</h2>
                       <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'var(--font-body)', fontWeight: 300, marginBottom: '0.5rem' }}>{item.description}</p>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.05em' }}>{item.tags}</p>
                       
@@ -161,7 +161,7 @@ export default function Projects() {
                 <div style={{ padding: 'clamp(1.5rem, 5vw, 4rem)', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div style={{ position: 'relative', zIndex: 20 }}>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600, letterSpacing: '0.15em' }}>{item.role}</p>
-                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 6vw, 3.8rem)', fontWeight: 700, textTransform: 'none', letterSpacing: '-0.04em', lineHeight: 1 }}>{item.title}</h3>
+                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 6vw, 3.8rem)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', lineHeight: 1 }}>{item.title}</h3>
                     
                     <p style={{ 
                       maxWidth: '500px', 
@@ -177,19 +177,19 @@ export default function Projects() {
                     }}>
                       {item.description}
                     </p>
-                  </div>
 
-                  <p style={{ 
-                    position: 'relative', 
-                    zIndex: 20, 
-                    fontFamily: 'var(--font-mono)', 
-                    fontSize: '0.7rem', 
-                    color: 'var(--text-muted)',
-                    marginTop: '3rem',
-                    letterSpacing: '0.1em'
-                  }}>
-                    {item.tags}
-                  </p>
+                    <p style={{ 
+                      position: 'relative', 
+                      zIndex: 20, 
+                      fontFamily: 'var(--font-mono)', 
+                      fontSize: '0.7rem', 
+                      color: 'var(--text-muted)',
+                      marginTop: '3rem',
+                      letterSpacing: '0.1em'
+                    }}>
+                      {item.tags}
+                    </p>
+                  </div>
                 </div>
               )}
               
@@ -211,12 +211,12 @@ export default function Projects() {
               ) : null}
 
               {isIEEE && heroImage && (
-                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '65%', overflow: 'hidden', zIndex: 5, borderTop: '1px solid var(--border)' }}>
+                <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%', overflow: 'hidden', zIndex: 5, padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                   <motion.img 
                     src={heroImage.src} 
                     whileHover={{ scale: 1.03 }}
                     transition={{ duration: 0.8, ease: 'easeOut' }}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }} 
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'bottom' }} 
                   />
                 </div>
               )}
@@ -229,6 +229,38 @@ export default function Projects() {
             </motion.div>
           )
         })}
+      </div>
+
+      {/* Archive Link */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '6rem' }}>
+        <Link 
+          to="/archive"
+          onMouseEnter={() => setCursorType('default')}
+          style={{ 
+            display: 'inline-flex', 
+            alignItems: 'center', 
+            gap: '0.5rem',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '0.8rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.15em',
+            color: 'var(--text)',
+            padding: '1rem 2rem',
+            border: '1px solid var(--border)',
+            transition: 'all 0.3s ease',
+            backgroundColor: 'rgba(255,255,255,0.02)'
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--text)';
+            e.currentTarget.style.color = 'var(--bg)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)';
+            e.currentTarget.style.color = 'var(--text)';
+          }}
+        >
+          {t.hero.archive} →
+        </Link>
       </div>
     </section>
   )

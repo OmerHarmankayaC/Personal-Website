@@ -325,7 +325,8 @@ export default function ProjectDetail() {
               fontFamily: 'var(--font-display)',
               lineHeight: 0.85,
               marginBottom: '2.5rem',
-              letterSpacing: '-0.05em'
+              letterSpacing: '0.02em',
+              textTransform: 'uppercase'
             }}
           >
             {project.title}
@@ -335,12 +336,13 @@ export default function ProjectDetail() {
             variants={itemVariants}
             style={{ 
               fontSize: 'clamp(1.1rem, 3.5vw, 1.8rem)', 
-              fontFamily: 'var(--font-display)',
-              fontWeight: 400,
+              fontFamily: 'var(--font-heading)',
+              fontWeight: 300,
               maxWidth: '800px',
               lineHeight: 1.3,
               marginBottom: '5rem',
-              color: 'var(--text-muted)'
+              color: 'var(--text-muted)',
+              letterSpacing: '-0.02em'
             }}
           >
             {project.description}
@@ -362,7 +364,7 @@ export default function ProjectDetail() {
               ].map((meta, i) => (
                 <div key={i}>
                   <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
-                  <p style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 500 }}>{meta.value}</p>
+                  <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 600 }}>{meta.value}</p>
                 </div>
               ))}
             </div>
@@ -396,38 +398,6 @@ export default function ProjectDetail() {
               )}
             </div>
 
-            {/* In-Line Tech Stack for vertical density */}
-            {project.techStack && (
-              <motion.div 
-                variants={itemVariants}
-                style={{ 
-                  gridColumn: 'span 12',
-                  display: 'flex', 
-                  flexWrap: 'wrap', 
-                  gap: '0.75rem', 
-                  marginTop: '1.5rem',
-                  paddingTop: '2rem',
-                  borderTop: '1px solid rgba(255,255,255,0.05)'
-                }}
-              >
-                {project.techStack.map((tech: string, i: number) => (
-                  <span 
-                    key={i} 
-                    style={{ 
-                      padding: '6px 14px', 
-                      backgroundColor: 'rgba(255,255,255,0.03)', 
-                      border: '1px solid rgba(255,255,255,0.1)', 
-                      borderRadius: '4px',
-                      fontSize: '0.75rem',
-                      fontFamily: 'var(--font-mono)',
-                      color: 'var(--text-muted)'
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </motion.div>
-            )}
           </div>
         </div>
 
@@ -707,12 +677,14 @@ export default function ProjectDetail() {
               style={{ 
                 fontFamily: 'var(--font-display)',
                 fontSize: 'clamp(2.5rem, 8vw, 6rem)',
-                fontWeight: 700,
+                fontWeight: 400,
                 color: 'var(--text)',
                 lineHeight: 1,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '2rem'
+                gap: '2rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.02em'
               }}
               whileHover={{ x: 20 }}
               transition={{ duration: 0.4 }}

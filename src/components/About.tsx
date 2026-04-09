@@ -52,9 +52,9 @@ export default function About() {
         lineHeight: 1,
         marginBottom: '2.5rem',
         fontWeight: 400,
-        textTransform: 'none',
+        textTransform: 'uppercase',
         fontFamily: 'var(--font-display)',
-        letterSpacing: '-0.01em'
+        letterSpacing: '0.02em'
       }}>{t.about.title}</h2>
 
       <p 

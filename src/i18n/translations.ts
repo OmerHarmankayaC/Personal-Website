@@ -34,38 +34,38 @@ export const translations = {
       items: [
         {
           id: 'vera',
+          featured: true,
           title: "Vera Finance",
-          year: "2024",
+          year: "2026",
           category: "Fintech",
           platform: "Web / Mobile",
-          role: "Fullstack / AI Integration",
-          description: "A comprehensive personal finance application leveraging AI for real-time insights.",
-          fullDescription: "Vera Finance is a next-generation personal wealth management platform designed to simplify complex financial data. By integrating advanced AI models, Vera provides users with proactive insights, automated categorization, and intelligent budgeting tools that adapt to individual spending patterns.",
-          techStack: ["Next.js", "TypeScript", "PostgreSQL", "OpenAI API", "Framer Motion", "Tailwind CSS"],
+          role: "Creator",
+          description: "Personal finance tracker with built in AI receipt scanning, inventory, goals, assets, and budget tracking.",
+          fullDescription: "A personal project driven by the desire to build something genuinely useful. Vera Finance is a comprehensive personal finance tracker featuring AI receipt scanning, inventory management, and income/expense tracking. I am particularly proud that it serves a real-world need and is nearing publication.",
           challenge: "Processing and categorizing thousands of transactions in real-time while maintaining low latency and high accuracy.",
           solution: "Implemented a robust serverless architecture with a specialized vector database for transaction pattern matching and a custom fine-tuned model for financial categorization.",
           link: "https://vera.staticorbit.dev/",
           size: "large",
           images: [
-            { src: '/images/vera/landing.png', type: 'desktop' },
-            { src: '/images/vera/app/home-screen.png', type: 'mobile' },
-            { src: '/images/vera/app/insights.png', type: 'mobile' },
-            { src: '/images/vera/app/assets.png', type: 'mobile' },
-            { src: '/images/vera/app/goals.png', type: 'mobile' },
-            { src: '/images/vera/app/inventory.png', type: 'mobile' }
+            { src: '/pictures/Vera-Finance/Vera-Landing_Page/Ekran Resmi 2026-03-29 11.57.08.png', type: 'desktop' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/home_screen.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/insights.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/assets.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/goals.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/inventory.png', type: 'mobile' }
           ],
-          tags: "TypeScript // Next.js // AI"
+          tags: "Fintech // AI"
         },
         {
           id: 'ieee',
+          featured: true,
           title: "IEEE TEDU WEBSITE",
-          year: "2023",
-          category: "Society / Community",
+          year: "2026",
+          category: "Society / Blog",
           platform: "Web",
           role: "Design / Development",
-          description: "Official society web page for the IEEE branch at TED University.",
-          fullDescription: "The IEEE TEDU website serves as the primary digital hub for one of the university's most active student branches. It features integrated event management, member portals, and a dynamic committee showcase system designed to improve student engagement and information accessibility.",
-          techStack: ["React", "Vite", "Firebase", "Framer Motion", "GSAP"],
+          description: "An introduction and blog website made for the IEEE TEDU Student Societies.",
+          fullDescription: "From my society I noticed that we did not have a dedicated website, so I took the initiative to build one. This platform serves as an introduction and blog for the IEEE TEDU Student Societies. I am extremely proud of its visually attractive, simple, yet highly effective design.",
           challenge: "Managing a large volume of dynamic content from multiple student committees while ensuring a fast, responsive user experience on mobile devices.",
           solution: "Developed a distributed content architecture using Firebase for real-time updates and optimized asset delivery for high-performance rendering of visual committee cards.",
           link: "https://ieee-tedu.vercel.app/",
@@ -76,24 +76,24 @@ export const translations = {
             { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
             { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ],
-          tags: "React // GSAP // Community"
+          tags: "Web // Society // Design"
         },
         {
           id: 'hospital-db',
+          featured: true,
           title: "Hospital dbms",
-          year: "2023",
+          year: "2025",
           category: "Database Systems",
           platform: "Backend / SQL",
-          role: "SYSTEMS ARCHITECTURE",
-          description: "Full relational database design for a hospital management platform. Schema architecture, normalization, and constraint enforcement.",
-          fullDescription: "A comprehensive database management system designed to handle complex relationships between patients, staff, appointments, and medical records. The project focused on high-integrity data modeling and optimized query performance for critical healthcare operations.",
-          techStack: ["PostgreSQL", "SQLAlchemy", "Python", "Normalization (3NF/BCNF)", "ER Modeling"],
+          role: "Systems Architecture",
+          description: "A database management system for a hypothetical hospital.",
+          fullDescription: "Developed as a school project in collaboration with a team, this database management system is designed for a hypothetical hospital utilizing C# and MsSQL. My primary contribution, and what I am most proud of, was designing and creating the entire database schema from the ground up.",
           challenge: "Ensuring strict data integrity and complex relationship mapping across 20+ interconnected tables in a high-concurrency environment.",
           solution: "Designed a multi-layered schema implementing advanced SQL constraints, triggers for automated auditing, and optimized indexing strategies for high-frequency medical record lookups.",
           link: "#",
           size: "medium-small",
           images: [],
-          tags: "SQL // Architecture // Performance"
+          tags: "Database // SQL"
         }
       ]
     },
@@ -140,38 +140,38 @@ export const translations = {
       items: [
         {
           id: 'vera',
+          featured: true,
           title: "Vera Finance",
-          year: "2024",
+          year: "2026",
           category: "Fintech",
           platform: "Web / Mobil",
-          role: "Fullstack / Yapay Zeka Entegrasyonu",
-          description: "Gerçek zamanlı içgörüler için yapay zekadan yararlanan kapsamlı bir kişisel finans uygulaması.",
-          fullDescription: "Vera Finance, karmaşık finansal verileri basitleştirmek için tasarlanmış yeni nesil bir kişisel varlık yönetimi platformudur. Gelişmiş yapay zeka modellerini entegre ederek Vera, kullanıcılara bireysel harcama kalıplarına uyum sağlayan proaktif içgörüler, otomatik kategorizasyon ve akıllı bütçeleme araçları sunar.",
-          techStack: ["Next.js", "TypeScript", "PostgreSQL", "OpenAI API", "Framer Motion", "Tailwind CSS"],
+          role: "Kurucu",
+          description: "Dahili yapay zeka fiş tarama, envanter, hedefler, varlıklar ve bütçe takibi içeren kişisel finans uygulaması.",
+          fullDescription: "Gerçekten faydalı bir şey inşa etme arzusuyla geliştirilmiş kişisel bir proje. Vera Finance; yapay zeka ile fiş tarama, envanter yönetimi ve gelir/gider takibi sunan kapsamlı bir finans izleyicisidir. Gerçek dünyadaki bir ihtiyaca hizmet etmesinden ve yayınlanmaya çok yakın olmasından büyük gurur duyuyorum.",
           challenge: "Düşük gecikme süresi ve yüksek doğruluk sağlarken binlerce işlemi gerçek zamanlı olarak işlemek ve kategorize etmek.",
           solution: "İşlem kalıbı eşleştirme için özel bir vektör veritabanı ve finansal kategorizasyon için özel olarak eğitilmiş bir model kullanarak sağlam bir sunucusuz mimari uygulandı.",
           link: "https://vera.staticorbit.dev/",
           size: "large",
           images: [
-            { src: '/images/vera/landing.png', type: 'desktop' },
-            { src: '/images/vera/app/home-screen.png', type: 'mobile' },
-            { src: '/images/vera/app/insights.png', type: 'mobile' },
-            { src: '/images/vera/app/assets.png', type: 'mobile' },
-            { src: '/images/vera/app/goals.png', type: 'mobile' },
-            { src: '/images/vera/app/inventory.png', type: 'mobile' }
+            { src: '/pictures/Vera-Finance/Vera-Landing_Page/Ekran Resmi 2026-03-29 11.57.08.png', type: 'desktop' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/home_screen.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/insights.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/assets.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/goals.png', type: 'mobile' },
+            { src: '/pictures/Vera-Finance/Vera-In_App-screenshots/inventory.png', type: 'mobile' }
           ],
-          tags: "TypeScript // Next.js // Yapay Zeka"
+          tags: "Fintech // Yapay Zeka"
         },
         {
           id: 'ieee',
+          featured: true,
           title: "IEEE TEDU WEB SİTESİ",
-          year: "2023",
-          category: "Topluluk / Sosyal",
+          year: "2026",
+          category: "Topluluk / Blog",
           platform: "Web Site",
           role: "Tasarım / Geliştirme",
-          description: "TED Üniversitesi IEEE topluluğunun resmi web sayfası.",
-          fullDescription: "IEEE TEDU web sitesi, üniversitenin en aktif öğrenci kollarından biri için birincil dijital merkez olarak hizmet vermektedir. Öğrenci katılımını ve bilgi erişilebilirliğini artırmak için tasarlanmış entegre etkinlik yönetimi, üye portalları ve dinamik bir komite vitrin sistemi içerir.",
-          techStack: ["React", "Vite", "Firebase", "Framer Motion", "GSAP"],
+          description: "IEEE TEDU Öğrenci Toplulukları için hazırlanan, tanıtım ve blog odaklı web sitesi.",
+          fullDescription: "Topluluğumuzun dijital bir varlığı olmadığını fark edince inisiyatif alarak bu tanıtım ve blog platformunu geliştirdim. Çıkan sonucun görsel olarak çekici, sade ama oldukça etkili olmasından dolayı gurur duyuyorum.",
           challenge: "Mobil cihazlarda hızlı ve duyarlı bir kullanıcı deneyimi sağlarken, birden fazla öğrenci komitesinden gelen büyük miktarda dinamik içeriği yönetmek.",
           solution: "Gerçek zamanlı güncellemeler için Firebase kullanarak dağıtılmış bir içerik mimarisi geliştirildi ve görsel komite kartlarının yüksek performanslı sunumu için varlık teslimi optimize edildi.",
           link: "https://ieee-tedu.vercel.app/",
@@ -182,24 +182,24 @@ export const translations = {
             { src: '/images/ieee/ieee-mockup-3.png', type: 'desktop' },
             { src: '/images/ieee/ieee-mockup-4.png', type: 'desktop' }
           ],
-          tags: "React // GSAP // Topluluk"
+          tags: "Web // Topluluk // Tasarım"
         },
         {
           id: 'hospital-db',
+          featured: true,
           title: "Hospital dbms",
-          year: "2023",
+          year: "2025",
           category: "Veritabanı Sistemleri",
           platform: "Backend / SQL",
-          role: "SİSTEM MİMARİSİ",
-          description: "Bir hastane yönetim platformu için tam ilişkisel veritabanı tasarımı. Şema mimarisi, normalizasyon ve kısıtlama zorlama.",
-          fullDescription: "Hastalar, personel, randevular ve tıbbi kayıtlar arasındaki karmaşık ilişkileri yönetmek için tasarlanmış kapsamlı bir veritabanı yönetim sistemi. Proje, yüksek bütünlüklü veri modelleme ve kritik sağlık operasyonları için optimize edilmiş sorgu performansına odaklandı.",
-          techStack: ["PostgreSQL", "SQLAlchemy", "Python", "Normalization (3NF/BCNF)", "ER Modeling"],
+          role: "Sistem Mimarisi",
+          description: "Hipotetik bir hastane için veritabanı yönetim sistemi.",
+          fullDescription: "Bir üniversite projesi kapsamında ekip olarak geliştirilen ve C# ile MsSQL kullanan bu veritabanı yönetim sistemi hipotetik bir hastane için tasarlandı. Tüm veritabanı şemasını baştan uca benim oluşturmuş olmam projede en gurur duyduğum kısımdır.",
           challenge: "Çoklu kullanıcı ortamında 20'den fazla birbirine bağlı tabloda katı veri bütünlüğü ve karmaşık ilişki eşlemesi sağlamak.",
           solution: "Gelişmiş SQL kısıtlamaları, otomatik denetim için tetikleyiciler ve yüksek frekanslı tıbbi kayıt aramaları için optimize edilmiş indeksleme stratejileri uygulayan çok katmanlı bir şema tasarlandı.",
           link: "#",
           size: "medium-small",
           images: [],
-          tags: "SQL // Mimari // Performans"
+          tags: "Veritabanı // SQL"
         }
       ]
     },

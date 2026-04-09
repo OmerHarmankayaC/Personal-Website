@@ -83,9 +83,9 @@ export default function Footer() {
             fontWeight: 400, 
             fontSize: 'clamp(52px, 8vw, 96px)', 
             lineHeight: 1, 
-            letterSpacing: '-0.01em',
+            letterSpacing: '0.02em',
             marginBottom: '48px',
-            textTransform: 'none',
+            textTransform: 'uppercase',
             cursor: 'none'
           }}
         >
@@ -148,8 +148,8 @@ export default function Footer() {
           fontFamily: 'var(--font-display)',
           fontWeight: 400,
           zIndex: 5, 
-          textTransform: 'none',
-          letterSpacing: '-0.01em',
+          textTransform: 'uppercase',
+          letterSpacing: '0.01em',
           cursor: 'none',
           pointerEvents: 'none',
           userSelect: 'none',

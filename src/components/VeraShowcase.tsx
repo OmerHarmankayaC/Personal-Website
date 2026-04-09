@@ -2,11 +2,11 @@ import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const screens = [
-  { id: 'goals', src: '/images/vera/app/goals.png' },
-  { id: 'inventory', src: '/images/vera/app/inventory.png' },
-  { id: 'home', src: '/images/vera/app/home-screen.png' },
-  { id: 'assets', src: '/images/vera/app/assets.png' },
-  { id: 'insights', src: '/images/vera/app/insights.png' },
+  { id: 'goals', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/goals.png' },
+  { id: 'inventory', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/inventory.png' },
+  { id: 'home', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/home_screen.png' },
+  { id: 'assets', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/assets.png' },
+  { id: 'insights', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/insights.png' },
 ];
 
 export default function VeraShowcase() {

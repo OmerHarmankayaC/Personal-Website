@@ -6,6 +6,7 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Footer from './components/Footer';
 import ProjectDetail from './components/ProjectDetail';
+import Archive from './components/Archive';
 import CustomCursor from './components/CustomCursor';
 import { I18nProvider } from './i18n/context';
 import { CursorProvider } from './context/CursorContext';
@@ -34,6 +35,18 @@ function MainLayout() {
   );
 }
 
+// Animated Routes Component to force re-render on route changes
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <Routes key={location.pathname} location={location}>
+      <Route path="/" element={<MainLayout />} />
+      <Route path="/project/:id" element={<ProjectDetail />} />
+      <Route path="/archive" element={<Archive />} />
+    </Routes>
+  );
+}
+
 function App() {
   useEffect(() => {
     // Force browser to not restore scroll position
@@ -48,13 +61,15 @@ function App() {
 
     (window as any).lenis = lenis;
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       (window as any).lenis = null;
     };
@@ -66,10 +81,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <CustomCursor />
-          <Routes>
-            <Route path="/" element={<MainLayout />} />
-            <Route path="/project/:id" element={<ProjectDetail />} />
-          </Routes>
+          <AnimatedRoutes />
         </Router>
       </CursorProvider>
     </I18nProvider>

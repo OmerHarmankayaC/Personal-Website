@@ -210,7 +210,7 @@ export default function Hero() {
         <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: '16px', right: '16px', width: '24px', height: '24px', borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
 
         <div className="nav-telemetry" style={{ 
-            opacity: 0, position: 'absolute', top: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '12px', fontSize: '0.9rem', fontFamily: 'var(--font-display)', fontWeight: 600, letterSpacing: '0.1em' 
+            opacity: 0, position: 'absolute', top: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 100, display: 'flex', gap: '12px', fontSize: '0.9rem', fontFamily: 'var(--font-heading)', fontWeight: 700, letterSpacing: '0.1em' 
           }}
         >
           <button onClick={() => setLang('TR')} style={{ color: lang === 'TR' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease' }}>TR</button>
@@ -232,8 +232,8 @@ export default function Hero() {
             ref={word1Ref}
             style={{ 
               position: 'absolute', left: 0, top: 0, 
-              fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 700, lineHeight: 0.9, 
-              letterSpacing: '-0.04em', textTransform: 'none', fontFamily: 'var(--font-display)', 
+              fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 400, lineHeight: 0.9, 
+              letterSpacing: '0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-display)', 
               whiteSpace: 'nowrap', margin: 0, opacity: 1 
             }}
           >
@@ -250,8 +250,8 @@ export default function Hero() {
             <h1 
               ref={word2Ref}
               style={{ 
-                fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 700, lineHeight: 0.9, 
-                letterSpacing: '-0.04em', textTransform: 'none', fontFamily: 'var(--font-display)', 
+                fontSize: 'clamp(2.5rem, 12vw, 8.5rem)', fontWeight: 400, lineHeight: 0.9, 
+                letterSpacing: '0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-display)', 
                 whiteSpace: 'nowrap', margin: 0, opacity: 1 
               }}
             >
@@ -262,8 +262,8 @@ export default function Hero() {
 
             {/* Subtitles: Architectural Vertical Breathing Room */}
             <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.8rem', maxWidth: '80vw' }}>
-              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(1rem, 4vw, 1.4rem)', letterSpacing: '0.05em', textTransform: 'none', color: 'var(--text-muted)', fontFamily: 'var(--font-display)', fontWeight: 600, lineHeight: 1.2 }}>{t.hero.subtitle1}</p>
-              <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.85rem, 3.5vw, 1.1rem)', fontFamily: 'var(--font-display)', fontWeight: 400, letterSpacing: '0.02em', opacity: 0, lineHeight: 1.4 }}>{t.hero.subtitle2}</p>
+              <p ref={subtitle1Ref} style={{ opacity: 0, fontSize: 'clamp(1rem, 4vw, 1.4rem)', letterSpacing: '0.05em', textTransform: 'none', color: 'var(--text-muted)', fontFamily: 'var(--font-heading)', fontWeight: 700, lineHeight: 1.2 }}>{t.hero.subtitle1}</p>
+              <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.85rem, 3.5vw, 1.1rem)', fontFamily: 'var(--font-heading)', fontWeight: 400, letterSpacing: '0.02em', opacity: 0, lineHeight: 1.4 }}>{t.hero.subtitle2}</p>
             </div>
           </div>
         </div>
@@ -274,10 +274,10 @@ export default function Hero() {
           ref={scrollIndicatorRef}
           style={{ 
             position: 'absolute', bottom: '40px', left: '50vw', x: '-50%', 
-            fontFamily: 'var(--font-display)',
-            fontSize: '1.1rem', 
-            fontWeight: 600,
-            letterSpacing: '0.2em', 
+            fontFamily: 'var(--font-heading)',
+            fontSize: '1rem', 
+            fontWeight: 800,
+            letterSpacing: '0.3em', 
             textTransform: 'uppercase', 
             color: 'var(--text)', 
             display: 'flex', flexDirection: 'column', alignItems: 'center', 

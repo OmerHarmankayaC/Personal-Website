@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap');
+
 :root {
   --bg: #000000;
   --text: #ffffff;
@@ -8,7 +10,8 @@
   --surface-soft: #141419;
   
   /* High-End Editorial Aesthetic */
-  --font-display: 'Inter', sans-serif;
+  --font-display: 'Bebas Neue', display; /* High-Impact Condensed */
+  --font-heading: 'Inter', sans-serif;   /* "Similar" Modern Sans-Serif */
   --font-body: 'Playfair Display', serif;
   --font-mono: 'JetBrains Mono', monospace;
   
@@ -66,6 +69,8 @@ body::before {
   background-size: 3px 3px;
   opacity: 0.16;
   z-index: -1;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 
@@ -74,23 +79,37 @@ body::before {
   color: var(--bg);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 700; /* Inter headlines need more weight */
+  font-weight: 400; /* Bebas Neue is naturally bold */
   line-height: 1.0;
-  text-transform: none;
-  letter-spacing: -0.04em; /* Tight Inter headings */
+  text-transform: uppercase;
+  letter-spacing: 0.02em; /* Spaced out slightly for premium feel */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   backface-visibility: hidden;
 }
 
+h3, h4, h5, h6 {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  text-rendering: optimizeLegibility;
+}
+
 /* Responsive Headings */
 @media (max-width: 768px) {
-  h1, h2, h3 {
-    letter-spacing: -0.03em;
-    line-height: 1.1;
+  h1, h2 {
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+  }
+  h3, h4 {
+    letter-spacing: -0.01em;
+    line-height: 1.2;
   }
 }
 
