@@ -68,7 +68,7 @@ export default function Projects() {
         gridTemplateColumns: 'repeat(12, 1fr)',
         gap: '0px' 
       }}>
-        {t.projects.items.filter((i: any) => i.featured !== false).map((item: any, idx) => {
+        {t.projects.items.filter((i: any) => i.featured !== false).map((item: any, idx: number) => {
           
           const isVera = item.id === 'vera';
           const isIEEE = item.id === 'ieee';
@@ -78,7 +78,7 @@ export default function Projects() {
           let heroImage: any = null;
           if (item.images && item.images.length > 0) {
              if (isVera) {
-               heroImage = item.images.find(i => i.src.includes('home-screen')) || item.images[0];
+               heroImage = item.images.find((i: any) => i.src.includes('home-screen')) || item.images[0];
              } else {
                heroImage = item.images[0];
              }
