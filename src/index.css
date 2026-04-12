@@ -169,3 +169,76 @@ button {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
+
+/* About Section Redesign - Brutalist Impact */
+.about-section {
+  padding: 25vh 0;
+  border-top: 1px solid var(--border-muted);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Increased for better editorial pacing */
+}
+
+.about-backdrop {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: clamp(8rem, 25vw, 30rem);
+  color: var(--text);
+  opacity: 0.03; /* Extremely subtle */
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  user-select: none;
+}
+
+.about-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-text {
+  font-size: clamp(1.1rem, 2vw, 1.8rem);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  color: var(--text);
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+.about-text p {
+  margin-bottom: 1.5rem;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 8vh 0;
+  }
+  .about-backdrop {
+    font-size: 35vw;
+  }
+  .about-text {
+    text-align: left; /* Better readability on small mobile */
+  }
+}
+
+/* Projects Section Pacing */
+#projects {
+  padding-top: 15vh !important;
+  margin-top: 5vh;
+}

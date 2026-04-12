@@ -28,7 +28,7 @@ export const translations = {
     },
     about: {
       title: "About",
-      text: "I'm Ömer. Computer Engineering and Industrial Engineering at TED University — not because I had to, but because I'm genuinely drawn to both how systems are built and how they're optimized. The most interesting problems live at that intersection.\n\nI build with AI as a core methodology. Not a shortcut — a craft. The result is work that ships: a live fintech app, a society's entire web presence, products that exist in the real world."
+      text: "I'm Ömer. I study Computer Engineering and Industrial Engineering at TED University — the combination isn't accidental. I'm genuinely interested in both how systems are built and how they're made to run better. The problems at that intersection are the ones worth solving.\n\nI use AI throughout my work — not as a workaround, but as the actual method. So far that means a live fintech app used by real people, and a website built from scratch for a university society."
     },
     projects: {
       title: "Selected Works",
@@ -41,10 +41,10 @@ export const translations = {
           category: "Fintech",
           platform: "Web / Mobile",
           role: "Creator",
-          description: "Personal finance tracker with built in AI receipt scanning, inventory, goals, assets, and budget tracking.",
-          fullDescription: "A personal project driven by the desire to build something genuinely useful. Vera Finance is a comprehensive personal finance tracker featuring AI receipt scanning, inventory management, and income/expense tracking. I am particularly proud that it serves a real-world need and is nearing publication.",
-          challenge: "Processing and categorizing thousands of transactions in real-time while maintaining low latency and high accuracy.",
-          solution: "Implemented a robust serverless architecture with a specialized vector database for transaction pattern matching and a custom fine-tuned model for financial categorization.",
+          description: "Personal finance tracker with AI receipt scanning, goal tracking, asset management, and budget tools.",
+          fullDescription: "A personal project built to solve a problem I was actually dealing with. Vera Finance is a finance tracker with AI-powered receipt scanning, inventory management, and income and expense tracking. It started as something I needed and turned into something other people use.",
+          challenge: "Processing and categorizing thousands of transactions in real time while keeping peoples data secure and private.",
+          solution: "Built a serverless architecture with a specialized database for privacy.",
           link: "https://vera.staticorbit.dev/",
           size: "large",
           images: [
@@ -65,10 +65,10 @@ export const translations = {
           category: "Society / Blog",
           platform: "Web",
           role: "Design / Development",
-          description: "An introduction and blog website made for the IEEE TEDU Student Societies.",
-          fullDescription: "From my society I noticed that we did not have a dedicated website, so I took the initiative to build one. This platform serves as an introduction and blog for the IEEE TEDU Student Societies. I am extremely proud of its visually attractive, simple, yet highly effective design.",
-          challenge: "Managing a large volume of dynamic content from multiple student committees while ensuring a fast, responsive user experience on mobile devices.",
-          solution: "Developed a distributed content architecture using Firebase for real-time updates and optimized asset delivery for high-performance rendering of visual committee cards.",
+          description: "Official website for the IEEE TEDU Student Branch — built from scratch after I noticed the society had none.",
+          fullDescription: "The society had no dedicated website. I noticed, took the initiative, and built one. It serves as an introduction and blog platform for the IEEE TEDU Student Branch, covering all active committees under one place.",
+          challenge: "Building a reliable platform for years to come that would look attractive and be easy to maintain.",
+          solution: "Designed and developed a responsive, component-driven architecture with a strong focus on visual hierarchy, ensuring an intuitive browsing experience across all device types.",
           link: "https://ieee-tedu.vercel.app/",
           size: "medium-large",
           images: [
@@ -87,10 +87,10 @@ export const translations = {
           category: "Database Systems",
           platform: "Backend / SQL",
           role: "Systems Architecture",
-          description: "A database management system for a hypothetical hospital.",
-          fullDescription: "Developed as a school project in collaboration with a team, this database management system is designed for a hypothetical hospital utilizing C# and MsSQL. My primary contribution, and what I am most proud of, was designing and creating the entire database schema from the ground up.",
-          challenge: "Ensuring strict data integrity and complex relationship mapping across 20+ interconnected tables in a high-concurrency environment.",
-          solution: "Designed a multi-layered schema implementing advanced SQL constraints, triggers for automated auditing, and optimized indexing strategies for high-frequency medical record lookups.",
+          description: "A relational database management system for a large-scale hypothetical hospital — built as a team project.",
+          fullDescription: "A team project built for a university course. The system models the full infrastructure of a hypothetical hospital — thousands of staff, clinics, and patients. Built with C# and MS SQL. My contribution was designing and normalizing the entire database schema from scratch.",
+          challenge: "Guaranteeing strict data integrity and accurate relationship mapping across 10+ interconnected tables in a high-concurrency environment.",
+          solution: "Designed a multi-layered schema with comprehensive SQL constraints, automated audit triggers, and an optimized indexing strategy for fast medical record lookups at scale.",
           link: "#",
           size: "medium-small",
           images: [],
@@ -99,43 +99,52 @@ export const translations = {
       ]
     },
     footer: {
+      watermark: "LET'S WORK",
+      heading1: "Let's build",
+      heading2: "something real.",
+      desc: "Open to opportunities, collaborations, and honest conversations about interesting problems.",
       email: "Email",
       linkedin: "LinkedIn",
       github: "GitHub",
-      cv: "Download CV",
-      title: "LET'S WORK",
-      cta: ["Let's build", "something."],
-      desc: "I'm open to opportunities, collaborations, and interesting conversations."
+      cv: "Download CV"
+    },
+    system: {
+      aboutBackdrop: "ABOUT",
+      ieeeUrl: "ieee.tedu.edu.tr",
+      ieeeOverview: "Overview",
+      veraSwipe: "Swipe right and left",
+      errorNotFound: "Project not found",
+      copyright: "© 2026 Ömer Harmankaya"
     }
   },
   TR: {
     hero: {
-      tags: ["SYS.01 // CE-IE", "SÜRÜM_1.0.0", "39.92N, 32.85E // ANKARA"],
+      tags: ["SYS.01 // CE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
-      subtitle1: "Sistemleri Tasarlamak. Dijital Gerçeklikler İnşa Etmek.",
+      subtitle1: "Sistemleri Tasarlamak. Gerçeklikleri İnşa Etmek.",
       subtitle2: "Bilgisayar & Endüstri Mühendisliği @ TED Üniversitesi",
       scroll: "Kaydır",
       cursor: {
         explore: "Keşfet",
         back: "Geri"
       },
-      liveProduct: "Canlı Önizleme",
+      liveProduct: "Projeyi İncele",
       archive: "Arşiv",
       projectMeta: {
         year: "Yıl",
         role: "Rol",
         category: "Kategori",
         platform: "Platform",
-        challenge: "Mevcut Problem",
-        solution: "Çözüm Yaklaşımı",
+        challenge: "Zorluk",
+        solution: "Çözüm",
         next: "Sıradaki Proje",
-        techStack: "Kullanılan Teknolojiler",
-        viewCaseStudy: "Projeyi İncele"
+        techStack: "Teknoloji",
+        viewCaseStudy: "İncele"
       }
     },
     about: {
       title: "Hakkımda",
-      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar ve Endüstri Mühendisliği okuyorum — yalnızca akademik bir zorunluluktan değil; sistemlerin en temel seviyede nasıl inşa edildiği ve en uç noktaya kadar nasıl optimize edilebileceği beni gerçekten cezbettiği için. Bence en ilginç ve çözmesi en keyifli problemler tam bu kesişim noktasında ortaya çıkıyor.\n\nProjelerimi hayata geçirirken yapay zekayı günü kurtaran basit bir kısayol olarak değil, temel bir metodoloji, adeta bir zanaat olarak ele alıyorum. Tüm bu çabanın arkasında; aktif bir finans asistanı, koca bir topluluğun uçtan uca dijital vizyonu ve gerçek dünyada insanlar tarafından bizzat kullanılan somut ürünler yatıyor."
+      text: "Ben Ömer. TED Üniversitesi'nde Bilgisayar ve Endüstri Mühendisliği okuyorum — bu kombinasyon tesadüf değil. Sistemlerin nasıl inşa edildiği ve nasıl daha iyi çalıştırılabileceği beni gerçekten ilgilendiriyor. En ilginç problemler tam bu kesişim noktasında ortaya çıkıyor.\n\nYapay zekayı çalışmalarımın her aşamasında kullanıyorum — bir kısayol olarak değil, temel metodoloji olarak. Şimdiye kadar bunun sonucu: gerçek insanların kullandığı aktif bir finans uygulaması ve bir üniversite topluluğu için sıfırdan inşa edilmiş bir platform."
     },
     projects: {
       title: "Öne Çıkan Çalışmalar",
@@ -148,10 +157,10 @@ export const translations = {
           category: "Fintech",
           platform: "Web / Mobil",
           role: "Kurucu & Geliştirici",
-          description: "Yapay zeka destekli fiş tarama, envanter, hedef, varlık ve bütçe takibi özelliklerine sahip kapsamlı kişisel finans asistanı.",
-          fullDescription: "Piyasadaki finans uygulamalarının yetersizliklerinden yola çıkarak, gerçekten işe yarayacak bir ürün ortaya koyma tutkusuyla geliştirdiğim kişisel bir proje. Vera Finance; yapay zeka vizyon modelleriyle saniyeler içinde fişlerinizi dijitalleştiren, akıllı envanter yönetimi ve detaylı gelir-gider takibi sunan bir ekosistem. Özellikle gerçek hayatta bizzat yaşadığımız bir probleme doğrudan teknolojik bir çözüm üretmesi ve artık aktif kullanıma hazır olması projeye olan inancımı artırıyor.",
-          challenge: "Binlerce kullanıcının finansal verisini ve mikro işlemini akıcı, gerçek zamanlı bir şekilde işlerken; aynı zamanda yapay zeka operasyonlarındaki doğruluğu maksimumda, gecikme süresini (latency) ise minimumda tutabilmek.",
-          solution: "Büyük dil ve vizyon modellerindeki işlem kalıplarını saniyeler içinde analiz edip ayıklayan özel bir vektör veritabanı kuruldu. Finansal verilerin hata payı olmaksızın doğru kategorilere ayrılması için ince ayar (fine-tune) yapılmış modellere dayanan oldukça verimli ve maliyet etkin bir Serverless (sunucusuz) mimari inşa edildi.",
+          description: "Yapay zeka destekli fiş tarama, hedef takibi, varlık yönetimi ve bütçe araçlarına sahip kapsamlı kişisel finans asistanı.",
+          fullDescription: "Bizzat yaşadığım bir problemi çözmek için başlattığım kişisel proje. Vera Finance; yapay zeka görüntü işlemeyle fiş dijitalleştirme, envanter yönetimi ve gelir-gider takibi sunan bir finans asistanı. Başlangıçta sadece kendi ihtiyacım için geliştirdiğim bir araç, zamanla başkalarının da kullandığı aktif bir ürüne dönüştü.",
+          challenge: "Binlerce işlemi gerçek zamanlı olarak işlerken kullanıcı verilerini güvenli ve gizli tutabilmek.",
+          solution: "Sunucusuz mimari ile kullanıcı verilerini güvenli ve gizli tutmak.",
           link: "https://vera.staticorbit.dev/",
           size: "large",
           images: [
@@ -172,10 +181,10 @@ export const translations = {
           category: "Topluluk / Blog",
           platform: "Web",
           role: "Tasarım & Geliştirme",
-          description: "IEEE TEDU Öğrenci Toplulukları için sıfırdan oluşturulmuş resmi tanıtım ve blog platformu.",
-          fullDescription: "Topluluğumuzun güçlü bir mühendislik vizyonu olmasına rağmen, bunu yansıtacak dijital bir yüzünün eksik olduğunu fark ettim. Bunun üzerine inisiyatif alıp tüm topluluk komitelerini tek çatı altında toplayan bu tanıtım ve etkinlik platformunu sıfırdan kodladım. Sonucun görsel açıdan oldukça modern, premium ve bir o kadar da sade olması, ortaya çıkardığımız işin başarısını kanıtlar nitelikte.",
-          challenge: "Birbirinden farklı 6'dan fazla alt komitenin sürekli ve aktif bir biçimde akıttığı yoğun ve dinamik içeriği ölçeklenebilir bir formatta yönetmek. Aynı zamanda bu veri yoğunluğunu, bilhassa mobil cihazlarda pürüzsüz ve yüksek performanslı bir kullanıcı deneyimi eşliğinde sunabilmek.",
-          solution: "Topluluk yöneticilerinin gönderilerini kod yazmadan paylaşabilmesi için Firebase altyapısında gerçek zamanlı, tepkisel (reactive) bir mimari oluşturuldu. Özellikle yüksek çözünürlüklü grafiklerin ve görsel komite kartlarının performans kaybı yaratmaması adına dinamik önbellekleme (caching) ve akıllı imaj optimizasyonları devreye alındı.",
+          description: "IEEE TEDU Öğrenci Topluluğu'nun tüm komitelerini tek çatı altında toplayan resmi tanıtım ve blog platformu — topluluk adına inisiyatif alınarak sıfırdan geliştirildi.",
+          fullDescription: "Topluluğun dijital bir varlığı yoktu. Fark ettim, inisiyatif aldım ve inşa ettim. Platform; IEEE TEDU'nun tüm aktif komitelerini, etkinliklerini ve içeriklerini tek bir yerde buluşturuyor.",
+          challenge: "Uzun yıllar boyunca güvenilir kalacak, görsel olarak çekici ve kolay yönetilebilir bir platform oluşturmak.",
+          solution: "Görsel hiyerarşi odaklı, reaktif ve bileşen tabanlı bir mimari tasarlanıp geliştirilerek tüm cihaz tiplerinde sezgisel bir gezinme deneyimi sağlandı.",
           link: "https://ieee-tedu.vercel.app/",
           size: "medium-large",
           images: [
@@ -194,10 +203,10 @@ export const translations = {
           category: "Veritabanı Sistemleri",
           platform: "Backend / SQL",
           role: "Sistem ve Şema Mimarisi",
-          description: "Büyük ölçekli, varsayımsal bir genel hastane modeli için inşa edilmiş kapsamlı ilişkisel veritabanı yönetim ekosistemi.",
-          fullDescription: "Bir üniversite bitirme projesi kapsamında ekip olarak geliştirilen bu proje; binlerce personeli, kliniği ve hastayı barındıran hipotetik bir hastanenin uçtan uca altyapısını modellediğimiz dev bir sistem. C# ve MsSQL ekseninde şekillenen bu yapıda tüm veritabanı şemasını en ince ayrıntılarına kadar bizzat tasarlayıp normalize etmiş olmak, arka ucu tamamen ayakta tutmayı sağlayan kritik bir basamaktı ve projenin en başarılı kısımlarından biriydi.",
-          challenge: "Aynı anda binlerce doktor ve hastanın aktif işlem yapabileceği bu son derece eşzamanlı (high-concurrency) ekosistemde; 20'yi aşkın iç içe geçmiş tablonun veri yozlaşmasına (data corruption) uğramaması ve karmaşık bağıntı haritasının kusursuz işletilmesini garanti edebilmek.",
-          solution: "Veri tutarlılığını sağlamlaştırmak için kapsamlı ve katı SQL kuralları (constraints) devreye sokuldu. İdari takip süreçlerini her işlemde otomatize etmek için dinamik arka plan tetikleyicileri (triggers) programlandı; ve devasa tıbbi arşivlerde saniyelik tarama süreleri elde edebilmek adına çok katmanlı, efektif bir indeksleme algoritması kurgulandı.",
+          description: "Büyük ölçekli, varsayımsal bir hastane altyapısı için inşa edilmiş kapsamlı ilişkisel veritabanı yönetim sistemi — ekip projesi.",
+          fullDescription: "Üniversite dersi kapsamında geliştirilen bir ekip projesi. Sistem; binlerce personeli, kliniği ve hastayı barındıran varsayımsal bir hastanenin uçtan uca altyapısını modelliyor. C# ve MS SQL ile geliştirildi. Projedeki katkım, veritabanı şemasının tamamını sıfırdan tasarlamak ve normalize etmekti.",
+          challenge: "Yüksek eşzamanlılık (high-concurrency) ortamında 10'dan fazla iç içe tablonun veri bütünlüğünü ve karmaşık bağıntı haritasını koruyabilmek.",
+          solution: "Kapsamlı SQL kısıtlamaları (constraints) tanımlandı. İdari süreçleri otomatize eden arka plan tetikleyicileri (triggers) yazıldı. Büyük tıbbi arşivlerde hızlı sorgulama için çok katmanlı indeksleme stratejisi kurgulandı.",
           link: "#",
           size: "medium-small",
           images: [],
@@ -206,13 +215,22 @@ export const translations = {
       ]
     },
     footer: {
+      watermark: "BİRLİKTE ÇALIŞALIM",
+      heading1: "Birlikte bir şeyler",
+      heading2: "inşa edelim.",
+      desc: "Vizyoner fikirlere, yeni girişimlere, cesur projelere ve ufuk açıcı sohbetlere her zaman açığım.",
       email: "E-Posta",
       linkedin: "LinkedIn",
       github: "GitHub",
-      cv: "CV İndir",
-      title: "BİRLİKTE ÇALIŞALIM",
-      cta: ["Geleceği birlikte", "inşa edelim."],
-      desc: "Vizyoner fikirlere, yeni girişimlere, cesur projelere ve ufuk açıcı sohbetlere her zaman açığım."
+      cv: "CV İndir"
+    },
+    system: {
+      aboutBackdrop: "ABOUT",
+      ieeeUrl: "ieee.tedu.edu.tr",
+      ieeeOverview: "Genel Bakış",
+      veraSwipe: "Sağa ve sola kaydırın",
+      errorNotFound: "Proje bulunamadı",
+      copyright: "© 2026 Ömer Harmankaya"
     }
   }
 };

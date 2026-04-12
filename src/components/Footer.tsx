@@ -50,7 +50,7 @@ const LinkRow = ({ text, href, icon = "↗", id }: { text: string; href: string;
 
 export default function Footer() {
   const { t } = useI18n();
-  const isLongTitle = t.footer.title.length > 12;
+  const isLongTitle = t.footer.watermark.length > 12;
   const fontSize = isLongTitle ? 'clamp(2.5rem, 9.5vw, 16rem)' : 'clamp(4rem, 15vw, 22rem)';
   const bottomOffset = isLongTitle ? '-3.8vw' : '-5vw';
   const liftAmount = isLongTitle ? '-9.2vw' : '-6.5vw';
@@ -89,8 +89,8 @@ export default function Footer() {
             cursor: 'none'
           }}
         >
-          {t.footer.cta[0]}<br />
-          <span style={{ fontWeight: 300, letterSpacing: '0.05em', fontFamily: 'var(--font-body)', textTransform: 'uppercase', fontSize: '0.4em', opacity: 0.6 }}>{t.footer.cta[1]}</span>
+          {t.footer.heading1}<br />
+          <span style={{ fontWeight: 300, letterSpacing: '0.05em', fontFamily: 'var(--font-body)', textTransform: 'uppercase', fontSize: '0.4em', opacity: 0.6 }}>{t.footer.heading2}</span>
         </motion.h2>
 
         <p style={{ 
@@ -126,7 +126,7 @@ export default function Footer() {
             pointerEvents: 'none'
           }}
         >
-          © 2026 Ömer Harmankaya
+          {t.system.copyright}
         </motion.p>
       </div>
 
@@ -156,7 +156,7 @@ export default function Footer() {
           willChange: 'transform, opacity'
         }}
       >
-        {t.footer.title}
+        {t.footer.watermark}
       </motion.h1>
       
     </footer>

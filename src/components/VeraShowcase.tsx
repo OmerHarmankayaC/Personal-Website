@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useI18n } from '../i18n/context';
 
 const screens = [
   { id: 'goals', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/goals.png' },
@@ -10,6 +11,7 @@ const screens = [
 ];
 
 export default function VeraShowcase() {
+  const { t } = useI18n();
   const [index, setIndex] = useState(2); // Start on Home Screen
   const frameRef = useRef<HTMLDivElement>(null);
 
@@ -216,7 +218,7 @@ export default function VeraShowcase() {
           opacity: 0.4,
           color: 'var(--text)'
         }}>
-          swipe right and left
+          {t.system.veraSwipe}
         </span>
       </div>
     </div>

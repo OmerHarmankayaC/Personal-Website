@@ -57,10 +57,7 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
     <div 
       style={{ 
         gridColumn: 'span 7', 
-        position: 'sticky', 
-        top: '12vh', // Stationary position in screen
-        alignSelf: 'start', 
-        height: '76vh', 
+        height: '75vh', // Centered naturally by flex parent
         zIndex: 5 // Ensure it stays on top of any chapters
       }}
     >
@@ -110,7 +107,7 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
               fontFamily: 'var(--font-mono)',
             }}
           >
-            ieee.tedu.edu.tr
+            {t.system.ieeeUrl}
           </div>
         </div>
 
@@ -131,6 +128,16 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
                 src={src}
                 alt={`IEEE site frame ${index + 1}`}
                 draggable={false}
+                onLoad={() => {
+                  // Re-measure height as images load to ensure correct parallax mapping
+                  const measure = () => {
+                    if (!viewportRef.current || !stripRef.current) return;
+                    const viewportHeight = viewportRef.current.clientHeight;
+                    const stripHeight = stripRef.current.scrollHeight;
+                    setMaxShift(viewportHeight - stripHeight);
+                  };
+                  measure();
+                }}
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -184,40 +191,39 @@ export default function ProjectDetail() {
     restDelta: 0.001
   });
 
-  useEffect(() => {
-    // Force scroll to top
-    window.scrollTo(0, 0);
-    // Force cursor reset to default
-    setCursorType('default');
-  }, [id, setCursorType]);
-
-  useEffect(() => {
-    // Immediate scroll reset on mount
-    window.scrollTo(0, 0);
-  }, [id]);
-
   useLayoutEffect(() => {
+    // Absolute immediate scroll reset before anything else
+    window.scrollTo(0, 0);
+    
+    // Explicitly reset the progress value to ensure the mockup starts at the top
+    // even if it was partially scrolled on a previous visit or page.
+    internalProgress.set(0);
+    
+    // Force reset cursor
+    setCursorType('default');
+
     if (!isIEEE || !parallaxSectionRef.current) return;
 
-    // We use ScrollTrigger to strictly PIN the section at the top
-    // this creates a "forced watch" until the end of the scroll trigger
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: parallaxSectionRef.current,
-        start: "top 12vh",
-        end: "+=500%", // The "duration" of the lock
+        start: "top top",
+        end: "+=500%", 
         pin: true,
         pinSpacing: true,
         onUpdate: (self) => {
           internalProgress.set(self.progress);
         }
       });
+      
+      // Ensure GSAP knows we are at (0,0) now
+      ScrollTrigger.refresh();
     });
 
     return () => ctx.revert();
-  }, [isIEEE]);
+  }, [id, isIEEE, setCursorType]);
 
-  if (!project) return <div>Project not found</div>;
+  if (!project) return <div>{t.system.errorNotFound}</div>;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -406,25 +412,29 @@ export default function ProjectDetail() {
           <div 
             ref={parallaxSectionRef}
             style={{ 
+              display: 'flex',
+              alignItems: 'center',
+              minHeight: '100vh',
+              position: 'relative',
+              padding: '2rem 0'
+            }}
+          >
+            <div style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(12, 1fr)', 
               gap: '4rem', 
-              position: 'relative',
-              marginTop: '5vh', // Small vertical buffer
-              height: '80vh', 
-            }}
-          >
-            <IEEEMockBrowser scrollYProgress={sectionProgress} />
+              width: '100%',
+              position: 'relative'
+            }}>
+              <IEEEMockBrowser scrollYProgress={sectionProgress} />
 
             {/* Scrolling Right: Project Info Chapters */}
-            <div style={{ 
-              gridColumn: 'span 5', 
-              position: 'sticky', 
-              top: '12vh', 
-              height: '76vh', 
-              display: 'flex', 
-              alignItems: 'center' 
-            }}>
+              <div style={{ 
+                gridColumn: 'span 5', 
+                height: '75vh', 
+                display: 'flex', 
+                alignItems: 'center'
+              }}>
               <div style={{ position: 'relative', width: '100%' }}>
                 {/* Chapter 1: Description */}
                 <motion.div 
@@ -448,7 +458,7 @@ export default function ProjectDetail() {
                     letterSpacing: '0.2em',
                     marginBottom: '1.5rem'
                   }}>
-                    Overview
+                    {t.system.ieeeOverview}
                   </p>
                   <p style={{ 
                     fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', 
@@ -513,6 +523,7 @@ export default function ProjectDetail() {
                     {project.solution}
                   </p>
                 </motion.div>
+              </div>
               </div>
             </div>
           </div>

@@ -7,23 +7,42 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLParagraphElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const { t } = useI18n();
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Reveal content
       gsap.fromTo(
-        textRef.current,
-        { opacity: 0, y: 50 },
+        contentRef.current,
+        { opacity: 0, y: 30 },
         {
           opacity: 1,
           y: 0,
-          duration: 1.5,
-          ease: "power3.out",
+          duration: 1.2,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 70%",
+            start: "top 80%",
             toggleActions: "play none none reverse",
+          }
+        }
+      );
+
+      // Parallax effect for the backdrop text
+      gsap.fromTo(
+        backdropRef.current,
+        { y: -50, scale: 1.1 },
+        {
+          y: 50,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
           }
         }
       );
@@ -32,45 +51,23 @@ export default function About() {
     return () => ctx.revert();
   }, []);
 
-  return (
-    <section 
-      ref={sectionRef}
-      className="container"
-      id="about"
-      style={{ 
-        minHeight: '60vh', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        justifyContent: 'center',
-        paddingTop: '8vh',
-        paddingBottom: '8vh'
-      }}
-    >
-      <h2 style={{ 
-        color: 'var(--text)', 
-        fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', 
-        lineHeight: 1,
-        marginBottom: '2.5rem',
-        fontWeight: 400,
-        textTransform: 'uppercase',
-        fontFamily: 'var(--font-display)',
-        letterSpacing: '0.02em'
-      }}>{t.about.title}</h2>
+  const paragraphs = t.about.text.split('\n\n');
 
-      <p 
-        ref={textRef}
-        style={{ 
-          fontSize: 'clamp(1.2rem, 2.2vw, 2.2rem)', 
-          fontFamily: 'var(--font-body)',
-          lineHeight: '1.4',
-          maxWidth: '900px',
-          color: 'var(--text)',
-          fontWeight: 300,
-          opacity: 0.9
-        }}
-      >
-        {t.about.text}
-      </p>
+  return (
+    <section ref={sectionRef} className="about-section" id="about">
+      <div className="about-backdrop" ref={backdropRef}>
+        {t.system.aboutBackdrop}
+      </div>
+      
+      <div className="container">
+        <div className="about-inner" ref={contentRef}>
+          <div className="about-text">
+            {paragraphs.map((p: string, i: number) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
