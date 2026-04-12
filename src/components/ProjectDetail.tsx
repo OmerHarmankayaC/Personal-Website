@@ -26,6 +26,7 @@ type IEEEMockBrowserProps = {
 };
 
 function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
+  const { t } = useI18n();
   const viewportRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [maxShift, setMaxShift] = useState(0);
