@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,7 +31,7 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const stripRef = useRef<HTMLDivElement>(null);
   const [maxShift, setMaxShift] = useState(0);
-
+  const isMobile = useIsMobile(1024);
 
   useEffect(() => {
     const measure = () => {
@@ -57,9 +58,13 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
   return (
     <div 
       style={{ 
-        gridColumn: 'span 7', 
-        height: '75vh', // Centered naturally by flex parent
-        zIndex: 5 // Ensure it stays on top of any chapters
+        gridColumn: isMobile ? 'span 1' : 'span 7', 
+        height: isMobile ? '40vh' : '75vh',
+        zIndex: 50,
+        position: isMobile ? 'sticky' : 'relative',
+        top: isMobile ? '64px' : 'auto',
+        marginBottom: isMobile ? '3rem' : '0',
+        minWidth: 0, // Prevents grid blowout
       }}
     >
       <div
@@ -106,6 +111,8 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
               fontSize: '0.65rem',
               color: 'var(--text-muted)',
               fontFamily: 'var(--font-mono)',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
             }}
           >
             {t.system.ieeeUrl}
@@ -120,7 +127,7 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
               display: 'flex', 
               flexDirection: 'column', 
               y: stripY,
-              backgroundColor: '#fff' // Ensure no background leakage
+              backgroundColor: '#fff'
             }}
           >
             {ieeeFrames.map((src, index) => (
@@ -130,7 +137,6 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
                 alt={`IEEE site frame ${index + 1}`}
                 draggable={false}
                 onLoad={() => {
-                  // Re-measure height as images load to ensure correct parallax mapping
                   const measure = () => {
                     if (!viewportRef.current || !stripRef.current) return;
                     const viewportHeight = viewportRef.current.clientHeight;
@@ -145,9 +151,7 @@ function IEEEMockBrowser({ scrollYProgress }: IEEEMockBrowserProps) {
                   display: 'block',
                   userSelect: 'none',
                   pointerEvents: 'none',
-                  // Subtract 1px from all images except the first to avoid sub-pixel gaps
                   marginTop: index === 0 ? 0 : '-1px',
-                  // Performance/Quality adjustments
                   WebkitBackfaceVisibility: 'hidden'
                 }}
               />
@@ -169,22 +173,20 @@ export default function ProjectDetail() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const parallaxSectionRef = useRef<HTMLDivElement>(null);
 
-  // Shared motion value for internal progress (driven by ScrollTrigger)
   const internalProgress = useSpring(0, { stiffness: 100, damping: 30 });
-  
-  // Backwards compatibility for the chapters
   const sectionProgress = internalProgress;
   
   const projectIndex = t.projects.items.findIndex((p: any) => p.id === id);
   const project = t.projects.items[projectIndex];
   const nextProject = t.projects.items[(projectIndex + 1) % t.projects.items.length];
 
+  const isMobile = useIsMobile(1024);
+  const isIEEE = id === 'ieee';
+
   const { scrollYProgress } = useScroll({
     target: scrollRef,
     offset: ["start end", "end start"]
   });
-
-  const isIEEE = id === 'ieee';
 
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -193,14 +195,8 @@ export default function ProjectDetail() {
   });
 
   useLayoutEffect(() => {
-    // Absolute immediate scroll reset before anything else
     window.scrollTo(0, 0);
-    
-    // Explicitly reset the progress value to ensure the mockup starts at the top
-    // even if it was partially scrolled on a previous visit or page.
     internalProgress.set(0);
-    
-    // Force reset cursor
     setCursorType('default');
 
     if (!isIEEE || !parallaxSectionRef.current) return;
@@ -216,8 +212,6 @@ export default function ProjectDetail() {
           internalProgress.set(self.progress);
         }
       });
-      
-      // Ensure GSAP knows we are at (0,0) now
       ScrollTrigger.refresh();
     });
 
@@ -230,10 +224,7 @@ export default function ProjectDetail() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
     }
   };
 
@@ -255,7 +246,8 @@ export default function ProjectDetail() {
         backgroundColor: 'var(--bg)', 
         minHeight: '100vh',
         color: 'var(--text)',
-        paddingTop: '8rem',
+        paddingTop: isMobile ? '5rem' : '8rem',
+        overflowX: 'hidden', // Prevent horizontal scroll globally
       }}
     >
       {/* Progress Bar */}
@@ -273,9 +265,9 @@ export default function ProjectDetail() {
         }}
       />
 
-      <div className="container" ref={scrollRef}>
+      <div className="container" ref={scrollRef} style={{ overflowX: 'hidden' }}>
         {/* Navigation */}
-        <motion.div variants={itemVariants} style={{ marginBottom: '4rem' }}>
+        <motion.div variants={itemVariants} style={{ marginBottom: isMobile ? '2rem' : '4rem' }}>
           <Link 
             to="/" 
             onMouseEnter={() => setCursorType('default')}
@@ -308,9 +300,16 @@ export default function ProjectDetail() {
           </Link>
         </motion.div>
 
-        {/* Hero Header: Full Editorial Intro */}
-        <div style={{ minHeight: '90vh', paddingBottom: '10vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-          {/* Section Marker / Role */}
+        {/* Hero Header */}
+        <div style={{ 
+          minHeight: isMobile ? 'auto' : '90vh', 
+          paddingBottom: isMobile ? '4rem' : '10vh', 
+          paddingTop: isMobile ? '2rem' : '0',
+          display: 'flex', 
+          flexDirection: 'column', 
+          justifyContent: isMobile ? 'flex-start' : 'center'
+        }}>
+          {/* Role */}
           <motion.p 
             variants={itemVariants}
             style={{ 
@@ -319,35 +318,38 @@ export default function ProjectDetail() {
               color: 'var(--accent)', 
               textTransform: 'uppercase', 
               letterSpacing: '0.3em',
-              marginBottom: '2rem'
+              marginBottom: '1.5rem'
             }}
           >
             {project.role}
           </motion.p>
 
+          {/* Title */}
           <motion.h1 
             variants={itemVariants}
             style={{ 
-              fontSize: 'clamp(3.5rem, 12vw, 10rem)', 
+              fontSize: isMobile ? 'clamp(2.8rem, 14vw, 5rem)' : 'clamp(3.5rem, 12vw, 10rem)', 
               fontFamily: 'var(--font-display)',
               lineHeight: 0.85,
-              marginBottom: '2.5rem',
+              marginBottom: isMobile ? '1.5rem' : '2.5rem',
               letterSpacing: '0.02em',
-              textTransform: 'uppercase'
+              textTransform: 'uppercase',
+              wordBreak: 'break-word',
             }}
           >
             {project.title}
           </motion.h1>
 
+          {/* Description */}
           <motion.p 
             variants={itemVariants}
             style={{ 
-              fontSize: 'clamp(1.1rem, 3.5vw, 1.8rem)', 
+              fontSize: isMobile ? '1rem' : 'clamp(1.1rem, 3.5vw, 1.8rem)', 
               fontFamily: 'var(--font-heading)',
               fontWeight: 300,
               maxWidth: '800px',
-              lineHeight: 1.3,
-              marginBottom: '5rem',
+              lineHeight: 1.5,
+              marginBottom: isMobile ? '3rem' : '5rem',
               color: 'var(--text-muted)',
               letterSpacing: '-0.02em'
             }}
@@ -355,13 +357,17 @@ export default function ProjectDetail() {
             {project.description}
           </motion.p>
 
-          {/* Combined Metadata & Tech Stack Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '3rem', alignItems: 'flex-start' }}>
+          {/* Metadata Grid */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr', 
+            gap: '2rem', 
+          }}>
+            {/* Meta Items: always 2-col on mobile */}
             <div style={{ 
-              gridColumn: 'span 8',
               display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
-              gap: '2.5rem',
+              gridTemplateColumns: 'repeat(2, 1fr)', 
+              gap: '1.5rem 2rem',
             }}>
               {[
                 { label: t.hero.projectMeta.year, value: project.year },
@@ -370,14 +376,15 @@ export default function ProjectDetail() {
                 { label: t.hero.projectMeta.platform, value: project.platform }
               ].map((meta, i) => (
                 <div key={i}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.5rem', letterSpacing: '0.1em' }}>{meta.label}</p>
-                  <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 600 }}>{meta.value}</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.4rem', letterSpacing: '0.1em' }}>{meta.label}</p>
+                  <p style={{ fontFamily: 'var(--font-heading)', fontSize: '0.9rem', fontWeight: 600 }}>{meta.value}</p>
                 </div>
               ))}
             </div>
 
-            <div style={{ gridColumn: 'span 4', display: 'flex', justifyContent: 'flex-end' }}>
-              {project.link && project.link !== '#' && (
+            {/* Live Product Button */}
+            {project.link && project.link !== '#' && (
+              <div>
                 <motion.a
                   href={project.link}
                   target="_blank"
@@ -388,10 +395,10 @@ export default function ProjectDetail() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '12px',
-                    padding: '16px 32px',
+                    padding: isMobile ? '12px 24px' : '16px 32px',
                     border: '1px solid var(--border)',
                     fontFamily: 'var(--font-mono)',
-                    fontSize: '0.8rem',
+                    fontSize: '0.75rem',
                     letterSpacing: '0.1em',
                     textTransform: 'uppercase',
                     textDecoration: 'none',
@@ -402,9 +409,8 @@ export default function ProjectDetail() {
                   {t.hero.liveProduct}
                   <ExternalLink size={14} />
                 </motion.a>
-              )}
-            </div>
-
+              </div>
+            )}
           </div>
         </div>
 
@@ -417,131 +423,113 @@ export default function ProjectDetail() {
               alignItems: 'center',
               minHeight: '100vh',
               position: 'relative',
-              padding: '2rem 0'
+              padding: isMobile ? '3rem 0' : '2rem 0'
             }}
           >
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(12, 1fr)', 
-              gap: '4rem', 
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(12, 1fr)', 
+              gap: isMobile ? '0' : '4rem', 
               width: '100%',
               position: 'relative'
             }}>
               <IEEEMockBrowser scrollYProgress={sectionProgress} />
 
-            {/* Scrolling Right: Project Info Chapters */}
+              {/* Chapters — absolute positioned in a fixed-height box so only ONE shows at a time */}
               <div style={{ 
-                gridColumn: 'span 5', 
-                height: '75vh', 
+                gridColumn: isMobile ? 'span 1' : 'span 5', 
+                height: isMobile ? '50vh' : '75vh', 
+                position: 'relative',
                 display: 'flex', 
-                alignItems: 'center'
+                alignItems: 'center',
+                paddingTop: isMobile ? '1rem' : '0',
+                minWidth: 0,
               }}>
-              <div style={{ position: 'relative', width: '100%' }}>
-                {/* Chapter 1: Description */}
-                <motion.div 
-                  style={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    transform: 'translateY(-50%)',
-                    width: '100%',
-                    opacity: useTransform(
-                      sectionProgress,
-                      [0, 0.1, 0.3, 0.4],
-                      [0, 1, 1, 0]
-                    )
-                  }}
-                >
-                  <p style={{ 
-                    fontFamily: 'var(--font-mono)', 
-                    fontSize: '0.7rem', 
-                    color: 'var(--accent)', 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '0.2em',
-                    marginBottom: '1.5rem'
-                  }}>
-                    {t.system.ieeeOverview}
-                  </p>
-                  <p style={{ 
-                    fontSize: 'clamp(1.15rem, 3vw, 1.35rem)', 
-                    lineHeight: 1.6,
-                    color: 'var(--text)',
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 300,
-                  }}>
-                    {project.description}
-                  </p>
-                  <p style={{ 
-                    fontSize: '1rem', 
-                    lineHeight: 1.6,
-                    color: 'var(--text-muted)',
-                    fontFamily: 'var(--font-body)',
-                    marginTop: '2rem'
-                  }}>
-                    {project.fullDescription}
-                  </p>
-                </motion.div>
+                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                  {/* Chapter 1: Overview */}
+                  <motion.div 
+                    style={{ 
+                      position: 'absolute', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)',
+                      width: '100%',
+                      opacity: useTransform(
+                        sectionProgress,
+                        [0, 0.15, 0.28, 0.38],
+                        [1, 1, 1, 0]
+                      )
+                    }}
+                  >
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1.5rem' }}>
+                      {t.system.ieeeOverview}
+                    </p>
+                    <p style={{ fontSize: 'clamp(1rem, 3vw, 1.35rem)', lineHeight: 1.6, color: 'var(--text)', fontFamily: 'var(--font-body)', fontWeight: 300 }}>
+                      {project.description}
+                    </p>
+                    <p style={{ fontSize: '1rem', lineHeight: 1.6, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', marginTop: '2rem' }}>
+                      {project.fullDescription}
+                    </p>
+                  </motion.div>
 
-                {/* Chapter 2: The Challenge */}
-                <motion.div 
-                   style={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    transform: 'translateY(-50%)',
-                    width: '100%',
-                    opacity: useTransform(
-                      sectionProgress,
-                      [0.45, 0.55, 0.7, 0.8],
-                      [0, 1, 1, 0]
-                    )
-                  }}
-                >
-                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                    {t.hero.projectMeta.challenge}
-                  </h3>
-                  <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                    {project.challenge}
-                  </p>
-                </motion.div>
+                  {/* Chapter 2: The Challenge */}
+                  <motion.div 
+                    style={{ 
+                      position: 'absolute', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)',
+                      width: '100%',
+                      opacity: useTransform(
+                        sectionProgress,
+                        [0.35, 0.45, 0.62, 0.72],
+                        [0, 1, 1, 0]
+                      )
+                    }}
+                  >
+                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                      {t.hero.projectMeta.challenge}
+                    </h3>
+                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                      {project.challenge}
+                    </p>
+                  </motion.div>
 
-                {/* Chapter 3: The Solution */}
-                <motion.div 
-                   style={{ 
-                    position: 'absolute', 
-                    top: '50%', 
-                    transform: 'translateY(-50%)',
-                    width: '100%',
-                    opacity: useTransform(
-                      sectionProgress,
-                      [0.85, 0.95, 1.0],
-                      [0, 1, 1]
-                    )
-                  }}
-                >
-                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                    {t.hero.projectMeta.solution}
-                  </h3>
-                  <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                    {project.solution}
-                  </p>
-                </motion.div>
-              </div>
+                  {/* Chapter 3: The Solution */}
+                  <motion.div 
+                    style={{ 
+                      position: 'absolute', 
+                      top: '50%', 
+                      transform: 'translateY(-50%)',
+                      width: '100%',
+                      opacity: useTransform(
+                        sectionProgress,
+                        [0.72, 0.82, 1.0],
+                        [0, 1, 1]
+                      )
+                    }}
+                  >
+                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                      {t.hero.projectMeta.solution}
+                    </h3>
+                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                      {project.solution}
+                    </p>
+                  </motion.div>
+                </div>
               </div>
             </div>
           </div>
         ) : (
-          /* STANDARD LAYOUT FOR OTHERS */
+          /* STANDARD LAYOUT FOR NON-IEEE PROJECTS */
           <>
             {project.images && project.images.length > 0 && (
               <motion.div 
                 variants={itemVariants}
-                whileHover={{ scale: 0.995 }}
-                transition={{ duration: 1, ease: 'easeOut' }}
                 style={{ 
                   width: '100%', 
-                  height: '85vh', 
+                  height: isMobile ? '50vw' : '85vh', 
                   overflow: 'hidden',
                   backgroundColor: '#000000',
-                  marginBottom: '10rem'
+                  marginBottom: isMobile ? '4rem' : '10rem'
                 }}
               >
                 <motion.img 
@@ -555,122 +543,125 @@ export default function ProjectDetail() {
               </motion.div>
             )}
 
+            {/* Full Description + Challenge + Solution — all single-column on mobile */}
             <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(12, 1fr)', 
-              gap: '4rem',
-              marginBottom: '15rem'
+              marginBottom: isMobile ? '4rem' : '15rem',
+              maxWidth: '100%',
             }}>
-              <div style={{ gridColumn: 'span 12', maxWidth: '800px' }}>
-                <motion.p 
-                  variants={itemVariants}
-                  style={{ 
-                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)', 
-                    lineHeight: 1.2,
-                    color: 'var(--text)',
-                    marginBottom: '6rem',
-                    fontFamily: 'var(--font-body)',
-                    fontWeight: 300,
-                    letterSpacing: '-0.02em'
-                  }}
-                >
-                  {project.fullDescription}
-                </motion.p>
+              <motion.p 
+                variants={itemVariants}
+                style={{ 
+                  fontSize: isMobile ? '1.1rem' : 'clamp(1.5rem, 4vw, 2.5rem)', 
+                  lineHeight: isMobile ? 1.6 : 1.2,
+                  color: 'var(--text)',
+                  marginBottom: isMobile ? '3rem' : '6rem',
+                  fontFamily: 'var(--font-body)',
+                  fontWeight: 300,
+                  letterSpacing: '-0.02em',
+                  maxWidth: '800px',
+                }}
+              >
+                {project.fullDescription}
+              </motion.p>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }}>
-                  <motion.div variants={itemVariants}>
-                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                      {t.hero.projectMeta.challenge}
-                    </h3>
-                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                      {project.challenge}
-                    </p>
-                  </motion.div>
-                  <motion.div variants={itemVariants}>
-                    <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
-                      {t.hero.projectMeta.solution}
-                    </h3>
-                    <p style={{ fontSize: '1.15rem', lineHeight: 1.6, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
-                      {project.solution}
-                    </p>
-                  </motion.div>
-                </div>
+              {/* Challenge + Solution: stacked on mobile, 2-col on desktop */}
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)', 
+                gap: isMobile ? '3rem' : '4rem',
+                maxWidth: '100%',
+              }}>
+                <motion.div variants={itemVariants}>
+                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                    {t.hero.projectMeta.challenge}
+                  </h3>
+                  <p style={{ fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                    {project.challenge}
+                  </p>
+                </motion.div>
+                <motion.div variants={itemVariants}>
+                  <h3 style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1.5rem', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em' }}>
+                    {t.hero.projectMeta.solution}
+                  </h3>
+                  <p style={{ fontSize: '1.1rem', lineHeight: 1.7, opacity: 0.9, fontFamily: 'var(--font-body)' }}>
+                    {project.solution}
+                  </p>
+                </motion.div>
               </div>
             </div>
           </>
         )}
 
-        {/* Premium Gallery Layout with Parallax */}
+        {/* Premium Gallery Layout */}
         {project.images && project.images.length > 1 && !isIEEE && (
-          <div style={{ marginBottom: '15rem' }}>
+          <div style={{ marginBottom: isMobile ? '6rem' : '15rem' }}>
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: 'repeat(12, 1fr)', 
-              gap: 'clamp(2rem, 8vw, 8rem)',
+              gridTemplateColumns: isMobile ? '1fr' : 'repeat(12, 1fr)', 
+              gap: isMobile ? '2rem' : 'clamp(2rem, 8vw, 8rem)',
               alignItems: 'start'
             }}>
-               {project.images.slice(1).map((img: any, i: number) => {
-                 const isEven = i % 2 === 0;
-                 const isMobileType = img.type === 'mobile';
-                 
-                 // Dynamic Spans for a more organic feel
-                 let gridColumn = 'span 12';
-                 if (isMobileType) {
-                   gridColumn = isEven ? '2 / span 5' : '7 / span 5';
-                 } else if (i % 3 === 0) {
-                   gridColumn = '2 / span 10'; // Inset full width
-                 }
+              {project.images.slice(1).map((img: any, i: number) => {
+                const isEven = i % 2 === 0;
+                const isMobileType = img.type === 'mobile';
+                
+                let gridColumn = 'span 12';
+                if (!isMobile) {
+                  if (isMobileType) {
+                    gridColumn = isEven ? '2 / span 5' : '7 / span 5';
+                  } else if (i % 3 === 0) {
+                    gridColumn = '2 / span 10';
+                  }
+                }
 
-                 return (
-                   <motion.div 
-                     key={i}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      initial={{ opacity: 0, y: 100 }}
-                      viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
-                      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                      style={{ 
-                        gridColumn,
-                        width: '100%', 
-                        height: isMobileType ? 'clamp(500px, 80vh, 1000px)' : 'auto',
-                        overflow: 'hidden',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: '#000000',
-                        marginTop: !isMobileType && i > 0 ? '8rem' : '0',
-                        border: '1px solid rgba(255,255,255,0.05)',
-                        boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)',
-                        position: 'relative'
-                      }}
-                   >
-                     <motion.img 
+                return (
+                  <motion.div 
+                    key={i}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: 100 }}
+                    viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
+                    transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                    style={{ 
+                      gridColumn: isMobile ? 'span 1' : gridColumn,
+                      width: '100%', 
+                      height: isMobile ? 'auto' : (isMobileType ? 'clamp(500px, 80vh, 1000px)' : 'auto'),
+                      overflow: 'hidden',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: '#000000',
+                      marginTop: !isMobileType && i > 0 && !isMobile ? '8rem' : (isMobile ? '0' : '0'),
+                      border: '1px solid rgba(255,255,255,0.05)',
+                      boxShadow: '0 40px 100px -20px rgba(0,0,0,0.5)',
+                      position: 'relative'
+                    }}
+                  >
+                    <motion.img 
                       src={img.src} 
                       alt={`${project.title} detail ${i}`} 
                       initial={{ scale: 1.15 }}
                       whileInView={{ scale: 1 }}
                       transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
                       style={{ 
-                        width: isMobileType ? 'auto' : '100%', 
-                        height: isMobileType ? '100%' : 'auto',
-                        objectFit: isMobileType ? 'contain' : 'cover',
+                        width: isMobileType && !isMobile ? 'auto' : '100%', 
+                        height: isMobileType && !isMobile ? '100%' : 'auto',
+                        objectFit: isMobileType && !isMobile ? 'contain' : 'cover',
                         display: 'block'
                       }} 
-                     />
-                     
-                     {/* Subtle Overlay Glow */}
-                     <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%)', pointerEvents: 'none' }} />
-                   </motion.div>
-                 );
-               })}
+                    />
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%)', pointerEvents: 'none' }} />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         )}
 
-        {/* Next Project / Footer */}
+        {/* Next Project */}
         <motion.div 
           style={{ 
             borderTop: '1px solid var(--border)', 
-            padding: '10rem 0',
+            padding: isMobile ? '5rem 0' : '10rem 0',
             textAlign: 'center'
           }}
           whileInView={{ opacity: 1 }}
@@ -688,21 +679,22 @@ export default function ProjectDetail() {
             <motion.h2 
               style={{ 
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+                fontSize: isMobile ? 'clamp(2rem, 10vw, 4rem)' : 'clamp(2.5rem, 8vw, 6rem)',
                 fontWeight: 400,
                 color: 'var(--text)',
                 lineHeight: 1,
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '2rem',
+                gap: isMobile ? '1rem' : '2rem',
                 textTransform: 'uppercase',
-                letterSpacing: '0.02em'
+                letterSpacing: '0.02em',
+                wordBreak: 'break-word',
               }}
               whileHover={{ x: 20 }}
               transition={{ duration: 0.4 }}
             >
               {nextProject.title}
-              <ArrowRight size={48} strokeWidth={1} />
+              <ArrowRight size={isMobile ? 28 : 48} strokeWidth={1} />
             </motion.h2>
           </Link>
         </motion.div>

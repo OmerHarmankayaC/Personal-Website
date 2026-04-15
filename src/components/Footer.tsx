@@ -49,7 +49,7 @@ const LinkRow = ({ text, href, icon = "↗", id }: { text: string; href: string;
 };
 
 export default function Footer() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const isLongTitle = t.footer.watermark.length > 12;
   const fontSize = isLongTitle ? 'clamp(2.5rem, 9.5vw, 16rem)' : 'clamp(4rem, 15vw, 22rem)';
   const bottomOffset = isLongTitle ? '-3.8vw' : '-5vw';
@@ -109,7 +109,12 @@ export default function Footer() {
           <LinkRow text="omr.harmankaya@gmail.com" href="mailto:omr.harmankaya@gmail.com" />
           <LinkRow text="linkedin.com/in/omer-harmankaya" href="https://www.linkedin.com/in/omer-harmankaya" />
           <LinkRow text="github.com/OmerHarmankayaC" href="https://github.com/OmerHarmankayaC" />
-          <LinkRow text={t.footer.cv} href="#" icon="↓" id="cv-download" />
+          <LinkRow 
+            text={t.footer.cv} 
+            href={lang === 'TR' ? '/CV-CMPE-TR.pdf' : '/CV-CMPE-ENG.pdf'} 
+            icon="↓" 
+            id="cv-download" 
+          />
         </div>
       </div>
 

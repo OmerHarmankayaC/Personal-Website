@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useI18n } from '../i18n/context';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const screens = [
   { id: 'goals', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/goals.png' },
@@ -10,10 +11,13 @@ const screens = [
   { id: 'insights', src: '/pictures/Vera-Finance/Vera-In_App-screenshots/insights.png' },
 ];
 
-export default function VeraShowcase() {
+export default function VeraShowcase({ controlledIndex }: { controlledIndex?: number } = {}) {
   const { t } = useI18n();
-  const [index, setIndex] = useState(2); // Start on Home Screen
+  const [index, setIndex] = useState(controlledIndex ?? 2); // Start on Home Screen
   const frameRef = useRef<HTMLDivElement>(null);
+
+  // If controlled externally (from scroll), use that index
+  const activeIndex = controlledIndex !== undefined ? controlledIndex : index;
 
   const handleNext = () => setIndex((prev) => (prev + 1) % screens.length);
   const handlePrev = () => setIndex((prev) => (prev - 1 + screens.length) % screens.length);
@@ -21,15 +25,17 @@ export default function VeraShowcase() {
   // Throttled wheel handler for trackpad/mouse horizontal swiping
   const lastWheelTime = useRef(0);
   const handleWheel = (e: React.WheelEvent) => {
+    if (controlledIndex !== undefined) return; // Don't respond to wheel when scroll-controlled
     const now = Date.now();
-    if (now - lastWheelTime.current < 500) return; // Prevent multiple triggers from one swipe
-
+    if (now - lastWheelTime.current < 500) return;
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 20) {
       if (e.deltaX > 0) handleNext();
       else handlePrev();
       lastWheelTime.current = now;
     }
   };
+
+  const isMobile = useIsMobile(768);
 
   return (
     <div 
@@ -47,35 +53,46 @@ export default function VeraShowcase() {
         cursor: 'default'
       }}
     >
-      {/* PHONE MOCKUP FRAME */}
+      {/* PHONE MOCKUP FRAME (iPhone 17 Pro Style) */}
       <div 
         ref={frameRef}
         onWheel={handleWheel}
         style={{ 
           position: 'relative', 
-          width: 'min(260px, 70vw)', 
-          aspectRatio: '280 / 580',
-          backgroundColor: '#111', 
-          borderRadius: 'clamp(30px, 10vw, 40px)', 
-          border: 'min(8px, 2vw) solid #222',
-          boxShadow: '0 50px 100px -20px rgba(0,0,0,0.5)',
+          /* On mobile: constrain by height so the phone fits in the section */
+          width: isMobile ? 'auto' : '280px', 
+          height: isMobile ? '65vh' : 'auto',
+          maxHeight: isMobile ? '65vh' : 'none',
+          aspectRatio: '9 / 19.5',
+          backgroundColor: '#050505', 
+          borderRadius: isMobile ? '36px' : '48px', 
+          border: isMobile ? '4px solid #2d2d2d' : '6px solid #2d2d2d',
+          boxShadow: `
+            0 0 0 1px rgba(255,255,255,0.05),
+            0 30px 60px -12px rgba(0,0,0,0.8),
+            0 18px 36px -18px rgba(0,0,0,0.9),
+            inset 0 0 2px 1px rgba(255,255,255,0.1)
+          `,
           overflow: 'hidden',
           zIndex: 10,
           marginBottom: '24px',
-          pointerEvents: 'auto'
+          pointerEvents: 'auto',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)'
         }}
       >
-        {/* Notch/Dynamic Island */}
+        {/* Refined Dynamic Island (iPhone 17 Pro style - even slimmer) */}
         <div style={{ 
           position: 'absolute', 
-          top: '12px', 
+          top: '14px', 
           left: '50%', 
           transform: 'translateX(-50%)', 
-          width: '80px', 
-          height: '24px', 
+          width: '65px', 
+          height: '18px', 
           backgroundColor: '#000', 
           borderRadius: '12px',
-          zIndex: 50
+          zIndex: 50,
+          border: '1px solid rgba(255,255,255,0.03)',
+          boxShadow: 'inset 0 0 4px rgba(255,255,255,0.1)'
         }} />
 
         {/* SCREEN CONTENT: Continuous Strip */}
@@ -89,7 +106,7 @@ export default function VeraShowcase() {
               touchAction: 'pan-y',
               userSelect: 'none'
             }}
-            animate={{ x: `-${index * (100 / screens.length)}%` }}
+            animate={{ x: `-${activeIndex * (100 / screens.length)}%` }}
             transition={{ 
               type: 'spring', 
               stiffness: 150, 
@@ -104,10 +121,9 @@ export default function VeraShowcase() {
             dragElastic={0.8} // Very elastic for immediate visual feedback
             dragMomentum={false}
             onDragEnd={(_, info) => {
+              if (controlledIndex !== undefined) return; // Ignore drag when scroll-controlled
               const delta = info.offset.x;
               const velocity = info.velocity.x;
-              
-              // Extreme high sensitivity for effortless swiping
               if (delta > 15 || velocity > 300) handlePrev();
               else if (delta < -15 || velocity < -300) handleNext();
             }}
@@ -141,6 +157,15 @@ export default function VeraShowcase() {
               </div>
             ))}
           </motion.div>
+
+          {/* Premium Screen Reflection Overlay */}
+          <div style={{ 
+            position: 'absolute', 
+            inset: 0, 
+            background: 'linear-gradient(110deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 25%, rgba(255,255,255,0) 75%, rgba(255,255,255,0.05) 100%)', 
+            zIndex: 40,
+            pointerEvents: 'none'
+          }} />
         </div>
       </div>
 
@@ -185,10 +210,10 @@ export default function VeraShowcase() {
                 key={i} 
                 onClick={(e) => { e.stopPropagation(); setIndex(i); }}
                 style={{ 
-                  width: i === index ? '16px' : '4px', 
+                  width: i === activeIndex ? '16px' : '4px', 
                   height: '4px', 
                   borderRadius: '2px', 
-                  backgroundColor: i === index ? 'var(--text)' : 'rgba(255,255,255,0.15)',
+                  backgroundColor: i === activeIndex ? 'var(--text)' : 'rgba(255,255,255,0.15)',
                   transition: 'all 0.4s ease',
                   cursor: 'pointer'
                 }} 

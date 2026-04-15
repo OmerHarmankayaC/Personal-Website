@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useI18n } from '../i18n/context';
 import { useCursor } from '../context/CursorContext';
 import VeraShowcase from './VeraShowcase';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function Projects() {
   const { t } = useI18n();
@@ -73,7 +74,7 @@ export default function Projects() {
           const isVera = item.id === 'vera';
           const isIEEE = item.id === 'ieee';
           const isHospital = item.id === 'hospital-db';
-          const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+          const isMobile = useIsMobile(768);
           
           let heroImage: any = null;
           if (item.images && item.images.length > 0) {
@@ -96,14 +97,16 @@ export default function Projects() {
                 position: 'relative',
                 gridColumn: isMobile ? 'span 12' : (item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4')),
                 backgroundColor: '#000000',
-                border: '1px solid rgba(255,255,255,0.15)',
+                border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.15)',
+                borderBottom: isMobile ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.15)',
                 display: 'flex',
-                flexDirection: isVera && isMobile ? 'column' : 'row',
+                flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: isVera ? 'center' : 'space-between',
                 minHeight: isMobile ? 'auto' : (item.size === 'large' ? '90vh' : '85vh'),
                 color: 'var(--text)',
                 transition: 'background-color 0.3s ease',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                paddingBottom: isMobile ? '4rem' : '0'
               }}
               onMouseEnter={() => !isMobile && setCursorType('project')}
               onMouseLeave={() => !isMobile && setCursorType('default')}
@@ -120,6 +123,19 @@ export default function Projects() {
                 onMouseEnter={() => !isMobile && setCursorType('project')}
               />
 
+              {/* Photo Area on Mobile (Top) - Standardized for all projects */}
+              {isMobile && !isVera && (isIEEE || isHospital) && (
+                <div style={{ width: '100%', height: isIEEE ? '300px' : '250px', marginBottom: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', overflow: 'hidden' }}>
+                    {isIEEE && heroImage && (
+                        <motion.img 
+                            src={heroImage.src} 
+                            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'bottom' }} 
+                        />
+                    )}
+                    {isHospital && <HospitalDBVisual />}
+                </div>
+              )}
+
               {/* VERA FINANCE: SPECIAL LAYOUT */}
               {isVera ? (
                 <div style={{ 
@@ -133,7 +149,7 @@ export default function Projects() {
                 }}>
                   {/* Photo/Showcase Area on Mobile (Top) */}
                   {isMobile && (
-                    <div style={{ width: '100%', height: '400px', marginBottom: '2rem', display: 'flex', justifyContent: 'center' }} onMouseEnter={() => setCursorType('default')}>
+                    <div style={{ width: '100%', height: '60vh', marginBottom: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onMouseEnter={() => setCursorType('default')}>
                        <VeraShowcase />
                     </div>
                   )}
@@ -175,7 +191,7 @@ export default function Projects() {
                   </div>
                 </div>
               ) : (
-                <div style={{ padding: 'clamp(1.5rem, 5vw, 4rem)', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ padding: isMobile ? '0 clamp(1.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem)' : 'clamp(1.5rem, 5vw, 4rem)', height: '100%', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div style={{ position: 'relative', zIndex: 20 }}>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.9rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', fontWeight: 600, letterSpacing: '0.15em' }}>{item.role}</p>
                     <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 6vw, 3.8rem)', fontWeight: 400, textTransform: 'uppercase', letterSpacing: '0.02em', lineHeight: 1 }}>{item.title}</h3>
@@ -245,7 +261,7 @@ export default function Projects() {
                 </div>
               ) : null}
 
-              {isIEEE && heroImage && (
+              {isIEEE && !isMobile && heroImage && (
                 <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '42%', overflow: 'hidden', zIndex: 5, padding: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'flex-end' }}>
                   <motion.img 
                     src={heroImage.src} 
@@ -256,7 +272,7 @@ export default function Projects() {
                 </div>
               )}
 
-              {isHospital && (
+              {isHospital && !isMobile && (
                 <div style={{ position: 'absolute', bottom: 0, right: 0, width: '90%', height: '60%', overflow: 'hidden', zIndex: 5, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: '1rem' }}>
                   <HospitalDBVisual />
                 </div>

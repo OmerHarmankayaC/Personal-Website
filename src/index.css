@@ -105,7 +105,8 @@ h3, h4, h5, h6 {
 @media (max-width: 768px) {
   h1, h2 {
     letter-spacing: 0.01em;
-    line-height: 1.05;
+    line-height: 1.0;
+    font-size: clamp(2.5rem, 12vw, 4.5rem) !important;
   }
   h3, h4 {
     letter-spacing: -0.01em;
@@ -170,6 +171,13 @@ button {
   background: var(--text-muted);
 }
 
+/* Sticky Mobile Utility */
+.sticky-mobile {
+  position: sticky;
+  top: 80px;
+  z-index: 100;
+}
+
 /* About Section Redesign - Brutalist Impact */
 .about-section {
   padding: 25vh 0;
@@ -227,13 +235,14 @@ button {
 
 @media (max-width: 768px) {
   .about-section {
-    padding: 8vh 0;
+    padding: 12vh 0; /* More breathing room */
   }
   .about-backdrop {
     font-size: 35vw;
   }
   .about-text {
     text-align: left; /* Better readability on small mobile */
+    font-size: 1.1rem;
   }
 }
 
@@ -241,4 +250,10 @@ button {
 #projects {
   padding-top: 15vh !important;
   margin-top: 5vh;
+}
+
+@media (max-width: 768px) {
+  #projects {
+    padding-top: 10vh !important;
+  }
 }
