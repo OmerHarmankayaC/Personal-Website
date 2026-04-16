@@ -152,17 +152,25 @@ export default function Hero() {
         const finished = word1Land + (word2Letters.length * 0.05) + 0.8;
         const settleAt = finished + 0.35;
 
-        // Phase 2: slide to left edge, scale to 1. Animate without width change to prevent backtracking wobble!
+        // Phase 2: slide to left edge, scale to 1. Using clean xPercent and left interpolation.
         tl.to(nameContainerRef.current, {
-          left: '12vw', xPercent: 0, scale: 1.0, duration: 1.3, ease: 'power3.inOut'
+          left: '12vw',
+          xPercent: 0,
+          scale: 1.0,
+          duration: 1.4,
+          ease: 'power3.inOut'
         }, settleAt);
 
-        // Reset width safely after movement is completely finished
-        tl.set(nameContainerRef.current, { width: 'auto' }, settleAt + 1.3);
+        // We defer width auto evaluation to prevent it from ruining xPercent translation math
+        tl.call(() => {
+          if (nameContainerRef.current) {
+            gsap.set(nameContainerRef.current, { width: 'auto' });
+          }
+        }, undefined, settleAt + 1.4);
 
         // word1 stays at absolute left:0 top:0, word2 goes below
         const word1Height = word1Ref.current?.offsetHeight || 80;
-        tl.to(word2WrapperRef.current, { x: 0, y: word1Height + 12, duration: 1.3, ease: 'power3.inOut' }, settleAt);
+        tl.to(word2WrapperRef.current, { x: 0, y: word1Height + 12, duration: 1.4, ease: 'power3.inOut' }, settleAt);
 
         tl.fromTo(subtitle1Ref.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8 }, settleAt + 0.4);
         tl.fromTo(subtitle2Ref.current, { opacity: 0, y: 10 }, { opacity: 0.7, y: 0, duration: 0.8 }, settleAt + 0.7);
