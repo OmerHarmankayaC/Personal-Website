@@ -39,9 +39,9 @@ html.lenis, html.lenis body {
   box-sizing: border-box;
 }
 
-/* Custom Cursor: Disable for Touch Devices */
+/* Custom Cursor: Disable globally on Non-Touch Devices */
 @media (pointer: fine) {
-  * {
+  html, body, *, *::before, *::after, a, button, input, [role="button"], [style*="cursor"] {
     cursor: none !important;
   }
 }

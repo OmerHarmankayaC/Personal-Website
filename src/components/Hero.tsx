@@ -336,25 +336,32 @@ export default function Hero() {
       )}
 
       {/* Scroll indicator */}
-      <motion.div
+      <div
         ref={scrollIndicatorRef}
         style={{
-          position: 'absolute', bottom: isMobile ? '10vh' : 40, left: '50vw', x: '-50%',
-          fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700,
-          letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--text)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
-          opacity: scrollIndicatorOpacity, y: scrollIndicatorY
+          position: 'absolute', bottom: isMobile ? '10vh' : 40, left: '50vw', transform: 'translateX(-50%)',
+          opacity: hasAnimated ? 1 : 0,
+          pointerEvents: 'none'
         }}
       >
-        <div style={{ height: 40, width: 1, backgroundColor: 'rgba(255,255,255,0.8)' }} />
         <motion.div
-           animate={{ y: [0, 4, 0] }}
-           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-           style={{ marginRight: '-0.3em' }}
+          style={{
+            fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700,
+            letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--text)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
+            opacity: scrollIndicatorOpacity, y: scrollIndicatorY
+          }}
         >
-          {t.hero.scroll}
+          <div style={{ height: 40, width: 1, backgroundColor: 'rgba(255,255,255,1)' }} />
+          <motion.div
+             animate={{ y: [0, 4, 0] }}
+             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+             style={{ marginRight: '-0.3em' }}
+          >
+            {t.hero.scroll}
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
