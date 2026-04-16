@@ -3,7 +3,7 @@ export type Language = 'EN' | 'TR';
 export const translations = {
   EN: {
     hero: {
-      tags: ["SYS.01 // CE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
+      tags: ["SYS.01 // CMPE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Engineering Systems. Building Realities.",
       subtitle2: "Computer & Industrial Engineering @ TED University",
@@ -119,7 +119,7 @@ export const translations = {
   },
   TR: {
     hero: {
-      tags: ["SYS.01 // CE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
+      tags: ["SYS.01 // CMPE-IE", "VER_1.0.0", "39.92N, 32.85E // ANKARA"],
       title: ["ÖMER", "HARMANKAYA"],
       subtitle1: "Sistemleri Tasarlamak. Gerçeklikleri İnşa Etmek.",
       subtitle2: "Bilgisayar & Endüstri Mühendisliği @ TED Üniversitesi",

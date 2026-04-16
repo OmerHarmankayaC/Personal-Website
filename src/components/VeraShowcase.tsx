@@ -60,13 +60,13 @@ export default function VeraShowcase({ controlledIndex }: { controlledIndex?: nu
         style={{ 
           position: 'relative', 
           /* On mobile: constrain by height so the phone fits in the section */
-          width: isMobile ? 'auto' : '280px', 
+          width: isMobile ? 'auto' : 'min(260px, 70vw)', 
           height: isMobile ? '65vh' : 'auto',
           maxHeight: isMobile ? '65vh' : 'none',
-          aspectRatio: '9 / 19.5',
-          backgroundColor: '#050505', 
-          borderRadius: isMobile ? '36px' : '48px', 
-          border: isMobile ? '4px solid #2d2d2d' : '6px solid #2d2d2d',
+          aspectRatio: isMobile ? '9 / 19.5' : '280 / 580',
+          backgroundColor: isMobile ? '#050505' : '#111', 
+          borderRadius: isMobile ? '36px' : 'clamp(30px, 10vw, 40px)', 
+          border: isMobile ? '4px solid #2d2d2d' : 'min(8px, 2vw) solid #222',
           boxShadow: `
             0 0 0 1px rgba(255,255,255,0.05),
             0 30px 60px -12px rgba(0,0,0,0.8),
@@ -118,7 +118,7 @@ export default function VeraShowcase({ controlledIndex }: { controlledIndex?: nu
             drag="x"
             dragDirectionLock={true}
             dragConstraints={{ left: 0, right: 0 }} // Elastic snap centered on current slide
-            dragElastic={0.8} // Very elastic for immediate visual feedback
+            dragElastic={1} // Perfect 1:1 visual feedback, feels like a real screen
             dragMomentum={false}
             onDragEnd={(_, info) => {
               if (controlledIndex !== undefined) return; // Ignore drag when scroll-controlled

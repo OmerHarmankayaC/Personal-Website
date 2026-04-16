@@ -8,6 +8,7 @@ import { useIsMobile } from '../hooks/useIsMobile';
 export default function Projects() {
   const { t } = useI18n();
   const { setCursorType } = useCursor();
+  const isMobile = useIsMobile(768);
 
   // Hospital DB ERD Visual (SVG)
   const HospitalDBVisual = () => (
@@ -74,7 +75,6 @@ export default function Projects() {
           const isVera = item.id === 'vera';
           const isIEEE = item.id === 'ieee';
           const isHospital = item.id === 'hospital-db';
-          const isMobile = useIsMobile(768);
           
           let heroImage: any = null;
           if (item.images && item.images.length > 0) {
@@ -149,7 +149,7 @@ export default function Projects() {
                 }}>
                   {/* Photo/Showcase Area on Mobile (Top) */}
                   {isMobile && (
-                    <div style={{ width: '100%', height: '60vh', marginBottom: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onMouseEnter={() => setCursorType('default')}>
+                    <div style={{ position: 'relative', zIndex: 30, width: '100%', height: '60vh', marginBottom: '2.5rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }} onMouseEnter={() => setCursorType('default')}>
                        <VeraShowcase />
                     </div>
                   )}

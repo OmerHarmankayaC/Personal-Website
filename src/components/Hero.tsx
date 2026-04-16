@@ -16,6 +16,7 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const nameContainerRef = useRef<HTMLDivElement>(null);
   const word1Ref = useRef<HTMLHeadingElement>(null);
+  const word2Ref = useRef<HTMLHeadingElement>(null);
   const word2WrapperRef = useRef<HTMLDivElement>(null);
   const subtitle1Ref = useRef<HTMLParagraphElement>(null);
   const subtitle2Ref = useRef<HTMLParagraphElement>(null);
@@ -49,14 +50,30 @@ export default function Hero() {
     ctx = gsap.context(() => {
       // ── SKIP: Already played this session ────────────────────────────────
       if (hasAnimated) {
-        gsap.set(nameContainerRef.current, { opacity: 1 });
-        gsap.set(word1Ref.current, { opacity: 1, y: 0 });
-        gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
-        gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
-        gsap.set(word2WrapperRef.current, { opacity: 1, y: 0 });
-        gsap.set([subtitle1Ref.current, subtitle2Ref.current, '.nav-telemetry', scrollIndicatorRef.current], { opacity: 1 });
-        gsap.set(subtitle2Ref.current, { opacity: 0.7 });
-        gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+        if (isMobileLocal) {
+            gsap.set(nameContainerRef.current, { opacity: 1 });
+            gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
+            gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
+            gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
+            gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
+            gsap.set('.nav-telemetry', { opacity: 1 });
+            gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+        } else {
+            gsap.set(nameContainerRef.current, { left: '12vw', xPercent: 0, opacity: 1, scale: 1, width: 'auto' });
+            gsap.set(word1Ref.current, { opacity: 1, y: 0, x: 0 });
+            gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
+            gsap.set(word2Ref.current, { opacity: 1, y: 0, x: 0 });
+            gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
+            gsap.set(word2WrapperRef.current, { 
+                x: 0, 
+                y: (word1Ref.current?.offsetHeight || 80) + 12,
+                opacity: 1 
+            });
+            gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
+            gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
+            gsap.set('.nav-telemetry', { opacity: 1 });
+            gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+        }
         unlockScroll();
         return;
       }
@@ -103,11 +120,8 @@ export default function Hero() {
         const word1Letters = gsap.utils.toArray<HTMLElement>('.word1-letter');
         const word2Letters = gsap.utils.toArray<HTMLElement>('.word2-letter');
 
-        const w1El = nameContainerRef.current?.querySelector<HTMLElement>('h1:first-child');
-        const w2El = nameContainerRef.current?.querySelector<HTMLElement>('div h1');
-
-        const w1Width = w1El?.offsetWidth || 0;
-        const w2Width = w2El?.offsetWidth || 0;
+        const w1Width = word1Ref.current?.offsetWidth || 0;
+        const w2Width = word2Ref.current?.offsetWidth || 0;
         const assemblyGap = 120;
         const totalW = w1Width + assemblyGap + w2Width;
         const maxAllowedW = window.innerWidth * 0.92;
@@ -129,15 +143,16 @@ export default function Hero() {
         const word1Land = 0.1 + (word1Letters.length * 0.04) + 0.1;
         tl.to(word2Letters, { y: 0, opacity: 1, rotate: 0, duration: 1.2, ease: 'power4.out', stagger: 0.04 }, word1Land);
 
-        const settleAt = word1Land + (word2Letters.length * 0.05) + 1.15;
+        const finished = word1Land + (word2Letters.length * 0.05) + 0.8;
+        const settleAt = finished + 0.35;
 
         // Phase 2: slide to left edge, scale to 1, reset width
         tl.to(nameContainerRef.current, {
-          left: '12vw', xPercent: 0, scale: 1, width: 'auto', duration: 1.3, ease: 'power3.inOut'
+          left: '12vw', xPercent: 0, scale: 1.0, width: 'auto', duration: 1.3, ease: 'power3.inOut'
         }, settleAt);
 
         // word1 stays at absolute left:0 top:0, word2 goes below
-        const word1Height = w1El?.offsetHeight || 80;
+        const word1Height = word1Ref.current?.offsetHeight || 80;
         tl.to(word2WrapperRef.current, { x: 0, y: word1Height + 12, duration: 1.3, ease: 'power3.inOut' }, settleAt);
 
         tl.fromTo(subtitle1Ref.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8 }, settleAt + 0.4);
@@ -224,6 +239,7 @@ export default function Hero() {
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '0.4rem' }}
           >
             <h1
+              ref={word2Ref}
               style={{
                 fontSize: 'clamp(3.2rem, 16vw, 8.5rem)', fontWeight: 400, lineHeight: 0.9,
                 letterSpacing: '0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-display)',
@@ -238,6 +254,21 @@ export default function Hero() {
             <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.8rem', maxWidth: '88vw', alignItems: 'center' }}>
               <p ref={subtitle1Ref} style={{ opacity: hasAnimated ? 1 : 0, fontSize: 'clamp(0.85rem, 4vw, 1.4rem)', letterSpacing: '0.04em', color: 'var(--text-muted)', fontFamily: 'var(--font-heading)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>{t.hero.subtitle1}</p>
               <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.75rem, 3.5vw, 1.1rem)', fontFamily: 'var(--font-heading)', fontWeight: 400, opacity: hasAnimated ? 0.7 : 0, lineHeight: 1.4, textAlign: 'center' }}>{t.hero.subtitle2}</p>
+              
+              {/* Mobile Coordinates */}
+              <p className="nav-telemetry" style={{ 
+                opacity: hasAnimated ? 1 : 0, 
+                marginTop: '3vh',
+                fontSize: '0.65rem', 
+                fontFamily: 'var(--font-mono)', 
+                color: 'var(--text-muted)', 
+                letterSpacing: '0.15em', 
+                textTransform: 'uppercase',
+                borderTop: '1px solid rgba(255,255,255,0.1)',
+                paddingTop: '12px'
+              }}>
+                 {t.hero.tags[2]}
+              </p>
             </div>
           </div>
         </div>
@@ -272,6 +303,7 @@ export default function Hero() {
             style={{ position: 'absolute', left: 0, top: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}
           >
             <h1
+              ref={word2Ref}
               style={{
                 fontSize: 'clamp(3rem, 10vw, 8.5rem)', fontWeight: 400, lineHeight: 0.9,
                 letterSpacing: '0.02em', textTransform: 'uppercase', fontFamily: 'var(--font-display)',

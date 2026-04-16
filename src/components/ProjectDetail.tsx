@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useIsMobile } from '../hooks/useIsMobile';
+import VeraShowcase from './VeraShowcase';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -595,13 +596,18 @@ export default function ProjectDetail() {
         {/* Premium Gallery Layout */}
         {project.images && project.images.length > 1 && !isIEEE && (
           <div style={{ marginBottom: isMobile ? '6rem' : '15rem' }}>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: isMobile ? '1fr' : 'repeat(12, 1fr)', 
-              gap: isMobile ? '2rem' : 'clamp(2rem, 8vw, 8rem)',
-              alignItems: 'start'
-            }}>
-              {project.images.slice(1).map((img: any, i: number) => {
+            {isMobile && project.id === 'vera' ? (
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginBottom: '2rem' }}>
+                <VeraShowcase />
+              </div>
+            ) : (
+              <div style={{ 
+                display: 'grid', 
+                gridTemplateColumns: isMobile ? '1fr' : 'repeat(12, 1fr)', 
+                gap: isMobile ? '2rem' : 'clamp(2rem, 8vw, 8rem)',
+                alignItems: 'start'
+              }}>
+                {project.images.slice(1).map((img: any, i: number) => {
                 const isEven = i % 2 === 0;
                 const isMobileType = img.type === 'mobile';
                 
@@ -653,7 +659,8 @@ export default function ProjectDetail() {
                   </motion.div>
                 );
               })}
-            </div>
+              </div>
+            )}
           </div>
         )}
 
