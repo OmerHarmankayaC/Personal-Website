@@ -144,8 +144,7 @@ export default function Projects() {
                   height: isMobile ? 'auto' : '100%', 
                   display: 'flex', 
                   flexDirection: isMobile ? 'column' : 'row',
-                  padding: 'clamp(1.5rem, 5vw, 4rem)', 
-                  zIndex: 20 
+                  padding: 'clamp(1.5rem, 5vw, 4rem)'
                 }}>
                   {/* Photo/Showcase Area on Mobile (Top) */}
                   {isMobile && (
@@ -158,7 +157,7 @@ export default function Projects() {
                   <div 
                     style={{ 
                       position: 'relative', 
-                      zIndex: 30, 
+                      zIndex: 20, 
                       width: isMobile ? '100%' : '45%',
                       textAlign: 'left',
                       pointerEvents: 'none' 
