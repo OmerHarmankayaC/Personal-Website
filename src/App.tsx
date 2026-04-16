@@ -11,6 +11,8 @@ import CustomCursor from './components/CustomCursor';
 import { I18nProvider } from './i18n/context';
 import { CursorProvider } from './context/CursorContext';
 
+import { useI18n } from './i18n/context';
+
 // Scroll Management Component
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -22,6 +24,41 @@ function ScrollToTop() {
     }
   }, [pathname]);
   return null;
+}
+
+function GlobalLanguageSwitcher() {
+  const { lang, setLang } = useI18n();
+  const location = useLocation();
+  
+  if (location.pathname === '/') return null;
+  
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '32px',
+      left: 'clamp(16px, 5vw, 32px)',
+      zIndex: 100,
+      display: 'flex',
+      gap: '8px',
+      fontSize: '0.75rem',
+      fontFamily: 'var(--font-mono)',
+      letterSpacing: '0.1em'
+    }}>
+      <button 
+        onClick={() => setLang('TR')} 
+        style={{ color: lang === 'TR' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease', padding: 0 }}
+      >
+        TR
+      </button>
+      <span style={{ color: 'var(--border)' }}>/</span>
+      <button 
+        onClick={() => setLang('EN')} 
+        style={{ color: lang === 'EN' ? 'var(--text)' : 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.3s ease', padding: 0 }}
+      >
+        EN
+      </button>
+    </div>
+  );
 }
 
 function MainLayout() {
@@ -81,6 +118,7 @@ function App() {
         <Router>
           <ScrollToTop />
           <CustomCursor />
+          <GlobalLanguageSwitcher />
           <AnimatedRoutes />
         </Router>
       </CursorProvider>

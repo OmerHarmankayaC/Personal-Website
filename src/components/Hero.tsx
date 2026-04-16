@@ -51,12 +51,12 @@ export default function Hero() {
       // ── SKIP: Already played this session ────────────────────────────────
       if (hasAnimated) {
         if (isMobileLocal) {
-            gsap.set(nameContainerRef.current, { opacity: 1 });
+            gsap.set(nameContainerRef.current, { opacity: 1, y: 0 });
             gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
             gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
             gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
             gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
-            gsap.set('.nav-telemetry', { opacity: 1 });
+            gsap.set('.nav-telemetry', { opacity: 1, y: 0 });
             gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
         } else {
             gsap.set(nameContainerRef.current, { left: '12vw', xPercent: 0, opacity: 1, scale: 1, width: 'auto' });
@@ -95,25 +95,31 @@ export default function Hero() {
       });
 
       if (isMobileLocal) {
-        // ── MOBILE: Simple vertical entrance — no horizontal assembly ────────
-        // Words stay in relative flow (flex-column). Just slide in from above.
-        gsap.set(nameContainerRef.current, { opacity: 1 });
-        gsap.set('.word1-letter', { opacity: 0, y: -60 });
-        gsap.set('.word2-letter', { opacity: 0, y: -60 });
-        gsap.set(subtitle1Ref.current, { opacity: 0, y: 10 });
-        gsap.set(subtitle2Ref.current, { opacity: 0, y: 10 });
-        gsap.set('.nav-telemetry', { opacity: 0 });
+        // ── MOBILE: Slow settling entrance ────────
+        // Start the whole container higher up and lower it smoothly.
+        gsap.set(nameContainerRef.current, { opacity: 1, y: -60 });
+        gsap.set('.word1-letter', { opacity: 0, y: -40 });
+        gsap.set('.word2-letter', { opacity: 0, y: -40 });
+        gsap.set(subtitle1Ref.current, { opacity: 0, y: 15 });
+        gsap.set(subtitle2Ref.current, { opacity: 0, y: 15 });
+        gsap.set('.nav-telemetry', { opacity: 0, y: 10 });
         gsap.set(scrollIndicatorRef.current, { opacity: 0 });
 
         const word1Letters = gsap.utils.toArray<HTMLElement>('.word1-letter');
         const word2Letters = gsap.utils.toArray<HTMLElement>('.word2-letter');
 
-        tl.to(word1Letters, { y: 0, opacity: 1, duration: 1.0, ease: 'power4.out', stagger: 0.03 }, 0.3);
-        tl.to(word2Letters, { y: 0, opacity: 1, duration: 1.0, ease: 'power4.out', stagger: 0.03 }, 0.55);
-        tl.to(subtitle1Ref.current, { opacity: 1, y: 0, duration: 0.8 }, 1.5);
-        tl.to(subtitle2Ref.current, { opacity: 0.7, y: 0, duration: 0.8 }, 1.75);
-        tl.to('.nav-telemetry', { opacity: 1, duration: 0.6, stagger: 0.1 }, 1.9);
-        tl.to(scrollIndicatorRef.current, { opacity: 0.5, duration: 1 }, 2.4);
+        // Letters quickly assemble
+        tl.to(word1Letters, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.03 }, 0.1);
+        tl.to(word2Letters, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.03 }, 0.35);
+
+        // Entire block smoothly drifts down to final position
+        tl.to(nameContainerRef.current, { y: 0, duration: 2.2, ease: 'power2.out' }, 0.1);
+
+        // Subtext fades in gracefully as block moves down
+        tl.to(subtitle1Ref.current, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 1.1);
+        tl.to(subtitle2Ref.current, { opacity: 0.7, y: 0, duration: 1.0, ease: 'power3.out' }, 1.3);
+        tl.to('.nav-telemetry', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: 0.15 }, 1.5);
+        tl.to(scrollIndicatorRef.current, { opacity: 0.5, duration: 1.5 }, 2.2);
 
       } else {
         // ── DESKTOP: Horizontal assembly → vertical settle ───────────────────
@@ -183,6 +189,9 @@ export default function Hero() {
           <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 16, right: 16, width: 24, height: 24, borderTop: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
           <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 16, left: 16, width: 24, height: 24, borderBottom: '2px solid var(--text)', borderLeft: '2px solid var(--text)', pointerEvents: 'none' }} />
           <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', bottom: 16, right: 16, width: 24, height: 24, borderBottom: '2px solid var(--text)', borderRight: '2px solid var(--text)', pointerEvents: 'none' }} />
+
+          <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, left: 'clamp(32px, 5vw, 60px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em' }}>{t.hero.tags[0]}</div>
+          <div className="nav-telemetry" style={{ opacity: 0, position: 'absolute', top: 32, right: 'clamp(32px, 5vw, 60px)', fontSize: '0.75rem', color: 'var(--text)', fontFamily: 'var(--font-mono)', letterSpacing: '0.15em' }}>{t.hero.tags[1]}</div>
         </>
       )}
 
