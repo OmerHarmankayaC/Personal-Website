@@ -51,28 +51,28 @@ export default function Hero() {
       // ── SKIP: Already played this session ────────────────────────────────
       if (hasAnimated) {
         if (isMobileLocal) {
-            gsap.set(nameContainerRef.current, { opacity: 1, y: 0 });
-            gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
-            gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
-            gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
-            gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
-            gsap.set('.nav-telemetry', { opacity: 1, y: 0 });
-            gsap.set(scrollIndicatorRef.current, { opacity: 1 });
+          gsap.set(nameContainerRef.current, { opacity: 1, y: 0 });
+          gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
+          gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
+          gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
+          gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
+          gsap.set('.nav-telemetry', { opacity: 1, y: 0 });
+          gsap.set(scrollIndicatorRef.current, { opacity: 1 });
         } else {
-            gsap.set(nameContainerRef.current, { left: '12vw', xPercent: 0, opacity: 1, scale: 1, width: 'auto' });
-            gsap.set(word1Ref.current, { opacity: 1, y: 0, x: 0 });
-            gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
-            gsap.set(word2Ref.current, { opacity: 1, y: 0, x: 0 });
-            gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
-            gsap.set(word2WrapperRef.current, { 
-                x: 0, 
-                y: (word1Ref.current?.offsetHeight || 80) + 12,
-                opacity: 1 
-            });
-            gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
-            gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
-            gsap.set('.nav-telemetry', { opacity: 1 });
-            gsap.set(scrollIndicatorRef.current, { opacity: 1 });
+          gsap.set(nameContainerRef.current, { left: '12vw', xPercent: 0, opacity: 1, scale: 1, width: 'auto' });
+          gsap.set(word1Ref.current, { opacity: 1, y: 0, x: 0 });
+          gsap.set('.word1-letter', { opacity: 1, y: 0, rotate: 0 });
+          gsap.set(word2Ref.current, { opacity: 1, y: 0, x: 0 });
+          gsap.set('.word2-letter', { opacity: 1, y: 0, rotate: 0 });
+          gsap.set(word2WrapperRef.current, {
+            x: 0,
+            y: (word1Ref.current?.offsetHeight || 80) + 12,
+            opacity: 1
+          });
+          gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
+          gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
+          gsap.set('.nav-telemetry', { opacity: 1 });
+          gsap.set(scrollIndicatorRef.current, { opacity: 1 });
         }
         unlockScroll();
         return;
@@ -274,20 +274,20 @@ export default function Hero() {
             <div style={{ marginTop: '5vh', display: 'flex', flexDirection: 'column', gap: '0.8rem', maxWidth: '88vw', alignItems: 'center' }}>
               <p ref={subtitle1Ref} style={{ opacity: hasAnimated ? 1 : 0, fontSize: 'clamp(0.85rem, 4vw, 1.4rem)', letterSpacing: '0.04em', color: 'var(--text-muted)', fontFamily: 'var(--font-heading)', fontWeight: 700, lineHeight: 1.2, textAlign: 'center' }}>{t.hero.subtitle1}</p>
               <p ref={subtitle2Ref} style={{ fontSize: 'clamp(0.75rem, 3.5vw, 1.1rem)', fontFamily: 'var(--font-heading)', fontWeight: 400, opacity: hasAnimated ? 0.7 : 0, lineHeight: 1.4, textAlign: 'center' }}>{t.hero.subtitle2}</p>
-              
+
               {/* Mobile Coordinates */}
-              <p className="nav-telemetry" style={{ 
-                opacity: hasAnimated ? 1 : 0, 
+              <p className="nav-telemetry" style={{
+                opacity: hasAnimated ? 1 : 0,
                 marginTop: '3vh',
-                fontSize: '0.65rem', 
-                fontFamily: 'var(--font-mono)', 
-                color: 'var(--text-muted)', 
-                letterSpacing: '0.15em', 
+                fontSize: '0.65rem',
+                fontFamily: 'var(--font-mono)',
+                color: 'var(--text-muted)',
+                letterSpacing: '0.15em',
                 textTransform: 'uppercase',
                 borderTop: '1px solid rgba(255,255,255,0.1)',
                 paddingTop: '12px'
               }}>
-                 {t.hero.tags[2]}
+                {t.hero.tags[2]}
               </p>
             </div>
           </div>
@@ -362,9 +362,9 @@ export default function Hero() {
         >
           <div style={{ height: 40, width: 1, backgroundColor: 'rgba(255,255,255,1)' }} />
           <motion.div
-             animate={{ y: [0, 4, 0] }}
-             transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-             style={{ marginRight: '-0.3em' }}
+            animate={{ y: [0, 4, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            style={{ marginRight: '-0.3em' }}
           >
             {t.hero.scroll}
           </motion.div>
