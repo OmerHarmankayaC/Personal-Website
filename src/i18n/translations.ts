@@ -82,7 +82,7 @@ export const translations = {
         {
           id: 'hospital-db',
           featured: true,
-          title: "Hospital dbms",
+          title: "HOSPITAL DBMS",
           year: "2025",
           category: "Database Systems",
           platform: "Backend / SQL",
@@ -198,7 +198,7 @@ export const translations = {
         {
           id: 'hospital-db',
           featured: true,
-          title: "Hospital DBMS",
+          title: "HOSPITAL DBMS",
           year: "2025",
           category: "Veritabanı Sistemleri",
           platform: "Backend / SQL",
