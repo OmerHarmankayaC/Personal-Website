@@ -29,9 +29,9 @@ export default function Projects() {
       {/* Table 2 */}
       <rect x="250" y="80" width="100" height="80" rx="2" fill="rgba(240,238,232,0.06)" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
       <line x1="250" y1="100" x2="350" y2="100" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
-      <line x1="260" y1="115" x2="340" y2="115" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
-      <line x1="260" y1="130" x2="340" y2="130" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
-      <line x1="260" y1="145" x2="340" y2="145" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="260" y1="115" x2="240" y2="115" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="260" y1="130" x2="240" y2="130" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="260" y1="145" x2="240" y2="145" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
 
       {/* Table 3 */}
       <rect x="150" y="180" width="100" height="80" rx="2" fill="rgba(240,238,232,0.06)" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
@@ -50,6 +50,8 @@ export default function Projects() {
       <rect x="248" y="218" width="4" height="4" transform="rotate(45 250 220)" fill="rgba(240,238,232,0.8)" />
     </motion.svg>
   );
+
+
 
   return (
     <section className="container" id="projects" style={{ paddingBottom: '20vh' }}>
@@ -279,6 +281,7 @@ export default function Projects() {
                   />
                 </div>
               )}
+
 
               {isHospital && !isMobile && (
                 <div style={{ position: 'absolute', bottom: 0, right: 0, width: '90%', height: '60%', overflow: 'hidden', zIndex: 5, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', padding: '1rem' }}>
