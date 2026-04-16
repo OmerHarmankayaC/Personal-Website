@@ -20,34 +20,34 @@ export default function Projects() {
       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
     >
       {/* Table 1 */}
-      <rect x="50" y="50" width="100" height="80" rx="2" fill="rgba(240,238,232,0.04)" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="50" y1="70" x2="150" y2="70" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="60" y1="85" x2="140" y2="85" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="60" y1="100" x2="140" y2="100" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="60" y1="115" x2="140" y2="115" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
+      <rect x="50" y="50" width="100" height="80" rx="2" fill="rgba(240,238,232,0.06)" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="50" y1="70" x2="150" y2="70" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="60" y1="85" x2="140" y2="85" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="60" y1="100" x2="140" y2="100" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="60" y1="115" x2="140" y2="115" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
 
       {/* Table 2 */}
-      <rect x="250" y="80" width="100" height="80" rx="2" fill="rgba(240,238,232,0.04)" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="250" y1="100" x2="350" y2="100" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="260" y1="115" x2="340" y2="115" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="260" y1="130" x2="340" y2="130" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="260" y1="145" x2="340" y2="145" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
+      <rect x="250" y="80" width="100" height="80" rx="2" fill="rgba(240,238,232,0.06)" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="250" y1="100" x2="350" y2="100" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="260" y1="115" x2="340" y2="115" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="260" y1="130" x2="340" y2="130" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="260" y1="145" x2="340" y2="145" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
 
       {/* Table 3 */}
-      <rect x="150" y="180" width="100" height="80" rx="2" fill="rgba(240,238,232,0.04)" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="150" y1="200" x2="250" y2="200" stroke="rgba(240,238,232,0.2)" strokeWidth="0.8" />
-      <line x1="160" y1="215" x2="240" y2="215" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="160" y1="230" x2="240" y2="230" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
-      <line x1="160" y1="245" x2="240" y2="245" stroke="rgba(240,238,232,0.1)" strokeWidth="0.5" />
+      <rect x="150" y="180" width="100" height="80" rx="2" fill="rgba(240,238,232,0.06)" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="150" y1="200" x2="250" y2="200" stroke="rgba(240,238,232,0.6)" strokeWidth="0.8" />
+      <line x1="160" y1="215" x2="240" y2="215" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="160" y1="230" x2="240" y2="230" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
+      <line x1="160" y1="245" x2="240" y2="245" stroke="rgba(240,238,232,0.3)" strokeWidth="0.5" />
 
       {/* Connectors */}
-      <path d="M 150 90 L 250 90" fill="none" stroke="rgba(240,238,232,0.15)" strokeWidth="0.8" />
-      <rect x="148" y="88" width="4" height="4" transform="rotate(45 150 90)" fill="rgba(240,238,232,0.25)" />
-      <rect x="248" y="88" width="4" height="4" transform="rotate(45 250 90)" fill="rgba(240,238,232,0.25)" />
+      <path d="M 150 90 L 250 90" fill="none" stroke="rgba(240,238,232,0.5)" strokeWidth="0.8" />
+      <rect x="148" y="88" width="4" height="4" transform="rotate(45 150 90)" fill="rgba(240,238,232,0.8)" />
+      <rect x="248" y="88" width="4" height="4" transform="rotate(45 250 90)" fill="rgba(240,238,232,0.8)" />
 
-      <path d="M 300 160 L 300 220 L 250 220" fill="none" stroke="rgba(240,238,232,0.15)" strokeWidth="0.8" />
-      <rect x="298" y="158" width="4" height="4" transform="rotate(45 300 160)" fill="rgba(240,238,232,0.25)" />
-      <rect x="248" y="218" width="4" height="4" transform="rotate(45 250 220)" fill="rgba(240,238,232,0.25)" />
+      <path d="M 300 160 L 300 220 L 250 220" fill="none" stroke="rgba(240,238,232,0.5)" strokeWidth="0.8" />
+      <rect x="298" y="158" width="4" height="4" transform="rotate(45 300 160)" fill="rgba(240,238,232,0.8)" />
+      <rect x="248" y="218" width="4" height="4" transform="rotate(45 250 220)" fill="rgba(240,238,232,0.8)" />
     </motion.svg>
   );
 
@@ -97,8 +97,8 @@ export default function Projects() {
                 position: 'relative',
                 gridColumn: isMobile ? 'span 12' : (item.size === 'large' ? 'span 12' : (item.size === 'medium-large' ? 'span 8' : 'span 4')),
                 backgroundColor: '#000000',
-                border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.15)',
-                borderBottom: isMobile ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(255,255,255,0.15)',
+                border: isMobile ? 'none' : '1px solid rgba(255,255,255,0.4)',
+                borderBottom: isMobile ? '1px solid rgba(255,255,255,0.3)' : '1px solid rgba(255,255,255,0.4)',
                 display: 'flex',
                 flexDirection: isMobile ? 'column' : 'row',
                 justifyContent: isVera ? 'center' : 'space-between',
@@ -166,7 +166,16 @@ export default function Projects() {
                   >
                     <div style={{ pointerEvents: 'auto' }}>
                       <h2 style={{ fontSize: 'clamp(1.5rem, 6vw, 3.5rem)', color: 'var(--text)', fontWeight: 400, margin: '0 0 1rem 0', fontFamily: 'var(--font-display)', textTransform: 'uppercase', letterSpacing: '0.01em' }}>{item.title}</h2>
-                      <p style={{ fontSize: 'clamp(0.9rem, 2vw, 1.1rem)', color: 'var(--text-muted)', lineHeight: 1.5, fontFamily: 'var(--font-body)', fontWeight: 300, marginBottom: '0.5rem' }}>{item.description}</p>
+                      <p style={{ 
+                        fontSize: 'clamp(1.1rem, 4vw, 1.15rem)', 
+                        color: 'var(--text)', 
+                        opacity: 0.85,
+                        lineHeight: 1.6, 
+                        fontFamily: 'var(--font-body)', 
+                        fontWeight: 400, 
+                        marginBottom: '0.5rem',
+                        marginTop: '1.5rem' 
+                      }}>{item.description}</p>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '2rem', letterSpacing: '0.05em' }}>{item.tags}</p>
 
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text)' }}>

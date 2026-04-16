@@ -692,16 +692,19 @@ export default function ProjectDetail() {
                 lineHeight: 1,
                 display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: isMobile ? '1rem' : '2rem',
                 textTransform: 'uppercase',
                 letterSpacing: '0.02em',
                 wordBreak: 'break-word',
+                textAlign: 'center'
               }}
-              whileHover={{ x: 20 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.4 }}
             >
-              {nextProject.title}
-              <ArrowRight size={isMobile ? 28 : 48} strokeWidth={1} />
+              <ArrowRight size={isMobile ? 28 : 48} strokeWidth={1} style={{ opacity: 0, pointerEvents: 'none', flexShrink: 0 }} />
+              <span>{nextProject.title}</span>
+              <ArrowRight size={isMobile ? 28 : 48} strokeWidth={1} style={{ flexShrink: 0 }} />
             </motion.h2>
           </Link>
         </motion.div>

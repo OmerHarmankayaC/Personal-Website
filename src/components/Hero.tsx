@@ -57,7 +57,7 @@ export default function Hero() {
             gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
             gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
             gsap.set('.nav-telemetry', { opacity: 1, y: 0 });
-            gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+            gsap.set(scrollIndicatorRef.current, { opacity: 1 });
         } else {
             gsap.set(nameContainerRef.current, { left: '12vw', xPercent: 0, opacity: 1, scale: 1, width: 'auto' });
             gsap.set(word1Ref.current, { opacity: 1, y: 0, x: 0 });
@@ -72,7 +72,7 @@ export default function Hero() {
             gsap.set(subtitle1Ref.current, { opacity: 1, y: 0 });
             gsap.set(subtitle2Ref.current, { opacity: 0.7, y: 0 });
             gsap.set('.nav-telemetry', { opacity: 1 });
-            gsap.set(scrollIndicatorRef.current, { opacity: 0.5 });
+            gsap.set(scrollIndicatorRef.current, { opacity: 1 });
         }
         unlockScroll();
         return;
@@ -119,7 +119,7 @@ export default function Hero() {
         tl.to(subtitle1Ref.current, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 1.1);
         tl.to(subtitle2Ref.current, { opacity: 0.7, y: 0, duration: 1.0, ease: 'power3.out' }, 1.3);
         tl.to('.nav-telemetry', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: 0.15 }, 1.5);
-        tl.to(scrollIndicatorRef.current, { opacity: 0.5, duration: 1.5 }, 2.2);
+        tl.to(scrollIndicatorRef.current, { opacity: 1, duration: 1.5 }, 2.2);
 
       } else {
         // ── DESKTOP: Horizontal assembly → vertical settle ───────────────────
@@ -152,10 +152,13 @@ export default function Hero() {
         const finished = word1Land + (word2Letters.length * 0.05) + 0.8;
         const settleAt = finished + 0.35;
 
-        // Phase 2: slide to left edge, scale to 1, reset width
+        // Phase 2: slide to left edge, scale to 1. Animate without width change to prevent backtracking wobble!
         tl.to(nameContainerRef.current, {
-          left: '12vw', xPercent: 0, scale: 1.0, width: 'auto', duration: 1.3, ease: 'power3.inOut'
+          left: '12vw', xPercent: 0, scale: 1.0, duration: 1.3, ease: 'power3.inOut'
         }, settleAt);
+
+        // Reset width safely after movement is completely finished
+        tl.set(nameContainerRef.current, { width: 'auto' }, settleAt + 1.3);
 
         // word1 stays at absolute left:0 top:0, word2 goes below
         const word1Height = word1Ref.current?.offsetHeight || 80;
@@ -164,7 +167,7 @@ export default function Hero() {
         tl.fromTo(subtitle1Ref.current, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8 }, settleAt + 0.4);
         tl.fromTo(subtitle2Ref.current, { opacity: 0, y: 10 }, { opacity: 0.7, y: 0, duration: 0.8 }, settleAt + 0.7);
         tl.fromTo('.nav-telemetry', { opacity: 0 }, { opacity: 1, duration: 0.6, stagger: 0.15 }, settleAt + 0.8);
-        tl.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 0.5, duration: 1 }, settleAt + 1.8);
+        tl.fromTo(scrollIndicatorRef.current, { opacity: 0 }, { opacity: 1, duration: 1 }, settleAt + 1.8);
       }
     }, containerRef);
 
@@ -336,15 +339,21 @@ export default function Hero() {
       <motion.div
         ref={scrollIndicatorRef}
         style={{
-          position: 'absolute', bottom: 40, left: '50vw', x: '-50%',
-          fontFamily: 'var(--font-heading)', fontSize: '1rem', fontWeight: 800,
+          position: 'absolute', bottom: isMobile ? '10vh' : 40, left: '50vw', x: '-50%',
+          fontFamily: 'var(--font-heading)', fontSize: '0.8rem', fontWeight: 700,
           letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--text)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16,
           opacity: scrollIndicatorOpacity, y: scrollIndicatorY
         }}
       >
-        <div style={{ height: 40, width: 1, backgroundColor: 'var(--border)' }} />
-        {t.hero.scroll}
+        <div style={{ height: 40, width: 1, backgroundColor: 'rgba(255,255,255,0.8)' }} />
+        <motion.div
+           animate={{ y: [0, 4, 0] }}
+           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+           style={{ marginRight: '-0.3em' }}
+        >
+          {t.hero.scroll}
+        </motion.div>
       </motion.div>
     </section>
   );

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
 import Hero from './components/Hero';
@@ -14,15 +14,35 @@ import { CursorProvider } from './context/CursorContext';
 import { useI18n } from './i18n/context';
 
 // Scroll Management Component
-function ScrollToTop() {
+function ScrollManager() {
   const { pathname } = useLocation();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-    // If lenis is available globally, use it for immediate scroll
-    if ((window as any).lenis) {
-      (window as any).lenis.scrollTo(0, { immediate: true });
+    if (pathname === '/') {
+      // Restore home scroll position if it exists
+      const savedY = sessionStorage.getItem('homeScrollPos');
+      if (savedY) {
+        // Delay slightly ensures the DOM has painted elements enough to have height
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            window.scrollTo(0, Number(savedY));
+            if ((window as any).lenis) {
+              (window as any).lenis.scrollTo(Number(savedY), { immediate: true });
+            }
+          }, 50);
+        });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } else {
+      // Always scroll to top for new pages like project details
+      window.scrollTo(0, 0);
+      if ((window as any).lenis) {
+        (window as any).lenis.scrollTo(0, { immediate: true });
+      }
     }
   }, [pathname]);
+
   return null;
 }
 
@@ -62,6 +82,21 @@ function GlobalLanguageSwitcher() {
 }
 
 function MainLayout() {
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      lastScrollY.current = window.scrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Save scroll position when leaving the main page precisely using the buffered reference
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      sessionStorage.setItem('homeScrollPos', lastScrollY.current.toString());
+    };
+  }, []);
+
   return (
     <main>
       <Hero />
@@ -116,7 +151,7 @@ function App() {
     <I18nProvider>
       <CursorProvider>
         <Router>
-          <ScrollToTop />
+          <ScrollManager />
           <CustomCursor />
           <GlobalLanguageSwitcher />
           <AnimatedRoutes />
