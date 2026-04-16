@@ -96,7 +96,6 @@ export default function Hero() {
 
       if (isMobileLocal) {
         // ── MOBILE: Slow settling entrance ────────
-        // Start the whole container higher up and lower it smoothly.
         gsap.set(nameContainerRef.current, { opacity: 1, y: -60 });
         gsap.set('.word1-letter', { opacity: 0, y: -40 });
         gsap.set('.word2-letter', { opacity: 0, y: -40 });
@@ -108,14 +107,9 @@ export default function Hero() {
         const word1Letters = gsap.utils.toArray<HTMLElement>('.word1-letter');
         const word2Letters = gsap.utils.toArray<HTMLElement>('.word2-letter');
 
-        // Letters quickly assemble
         tl.to(word1Letters, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.03 }, 0.1);
         tl.to(word2Letters, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.03 }, 0.35);
-
-        // Entire block smoothly drifts down to final position
         tl.to(nameContainerRef.current, { y: 0, duration: 2.2, ease: 'power2.out' }, 0.1);
-
-        // Subtext fades in gracefully as block moves down
         tl.to(subtitle1Ref.current, { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' }, 1.1);
         tl.to(subtitle2Ref.current, { opacity: 0.7, y: 0, duration: 1.0, ease: 'power3.out' }, 1.3);
         tl.to('.nav-telemetry', { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out', stagger: 0.15 }, 1.5);
@@ -152,7 +146,7 @@ export default function Hero() {
         const finished = word1Land + (word2Letters.length * 0.05) + 0.8;
         const settleAt = finished + 0.35;
 
-        // Phase 2: slide to left edge, scale to 1. Using clean xPercent and left interpolation.
+        // Phase 2: slide to left edge, scale to 1.
         tl.to(nameContainerRef.current, {
           left: '12vw',
           xPercent: 0,
@@ -161,14 +155,14 @@ export default function Hero() {
           ease: 'power3.inOut'
         }, settleAt);
 
-        // We defer width auto evaluation to prevent it from ruining xPercent translation math
+        // Defer width:auto so it doesn't break xPercent math during the tween
         tl.call(() => {
           if (nameContainerRef.current) {
             gsap.set(nameContainerRef.current, { width: 'auto' });
           }
         }, undefined, settleAt + 1.4);
 
-        // word1 stays at absolute left:0 top:0, word2 goes below
+        // word1 stays at left:0 top:0 — word2 slides below it
         const word1Height = word1Ref.current?.offsetHeight || 80;
         tl.to(word2WrapperRef.current, { x: 0, y: word1Height + 12, duration: 1.4, ease: 'power3.inOut' }, settleAt);
 
