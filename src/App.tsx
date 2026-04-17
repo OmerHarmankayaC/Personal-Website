@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
+import { Analytics } from '@vercel/analytics/react';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
@@ -155,6 +156,7 @@ function App() {
           <CustomCursor />
           <GlobalLanguageSwitcher />
           <AnimatedRoutes />
+          <Analytics />
         </Router>
       </CursorProvider>
     </I18nProvider>
